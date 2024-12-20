@@ -32,12 +32,12 @@
                     <button onclick="switchScreen('homePage')" class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Home</button>
                     <button onclick="switchScreen('uploadPage')" class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Submit</button>
                     <button onclick="switchScreen('aboutPage')" class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">About</button>
-                    {{-- <form method="POST" action="{{ route('logout') }}" class="inline">
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
-                        <button type="submit" class="px-4 py-2 mt-2 text-sm font-semibold bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:shadow-outline">
+                        <button type="submit" class="px-4 py-2 mt-2 text-sm font-semibold bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:shadow-outline text-white ml-2">
                             Logout
                         </button>
-                    </form> --}}
+                    </form>
                 </nav>
             </div>
 

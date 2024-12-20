@@ -33,15 +33,15 @@ Route::get('/', function () {
 Route::get('/about', [AboutController::class, 'indexuser'])->name('about');
 
 // Admin Dashboard
-// Route::get('/', function () {
-//     return view('admin.dashboard');
-// })->name('admin.dashboard');
+Route::get('/admin', function () {
+    return view('admin.dashboard');
+})->name('admin.dashboard');
 
 // About Management
-// Route::get('/', [AboutController::class, 'index'])->name('abouts');
-// Route::post('/about/store', [AboutController::class, 'store'])->name('about.store');
-// Route::put('/{id}', [AboutController::class, 'update'])->name('update');
-// Route::delete('/{id}', [AboutController::class, 'destroy'])->name('destroy');
+Route::get('/admin', [AboutController::class, 'index'])->name('abouts');
+Route::post('/about/store', [AboutController::class, 'store'])->name('about.store');
+Route::put('/{id}', [AboutController::class, 'update'])->name('update');
+Route::delete('/{id}', [AboutController::class, 'destroy'])->name('destroy');
 
 
 // Submission Management
@@ -90,3 +90,10 @@ Route::middleware(['auth'])->group(function () {
 
 // Add resource route for pages
 Route::resource('pages', PageController::class);
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Other routes...
+
+    Route::get('/submissions', [SubmissionController::class, 'index'])->name('submissions.index');
+    // Other routes...
+});
+

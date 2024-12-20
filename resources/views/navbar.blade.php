@@ -46,31 +46,31 @@
             <ul class="flex justify-center space-x-4">
                 <li>
                     <a href="{{ route('home') }}"
-                        class="px-4 py-2 border rounded text-white hover:bg-white hover:text-black">
+                        class="px-4 py-2 border rounded text-white hover:bg-green-500 hover:text-black">
                         HOME
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('curr') }}"
-                        class="px-4 py-2 border rounded text-white hover:bg-white hover:text-black">
+                        class="px-4 py-2 border rounded text-white hover:bg-green-500 hover:text-black">
                         CURRENT
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('announcements') }}"
-                        class="px-4 py-2 border rounded text-white hover:bg-white hover:text-black">
+                        class="px-4 py-2 border rounded text-white hover:bg-green-500 hover:text-black">
                         ANNOUNCEMENTS
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('submit.index') }}"
-                        class="px-4 py-2 border rounded text-white hover:bg-white hover:text-black">
+                        class="px-4 py-2 border rounded text-white hover:bg-green-500 hover:text-black">
                         SUBMIT
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('about') }}"
-                        class="px-4 py-2 border rounded text-white hover:bg-white hover:text-black">
+                        class="px-4 py-2 border rounded text-white hover:bg-green-500 hover:text-black">
                         ABOUT
                     </a>
                 </li>

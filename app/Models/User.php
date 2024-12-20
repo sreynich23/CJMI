@@ -14,8 +14,6 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'notifications_enabled',
-        'reviewer_available',
     ];
 
     protected $hidden = [
@@ -23,23 +21,29 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'notifications_enabled' => 'boolean',
-        'reviewer_available' => 'boolean',
-    ];
-
     protected $attributes = [
-        'notifications_enabled' => false,
-        'reviewer_available' => false,
         'role' => 'user',
     ];
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    /**
+     * Check if the user is an admin
+     *
+     * @return bool
+     */
     public function isAdmin()
     {
         return $this->role === 'admin';
     }
 
+    /**
+     * Check if the user is a regular user
+     *
+     * @return bool
+     */
     public function isUser()
     {
         return $this->role === 'user';

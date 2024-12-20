@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,68 +8,81 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        [x-cloak] { display: none !important; }
-        .relative { position: relative; }
-        .absolute { position: absolute; }
+        [x-cloak] {
+            display: none !important;
+        }
+
+        .relative {
+            position: relative;
+        }
+
+        .absolute {
+            position: absolute;
+        }
     </style>
 </head>
-<body class="bg-gray-100">
+
+<body class="bg-gray-100 flex flex-col min-h-screen">
     @include('navbar')
 
-    @if(session('success'))
+    @if (session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
             <span class="block sm:inline">{{ session('success') }}</span>
         </div>
     @endif
 
-    @if(session('error'))
+    @if (session('error'))
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
             <span class="block sm:inline">{{ session('error') }}</span>
         </div>
     @endif
 
-    <main>
+    <main class="flex-grow">
         @yield('content')
     </main>
 
-    <footer class="bg-gray-900 text-white py-6">
-        <div class="container mx-auto text-center">
-            <div class="grid grid-cols-3 gap-4 text-sm">
-                <div>
-                    <h2 class="font-bold mb-2">Information</h2>
-                    <ul>
-                        <li><a href="{{ route('about') }}">About Us</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h2 class="font-bold mb-2">My Account</h2>
-                    <ul>
-                        @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
-                            <li><a href="#">Profile</a></li>
-                            <li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit">Logout</button>
-                                </form>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-                <div>
-                    <h2 class="font-bold mb-2">Extras</h2>
-                    <ul>
-                        <li><a href="#">Downloads</a></li>
-                        <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Support</a></li>
-                    </ul>
+    <footer class="bg-gray-900 text-white py-4">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Contact Information -->
+                <div class="space-y-2">
+                    <h3 class="font-bold">{{ $journalInfo->journal_name ?? 'CJMI' }}</h3>
+                    <div class="text-sm text-gray-400 space-y-1">
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            {{ $journalInfo->email ?? 'cjmi.journal@gmail.com' }}
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                            </svg>
+                            {{ $journalInfo->telegram ?? '+855 85593115' }}
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            {{ $journalInfo->editorial_office ?? 'Battabang, Cambodia' }}
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                            Designed & Developed by: {{ $journalInfo->developer ?? 'LONG SREYNICH' }}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </footer>
 </body>
+
 </html>

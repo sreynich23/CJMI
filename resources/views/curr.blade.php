@@ -1,44 +1,74 @@
+@extends('layouts.app')
 
-<body class="bg-gray-100">
-    <!-- Header Section -->
-    @include('navbar')
+@section('content')
+<div class="container mx-auto px-4">
+    <!-- Journal Title -->
+    <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
+        <h1 class="text-3xl md:text-4xl text-blue-900 font-medium">
+            {{ $journalInfo->journal_name ?? 'Cambodian Journal of Multidisciplinary Research and Innovation' }}
+        </h1>
+    </div>
 
+    <!-- Volume Navigation -->
+    <div class="bg-white p-4 rounded-lg shadow-sm mb-6">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2 w-full">
+                <!-- Volume Navigation -->
+                <button class="text-green-700 hover:text-green-900 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
 
-    <div class="container mx-auto p-4 flex space-x-6">
-            <div class="flex-1 bg-gray-100 p-4 rounded-lg">
-                @include('currents.curr')
+                <div class="flex-1 flex items-center justify-center space-x-6 overflow-x-auto scrollbar-hide">
+                    <span class="font-semibold text-xl text-gray-800 whitespace-nowrap">
+                        Volume 25, 2024
+                    </span>
+                    <a href="#" class="text-green-700 hover:underline whitespace-nowrap">Vol 24, 2023</a>
+                    <a href="#" class="text-green-700 hover:underline whitespace-nowrap">Vol 23, 2022</a>
+                    <a href="#" class="text-green-700 hover:underline whitespace-nowrap">Vol 22, 2021</a>
+                </div>
+
+                <button class="text-green-700 hover:text-green-900 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
             </div>
+            <a href="#" class="text-blue-900 hover:underline whitespace-nowrap">All volumes & issues</a>
+        </div>
+    </div>
+
+    <!-- Issues Navigation and Content -->
+    <div class="bg-white p-6 rounded-lg shadow-sm">
+        <!-- Issues Navigation -->
+        <div class="flex items-center justify-center space-x-4 mb-6 border-b pb-4">
+            <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+
+            <nav class="flex space-x-6 text-center overflow-x-auto scrollbar-hide">
+                <a href="#" class="text-green-700 font-bold border-b-2 border-green-700 pb-2 px-2">Issue 5</a>
+                <a href="#" class="text-green-700 hover:font-bold hover:border-b-2 hover:border-green-700 pb-2 px-2">Issue 4</a>
+                <a href="#" class="text-green-700 hover:font-bold hover:border-b-2 hover:border-green-700 pb-2 px-2">Issue 3</a>
+                <a href="#" class="text-green-700 hover:font-bold hover:border-b-2 hover:border-green-700 pb-2 px-2">Issue 2</a>
+                <a href="#" class="text-green-700 hover:font-bold hover:border-b-2 hover:border-green-700 pb-2 px-2">Issue 1</a>
+            </nav>
+
+            <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
         </div>
 
-    <!-- Footer Section -->
-    <footer class="bg-gray-900 text-white py-6">
-        <div class="container mx-auto text-center">
-            <div class="grid grid-cols-3 gap-4 text-sm">
-                <div>
-                    <h2 class="font-bold mb-2">Information</h2>
-                    <ul>
-                        <li>About Us</li>
-                        <li>Contact</li>
-                        <li>Privacy Policy</li>
-                    </ul>
-                </div>
-                <div>
-                    <h2 class="font-bold mb-2">My Account</h2>
-                    <ul>
-                        <li>Login</li>
-                        <li>Register</li>
-                        <li>Profile</li>
-                    </ul>
-                </div>
-                <div>
-                    <h2 class="font-bold mb-2">Extras</h2>
-                    <ul>
-                        <li>Downloads</li>
-                        <li>FAQs</li>
-                        <li>Support</li>
-                    </ul>
-                </div>
-            </div>
+        <!-- Articles List -->
+        <div class="space-y-6">
+            @include('wigets.articles')
         </div>
-    </footer>
-</body>
+    </div>
+</div>
+@endsection
+
