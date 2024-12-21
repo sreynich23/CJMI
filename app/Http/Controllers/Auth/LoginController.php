@@ -20,9 +20,17 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
+        // Attempt to log in with the provided credentials
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+
+            // Check user role and redirect accordingly
+            $user = Auth::user();
+            if ($user->role == 'admin') {
+                return redirect()->route('admin.dashboard'); // Admin Dashboard
+            } else {
+                return redirect()->intended('/'); // Default user page
+            }
         }
 
         return back()->withErrors([
@@ -38,3 +46,4 @@ class LoginController extends Controller
         return redirect('/');
     }
 }
+

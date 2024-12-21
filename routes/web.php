@@ -2,76 +2,49 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin\SubmissionController;
+use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SubmitController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\SubmitController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\AdminMiddleware;
 
-// Add auth routes (includes login, register, password reset, etc)
+// Authentication Routes
 Auth::routes();
-// Authentication routes
-Route::middleware(['web'])->group(function () {
-    // Guest routes (login/register)
-    Route::middleware(['guest'])->group(function () {
-        Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-        Route::post('/register', [RegisterController::class, 'register']);
-        Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-        Route::post('/login', [LoginController::class, 'login']);
-    });
 
-    // Auth required routes
-    Route::middleware(['auth'])->group(function () {
-        Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-    });
+// Public Routes
+Route::middleware(['web'])->group(function () {
+    Route::get('/', function () {
+        return view('home');
+    })->name('home');
+
+    Route::get('/about', [AboutController::class, 'indexuser'])->name('about');
+    Route::get('/curr', function () {
+        return view('curr');
+    })->name('curr');
+    Route::get('/announcements', [AnnouncementsController::class, 'index'])->name('announcements');
 });
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
-Route::get('/about', [AboutController::class, 'indexuser'])->name('about');
+// Guest Routes (Only for non-authenticated users)
+Route::middleware(['guest'])->group(function () {
+    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register']);
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
+});
 
-// Admin Dashboard
-Route::get('/admin', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
-
-// About Management
-Route::get('/admin', [AboutController::class, 'index'])->name('abouts');
-Route::post('/about/store', [AboutController::class, 'store'])->name('about.store');
-Route::put('/{id}', [AboutController::class, 'update'])->name('update');
-Route::delete('/{id}', [AboutController::class, 'destroy'])->name('destroy');
-
-
-// Submission Management
-Route::get('/submissions', [SubmissionController::class, 'index'])->name('admin.submissions.index');
-Route::get('/submissions/{submission}', [SubmissionController::class, 'show'])->name('admin.submissions.show');
-Route::put('/submissions/{submission}', [SubmissionController::class, 'update'])->name('admin.submissions.update');
-Route::get('/submit', [SubmitController::class, 'adminIndex'])->name('admin.submit');
-Route::post('/submit/checklist', [SubmitController::class, 'storeChecklistItem'])->name('admin.submit.checklist.store');
-Route::put('/submit/checklist/{id}', [SubmitController::class, 'updateChecklistItem'])->name('admin.submit.checklist.update');
-Route::delete('/submit/checklist/{id}', [SubmitController::class, 'deleteChecklistItem'])->name('admin.submit.checklist.delete');
-Route::put('/submit/contact', [SubmitController::class, 'updateContact'])->name('admin.submit.contact.update');
-Route::put('/submit/policy', [SubmitController::class, 'updatePolicy'])->name('admin.submit.policy.update');
-
-// Add the new route for curr page
-Route::get('/curr', function () {
-    return view('curr');
-})->name('curr');
-
-// Add the route for announcements page
-Route::get('/announcements', function () {
-    return view('announcements');
-})->name('announcements');
-
-// Submission System
+// Authenticated Routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('/submit', [SubmitController::class, 'index'])->name('submit.index');
-    Route::post('/submit/manuscript', [SubmitController::class, 'submitManuscript'])->name('submit.manuscript');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
 
-    // Submission Wizard
+    // Submission Wizard for Users
     Route::prefix('submit')->name('submit.')->group(function () {
+        Route::get('/', [SubmitController::class, 'index'])->name('index');
+        Route::post('/manuscript', [SubmitController::class, 'submitManuscript'])->name('manuscript');
         Route::get('/step1', [SubmitController::class, 'showStep1'])->name('step1');
         Route::post('/step1', [SubmitController::class, 'saveStep1'])->name('saveStep1');
         Route::get('/step2', [SubmitController::class, 'showStep2'])->name('step2');
@@ -83,17 +56,44 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/step5', [SubmitController::class, 'showStep5'])->name('step5');
     });
 
-    Route::get('/submissions', [SubmitController::class, 'indexSubmissions'])->name('submissions.index');
-    Route::get('/submissions/{submit}', [SubmitController::class, 'showSubmission'])->name('submissions.show');
-    Route::delete('/submissions/{submit}', [SubmitController::class, 'deleteSubmission'])->name('submissions.destroy');
+    // User Submissions
+    Route::prefix('submissions')->name('submissions.')->group(function () {
+        Route::get('/', [SubmitController::class, 'indexSubmissions'])->name('index');
+        Route::get('/{submit}', [SubmitController::class, 'showSubmission'])->name('show');
+        Route::delete('/{submit}', [SubmitController::class, 'deleteSubmission'])->name('destroy');
+    });
 });
 
-// Add resource route for pages
-Route::resource('pages', PageController::class);
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    // Other routes...
+// Admin Routes
+Route::get('admin', function () {
+    Route::get('admin', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
 
+
+
+    // About Management
+    Route::get('/about', [AboutController::class, 'index'])->name('about.index');
+    Route::post('/about/store', [AboutController::class, 'store'])->name('about.store');
+    Route::put('/about/{id}', [AboutController::class, 'update'])->name('about.update');
+    Route::delete('/about/{id}', [AboutController::class, 'destroy'])->name('about.destroy');
+
+    // Submissions Management
     Route::get('/submissions', [SubmissionController::class, 'index'])->name('submissions.index');
-    // Other routes...
-});
+    Route::get('/submissions/{submission}', [SubmissionController::class, 'show'])->name('submissions.show');
+    Route::put('/submissions/{submission}', [SubmissionController::class, 'update'])->name('submissions.update');
+    Route::delete('/submissions/{submission}', [SubmissionController::class, 'destroy'])->name('submissions.destroy');
 
+    // Submission System Admin-Specific
+    Route::prefix('submit')->name('submit.')->group(function () {
+        Route::get('/', [SubmitController::class, 'adminIndex'])->name('index');
+        Route::post('/checklist', [SubmitController::class, 'storeChecklistItem'])->name('checklist.store');
+        Route::put('/checklist/{id}', [SubmitController::class, 'updateChecklistItem'])->name('checklist.update');
+        Route::delete('/checklist/{id}', [SubmitController::class, 'deleteChecklistItem'])->name('checklist.delete');
+        Route::put('/contact', [SubmitController::class, 'updateContact'])->name('contact.update');
+        Route::put('/policy', [SubmitController::class, 'updatePolicy'])->name('policy.update');
+    });
+})->name('admin.dashboard')->middleware('admin');
+
+// Resource Route for Pages
+Route::resource('pages', PageController::class);

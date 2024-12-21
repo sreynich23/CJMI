@@ -11,80 +11,39 @@ use Illuminate\Support\Facades\Log;
 
 class SubmitController extends Controller
 {
-    protected $middleware = ['auth'];
-
     public function index()
     {
         return redirect()->route('submit.step1');
     }
 
+    // Step 1: Initial Requirements
     public function showStep1()
     {
         $checklistItems = ChecklistItem::all();
         return view('submit.step1', compact('checklistItems'));
     }
 
-    public function submitManuscript(Request $request)
-    {
-        try {
-            $request->validate([
-                'prefix' => 'nullable|string|max:255',
-                'title' => 'required|string|max:255',
-                'subtitle' => 'nullable|string|max:255',
-                'abstract' => 'required|string',
-                'keywords' => 'required|string',
-                'manuscript' => 'required|file|mimes:doc,docx,pdf|max:10240',
-            ]);
-
-            // Handle file upload
-            $file = $request->file('manuscript');
-            $originalFilename = $file->getClientOriginalName();
-
-            // Generate a unique filename
-            $filename = time() . '_' . $originalFilename;
-
-            // Store file in public/manuscripts directory
-            $path = $file->move(public_path('manuscripts'), $filename);
-
-            // Store relative path for database
-            $relativePath = 'manuscripts/' . $filename;
-
-            // Create submission
-            $submit = Submit::create([
-                'user_id' => Auth::id(),
-                'prefix' => $request->prefix,
-                'title' => $request->title,
-                'subtitle' => $request->subtitle,
-                'abstract' => $request->abstract,
-                'keywords' => $request->keywords,
-                'file_path' => $relativePath,
-                'original_filename' => $originalFilename,
-                'status' => 'pending',
-            ]);
-
-            return redirect()->route('submit.step5')
-                ->with('success', 'Manuscript submitted successfully!');
-        } catch (\Exception $e) {
-            Log::error('Submission error: ' . $e->getMessage());
-            return back()->with('error', 'Failed to submit manuscript. Please try again.')
-                ->withInput();
-        }
-    }
-
     public function saveStep1(Request $request)
     {
         $request->validate([
             'requirements' => 'required|array|min:5',
-            'comments' => 'nullable|string|max:1000'
+            'comments' => 'nullable|string'
         ]);
 
-        // Store submission data in session
-        session(['submission.step1' => [
-            'requirements' => $request->requirements,
-            'comments' => $request->comments
-        ]]);
+        $request->session()->put('submission.requirements', $request->requirements);
+        $request->session()->put('submission.comments', $request->comments);
 
         return redirect()->route('submit.step2');
+    }
+
+    // Step 2: File Upload
+    public function showStep2()
+    {
+        if (!session()->has('submission.requirements')) {
+            return redirect()->route('submit.step1')
+                ->with('error', 'Please complete step 1 first');
+        }
+        return view('submit.step2');
     }
 
     public function saveStep2(Request $request)
@@ -94,55 +53,79 @@ class SubmitController extends Controller
         ]);
 
         try {
-            // Get the file from the request
             $file = $request->file('manuscript');
-            $originalFilename = $file->getClientOriginalName();
+            $path = $file->store('manuscripts', 'public');
 
-            // Generate a unique filename
-            $filename = time() . '_' . $originalFilename;
+            if (!$path) {
+                throw new \Exception('Failed to store file');
+            }
 
-            // Store file in public/manuscripts directory
-            $path = $file->move(public_path('manuscripts'), $filename);
-
-            // Store relative path for database
-            $relativePath = 'manuscripts/' . $filename;
-
-            // Store file information in session
-            session(['submission.step2' => [
-                'file_path' => $relativePath,
-                'original_filename' => $originalFilename
-            ]]);
+            $request->session()->put('submission.file_path', $path);
+            $request->session()->put('submission.original_filename', $file->getClientOriginalName());
 
             return redirect()->route('submit.step3');
         } catch (\Exception $e) {
-            Log::error('File upload error: ' . $e->getMessage());
-            return back()->with('error', 'Failed to upload file. Please try again.')
-                ->withInput();
+            return back()->with('error', 'Failed to upload file. Please try again.');
         }
+    }
+
+    // Step 3: Metadata
+    public function showStep3()
+    {
+        if (!session()->has('submission.file_path')) {
+            return redirect()->route('submit.step2')
+                ->with('error', 'Please upload your manuscript first');
+        }
+
+        // Get the current submission data
+        $submission = [
+            'file_path' => session('submission.file_path'),
+            'original_filename' => session('submission.original_filename'),
+            'metadata' => session('submission.metadata', []),
+        ];
+
+        return view('submit.step3', compact('submission'));
     }
 
     public function saveStep3(Request $request)
     {
-        $request->validate([
-            'prefix' => 'nullable|string|max:255',
-            'title' => 'required|string|max:255',
-            'subtitle' => 'nullable|string|max:255',
-            'abstract' => 'required|string',
-            'keywords' => 'required|string',
-        ]);
+        try {
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'abstract' => 'required|string|min:100',
+                'keywords' => 'required|string|max:255',
+                'prefix' => 'nullable|string|max:10',
+                'subtitle' => 'nullable|string|max:255',
+            ]);
 
-        // Store metadata in session
-        session(['submission.step3' => [
-            'metadata' => $request->only([
-                'prefix',
-                'title',
-                'subtitle',
-                'abstract',
-                'keywords'
-            ])
-        ]]);
+            // Store metadata in session
+            $request->session()->put('submission.metadata', $validated);
 
-        return redirect()->route('submit.step4');
+            return redirect()->route('submit.step4');
+        } catch (\Exception $e) {
+            Log::error('Step 3 save failed: ' . $e->getMessage());
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Failed to save metadata. Please try again.']);
+        }
+    }
+
+    // Step 4: Review & Confirm
+    public function showStep4()
+    {
+        if (!session()->has('submission.metadata')) {
+            return redirect()->route('submit.step3')
+                ->with('error', 'Please complete the metadata first');
+        }
+
+        $submission = [
+            'file' => session('submission.file_path'),
+            'original_filename' => session('submission.original_filename'),
+            'metadata' => session('submission.metadata'),
+            'comments' => session('submission.comments'),
+        ];
+
+        return view('submit.step4', compact('submission'));
     }
 
     public function saveStep4(Request $request)
@@ -152,72 +135,46 @@ class SubmitController extends Controller
         ]);
 
         try {
-            // Get all submission data from session
-            $submissionData = session('submission');
-
-            // Validate that we have all required session data
-            if (
-                !isset($submissionData['step1']) ||
-                !isset($submissionData['step2']) ||
-                !isset($submissionData['step3'])
-            ) {
-                throw new \Exception('Missing submission data. Please start over.');
-            }
-
-            // Create the submission
-            $submit = Submit::create([
+            $submission = Submit::create([
                 'user_id' => Auth::id(),
-                'prefix' => $submissionData['step3']['metadata']['prefix'] ?? null,
-                'title' => $submissionData['step3']['metadata']['title'],
-                'subtitle' => $submissionData['step3']['metadata']['subtitle'] ?? null,
-                'abstract' => $submissionData['step3']['metadata']['abstract'],
-                'keywords' => $submissionData['step3']['metadata']['keywords'],
-                'file_path' => $submissionData['step2']['file_path'],
-                'original_filename' => $submissionData['step2']['original_filename'],
+                'prefix' => session('submission.metadata.prefix'),
+                'title' => session('submission.metadata.title'),
+                'subtitle' => session('submission.metadata.subtitle'),
+                'abstract' => session('submission.metadata.abstract'),
+                'keywords' => session('submission.metadata.keywords'),
+                'file_path' => session('submission.file_path'),
+                'original_filename' => session('submission.original_filename'),
                 'status' => 'pending',
-                'comments' => $submissionData['step1']['comments'] ?? null,
+                'comments' => session('submission.comments'),
             ]);
 
-            if (!$submit) {
-                throw new \Exception('Failed to create submission record.');
+            if (!$submission) {
+                throw new \Exception('Failed to create submission record');
             }
 
-            // Clear submission data from session only after successful creation
-            session()->forget('submission');
+            $request->session()->forget('submission');
+            $request->session()->put('submission.completed', true);
 
             return redirect()->route('submit.step5')
-                ->with('success', 'Your submission has been successfully completed!');
+                ->with('success', 'Your manuscript has been submitted successfully');
         } catch (\Exception $e) {
-            Log::error('Submission error: ', [
-                'message' => $e->getMessage(),
-                'user_id' => Auth::id(),
-                'session_data' => session('submission')
-            ]);
+            Log::error('Submission failed: ' . $e->getMessage());
 
-            return back()
-                ->with('error', 'Failed to complete submission: ' . $e->getMessage())
-                ->withInput();
+            if (session()->has('submission.file_path')) {
+                Storage::delete(session('submission.file_path'));
+            }
+
+            return back()->with('error', 'Failed to submit manuscript. Please try again.');
         }
     }
 
-    public function showStep2()
-    {
-        return view('submit.step2');
-    }
-
-    public function showStep3()
-    {
-        $submission = session('submission', []);
-        return view('submit.step3', compact('submission'));
-    }
-
-    public function showStep4()
-    {
-        return view('submit.step4');
-    }
-
+    // Step 5: Completion
     public function showStep5()
     {
+        if (!session()->has('submission.completed')) {
+            return redirect()->route('submit.step4')
+                ->with('error', 'Please complete your submission first');
+        }
         return view('submit.step5');
     }
 
@@ -286,3 +243,4 @@ class SubmitController extends Controller
         return view('submissions.show', compact('submit'));
     }
 }
+

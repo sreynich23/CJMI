@@ -49,12 +49,12 @@
                 </div>
 
                 <div class="flex justify-center space-x-4">
-                    <a href="{{ route('submissions.index') }}"
-                       class="px-6 py-3 bg-green-700 text-white rounded-md hover:bg-green-800">
-                        View My Submissions
+                    <a href="{{ route('home') }}"
+                        class="px-6 py-3 bg-green-700 text-white rounded-md hover:bg-green-800">
+                        Return to Home
                     </a>
                     <a href="{{ route('submit.step1') }}"
-                       class="px-6 py-3 border border-gray-300 rounded-md hover:bg-gray-50">
+                        class="px-6 py-3 border border-gray-300 rounded-md hover:bg-gray-50">
                         Submit Another Article
                     </a>
                 </div>
