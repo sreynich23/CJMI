@@ -51,7 +51,7 @@
 <!-- Hidden Form Section -->
 <div id="addForm"
     class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <form method="POST" action="{{ route('about.store') }}" id="aboutForm"
+    <form method="POST" action="{{ route('admin.about.store') }}" id="aboutForm"
         class="bg-white p-10 rounded shadow-lg w-1/2">
         @csrf
         <input type="hidden" id="about_id" name="about_id">
@@ -90,7 +90,7 @@
     function showForm() {
         addForm.classList.remove("hidden");
         // Reset form for new entry
-        aboutForm.action = "{{ route('about.store') }}";
+        aboutForm.action = "{{ ('admin.about.store') }}";
         aboutForm.method = "POST";
 
         // Remove any existing method field

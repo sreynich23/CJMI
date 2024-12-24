@@ -13,12 +13,6 @@ class AboutController extends Controller
         return view('admin.dashboard', compact('abouts'));
     }
 
-    public function indexuser()
-    {
-        $abouts = About::orderBy('created_at', 'desc')->get();
-        return view('about', compact('abouts'));
-    }
-
     public function store(Request $request)
     {
         $request->validate([

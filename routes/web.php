@@ -6,14 +6,14 @@ use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\SubmitController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\AdminMiddleware;
 
 // Authentication Routes
-Auth::routes();
+// Auth::routes();
 
 // Public Routes
 Route::middleware(['web'])->group(function () {
@@ -65,18 +65,17 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Admin Routes
-Route::get('admin', function () {
-    Route::get('admin', function () {
+Route::middleware(AdminMiddleware::class)->prefix('admin')->name('admin.')->group(function () {
+    // Dashboard
+    Route::get('/', function () {
         return view('admin.dashboard');
-    })->name('admin.dashboard');
-
-
+    })->name('dashboard');
 
     // About Management
-    Route::get('/about', [AboutController::class, 'index'])->name('about.index');
+    Route::get('/', [AboutController::class, 'index'])->name('abouts');
     Route::post('/about/store', [AboutController::class, 'store'])->name('about.store');
-    Route::put('/about/{id}', [AboutController::class, 'update'])->name('about.update');
-    Route::delete('/about/{id}', [AboutController::class, 'destroy'])->name('about.destroy');
+    Route::put('/{id}', [AboutController::class, 'update'])->name('update');
+    Route::delete('/{id}', [AboutController::class, 'destroy'])->name('destroy');
 
     // Submissions Management
     Route::get('/submissions', [SubmissionController::class, 'index'])->name('submissions.index');
@@ -93,7 +92,8 @@ Route::get('admin', function () {
         Route::put('/contact', [SubmitController::class, 'updateContact'])->name('contact.update');
         Route::put('/policy', [SubmitController::class, 'updatePolicy'])->name('policy.update');
     });
-})->name('admin.dashboard')->middleware('admin');
+});
+
 
 // Resource Route for Pages
 Route::resource('pages', PageController::class);

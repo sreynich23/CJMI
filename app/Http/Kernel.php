@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+// use App\Http\Middleware\AdminMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -22,7 +23,6 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ],
 
         'api' => [
@@ -36,8 +36,8 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
-        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        // 'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
+        // 'admin' => \app\Http\Middleware\AdminMiddleware::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,

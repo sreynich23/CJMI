@@ -13,16 +13,15 @@ class AdminMiddleware
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string  $role
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role == 'admin') {
+        if (Auth::check() && Auth::user()->role === 'admin') {
             return $next($request);
         }
 
-        return redirect('admin');  // Redirect to home if user is not an admin
+        return redirect('home')->with('error', 'You are not authorized to access this page.');
     }
-
 }
+
