@@ -81,20 +81,9 @@ Route::middleware(AdminMiddleware::class)->prefix('admin')->name('admin.')->grou
 
     // Submissions Management
     Route::get('/', [AboutController::class, 'index'])->name('submissions');
-    Route::get('/submissions/{submission}', [SubmissionController::class, 'show'])->name('submissions.show');
-    Route::post('/submissions/{submission}/approve', [SubmissionController::class, 'approve'])->name('submissions.approve');
-    Route::post('/submissions/{submission}/reject', [SubmissionController::class, 'reject'])->name('submissions.reject');
+    Route::post('/submissions/{submission}/approve', [AboutController::class, 'approve'])->name('submissions.approve');
+    Route::post('/submissions/{submission}/reject', [AboutController::class, 'reject'])->name('submissions.reject');
 
-    // Submissions Management
-    Route::get('/submissions', [SubmissionController::class, 'index'])->name('admin.submissions.index');
-    Route::get('/submissions/{submission}', [SubmissionController::class, 'show'])->name('admin.submissions.show');
-    Route::put('/submissions/{submission}', [SubmissionController::class, 'update'])->name('admin.submissions.update');
-    Route::get('/submit', [SubmitController::class, 'adminIndex'])->name('admin.submit');
-    Route::post('/submit/checklist', [SubmitController::class, 'storeChecklistItem'])->name('admin.submit.checklist.store');
-    Route::put('/submit/checklist/{id}', [SubmitController::class, 'updateChecklistItem'])->name('admin.submit.checklist.update');
-    Route::delete('/submit/checklist/{id}', [SubmitController::class, 'deleteChecklistItem'])->name('admin.submit.checklist.delete');
-    Route::put('/submit/contact', [SubmitController::class, 'updateContact'])->name('admin.submit.contact.update');
-    Route::put('/submit/policy', [SubmitController::class, 'updatePolicy'])->name('admin.submit.policy.update');
 
     // Submission System Admin-Specific
     Route::prefix('submit')->name('submit.')->group(function () {

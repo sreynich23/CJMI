@@ -16,12 +16,14 @@ class FileSubmission extends Model
         'file_type',
         'file_size',
         'version',
-        'status'
+        'status',
+        'reviewed_at'
     ];
 
     protected $casts = [
         'file_size' => 'integer',
         'version' => 'integer',
+        'reviewed_at' => 'datetime'
     ];
 
     public function article(): BelongsTo
@@ -36,9 +38,17 @@ class FileSubmission extends Model
 
     public function getFileUrl(): string
     {
-        return Storage::exists($this->file_path)
-            ? Storage::url($this->file_path)
-            : '#';
+        if (!$this->file_path) {
+            return null;
+        }
+
+        // If using public disk
+        if (Storage::disk('public')->exists($this->file_path)) {
+            return Storage::url($this->file_path);
+        }
+
+        // If file is stored in local storage
+        return Storage::url($this->file_path);
     }
 
     public function getFileSizeForHumans(): string

@@ -20,8 +20,8 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 space-x-2">
-                                <a href="{{ route('admin.submissions.show', $submission) }}"
-                                    class="text-blue-600 hover:text-blue-900">Review</a>
+                                {{-- <a href="{{ route('admin.submissions.show', $submission) }}"
+                                    class="text-blue-600 hover:text-blue-900">Review</a> --}}
                                 <form action="{{ route('admin.submissions.approve', $submission) }}" method="POST" class="inline">
                                     @csrf
                                     <button type="submit" class="text-green-600 hover:text-green-900">Approve</button>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\About;
 use App\Models\FileSubmission;
+use App\Models\Submit;
 use Illuminate\Http\Request;
 
 class AboutController extends Controller
@@ -11,11 +12,12 @@ class AboutController extends Controller
     public function index()
     {
         $abouts = About::all();
-        $submissions = FileSubmission::with(['article', 'user'])
+        $submissions = Submit::with(['article', 'user'])
+            ->where('status', 'pending')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-
-        return view('admin.dashboard', compact('abouts','submissions'));
+        // dd($submissions);
+        return view('admin.dashboard', compact('abouts', 'submissions'));
     }
 
     public function indexuser()
@@ -69,16 +71,26 @@ class AboutController extends Controller
         return response()->json($about);
     }
 
-    public function approve(FileSubmission $submission)
+    public function approve($id)
     {
-        $submission->update(['status' => 'approved']);
+        $submission = Submit::findOrFail($id); // Fetch the submission by ID
+        $submission->update(['status' => 'approved']); // Update the status to approved
+        // Insert details into the journal_issues table
+        \App\Models\JournalIssue::create([
+            'publication_date' => now(),
+            'title' => $submission->title ?? 'Untitled',
+            'description' => $submission->description ?? 'No description provided',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         return redirect()->back()->with('success', 'Submission approved successfully.');
     }
 
-    public function reject(FileSubmission $submission)
+    public function reject($id)
     {
-        $submission->update(['status' => 'rejected']);
+        $submission = Submit::findOrFail($id); // Fetch the submission by ID
+        $submission->update(['status' => 'rejected']); // Update the status to rejected
 
         return redirect()->back()->with('success', 'Submission rejected successfully.');
     }

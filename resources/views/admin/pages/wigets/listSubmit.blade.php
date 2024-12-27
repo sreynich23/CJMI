@@ -1,7 +1,7 @@
 <div class="border rounded-lg p-6">
     <h2 class="text-xl font-semibold mb-4">All Submissions</h2>
 
-    @if($submissions->isEmpty())
+    @if ($submissions->isEmpty())
         <p class="text-gray-500">No submissions found.</p>
     @else
         <div class="overflow-x-auto">
@@ -17,45 +17,35 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach($submissions as $submission)
+                    @foreach ($submissions as $submission)
                         <tr>
+                            <td class="px-6 py-4">{{ $submission->title ?? 'N/A' }}</td>
+                            <td class="px-6 py-4">{{ $submission->user->name ?? 'N/A' }}</td>
                             <td class="px-6 py-4">
-                                {{ $submission->article->title ?? 'N/A' }}
+                                <a href="{{ $submission->getFileUrl() }}" class="text-blue-600 hover:text-blue-900"
+                                    target="_blank">Download</a>
+                                <span class="text-xs text-gray-500 block">
+                                    {{ $submission->file_type }} - {{ number_format($submission->file_size / 1024, 2) }} KB
+                                </span>
                             </td>
-                            <td class="px-6 py-4">
-                                {{ $submission->user->name ?? 'N/A' }}
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="text-sm">{{ $submission->original_filename }}</span>
-                                <span class="text-xs text-gray-500 block">{{ $submission->file_type }} - {{ number_format($submission->file_size / 1024, 2) }} KB</span>
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $submission->created_at->format('M d, Y') }}
-                            </td>
+                            <td class="px-6 py-4">{{ $submission->created_at->format('M d, Y') }}</td>
                             <td class="px-6 py-4">
                                 <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
                                     {{ $submission->status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                                       ($submission->status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800') }}">
+                                        ($submission->status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800') }}">
                                     {{ ucfirst($submission->status) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-sm font-medium">
                                 <div class="flex space-x-3">
-                                    <a href="{{ $submission->getFileUrl() }}"
-                                       class="text-blue-600 hover:text-blue-900"
-                                       target="_blank">
-                                        Download
-                                    </a>
-                                    @if($submission->status === 'pending')
-                                        <form action="{{ route('admin.submissions.approve', $submission->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            <button type="submit" class="text-green-600 hover:text-green-900">Approve</button>
-                                        </form>
-                                        <form action="{{ route('admin.submissions.reject', $submission->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            <button type="submit" class="text-red-600 hover:text-red-900">Reject</button>
-                                        </form>
-                                    @endif
+                                    <!-- Approve Button -->
+                                    <button type="button"
+                                        class="text-green-600 hover:text-green-900"
+                                        onclick="showApproveModal({{ $submission->id }})">Approve</button>
+                                    <!-- Reject Button -->
+                                    <button type="button"
+                                        class="text-red-600 hover:text-red-900"
+                                        onclick="showRejectModal({{ $submission->id }})">Reject</button>
                                 </div>
                             </td>
                         </tr>
@@ -63,8 +53,68 @@
                 </tbody>
             </table>
         </div>
-        <div class="mt-4">
-            {{ $submissions->links() }}
-        </div>
+        <div class="mt-4">{{ $submissions->links() }}</div>
     @endif
 </div>
+
+<!-- Approve Modal -->
+<div id="approve-modal" class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 w-96">
+        <h3 class="text-lg font-semibold mb-4">Approve Submission</h3>
+        <form id="approve-form" method="POST">
+            @csrf
+            <input type="hidden" name="submission_id" id="approve-submission-id">
+            <div class="mb-4">
+                <label for="year" class="block text-sm font-medium text-gray-700">Year</label>
+                <input type="text" name="year" id="year" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div class="mb-4">
+                <label for="volume" class="block text-sm font-medium text-gray-700">Volume</label>
+                <input type="text" name="volume" id="volume" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div class="mb-4">
+                <label for="issue" class="block text-sm font-medium text-gray-700">Issue</label>
+                <input type="text" name="issue" id="issue" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div class="flex justify-end space-x-4">
+                <button type="button" class="text-gray-700" onclick="closeModal('approve-modal')">Cancel</button>
+                <button type="submit" class="text-white bg-green-600 px-4 py-2 rounded-md">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Reject Modal -->
+<div id="reject-modal" class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 w-96">
+        <h3 class="text-lg font-semibold mb-4">Reject Submission</h3>
+        <form id="reject-form" method="POST">
+            @csrf
+            <input type="hidden" name="submission_id" id="reject-submission-id">
+            <div class="mb-4">
+                <label for="reason" class="block text-sm font-medium text-gray-700">Reason for Rejection</label>
+                <textarea name="reason" id="reason" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
+            </div>
+            <div class="flex justify-end space-x-4">
+                <button type="button" class="text-gray-700" onclick="closeModal('reject-modal')">Cancel</button>
+                <button type="submit" class="text-white bg-red-600 px-4 py-2 rounded-md">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function showApproveModal(submissionId) {
+        document.getElementById('approve-submission-id').value = submissionId;
+        document.getElementById('approve-modal').classList.remove('hidden');
+    }
+
+    function showRejectModal(submissionId) {
+        document.getElementById('reject-submission-id').value = submissionId;
+        document.getElementById('reject-modal').classList.remove('hidden');
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.add('hidden');
+    }
+</script>

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Submit extends Model
 {
@@ -44,6 +45,22 @@ class Submit extends Model
     {
         return $this->hasMany(Author::class);
     }
+
+    public function getFileUrl(): string
+    {
+        if (!$this->file_path) {
+            return null;
+        }
+
+        // If using public disk
+        if (Storage::disk('public')->exists($this->file_path)) {
+            return Storage::url($this->file_path);
+        }
+
+        // If file is stored in local storage
+        return Storage::url($this->file_path);
+    }
+
 
     public function getStatusBadgeAttribute(): string
     {
