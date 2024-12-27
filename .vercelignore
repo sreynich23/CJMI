@@ -7,3 +7,8 @@
 .gitignore
 .gitattributes
 /storage/*.key
+/bootstrap/cache/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
