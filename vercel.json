@@ -1,8 +1,6 @@
 {
     "version": 2,
-    "build": {
-        "api/index.php": { "runtime": "vercel-php@0.6.0" }
-    },
+    
     "routes": [
         {
         "src": "/(.*)",
@@ -24,5 +22,6 @@
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie"
-    }
+    },
+    "public": true
 }
