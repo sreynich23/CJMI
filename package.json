@@ -2,8 +2,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "./build.sh",
         "dev": "vite",
+        "build": "vite build && cp -r public/* .vercel/output/static/",
         "vercel-build": "npm run build"
     },
     "devDependencies": {
