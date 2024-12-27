@@ -22,11 +22,9 @@
 
                 <div class="flex-1 flex items-center justify-center space-x-6 overflow-x-auto scrollbar-hide">
                     <span class="font-semibold text-xl text-gray-800 whitespace-nowrap">
-                        Volume 25, 2024
+                        Volume {{ $journalInfo->current_volume ?? '1' }}, {{ date('Y') }}
                     </span>
-                    <a href="#" class="text-green-700 hover:underline whitespace-nowrap">Vol 24, 2023</a>
-                    <a href="#" class="text-green-700 hover:underline whitespace-nowrap">Vol 23, 2022</a>
-                    <a href="#" class="text-green-700 hover:underline whitespace-nowrap">Vol 22, 2021</a>
+                    <!-- Add dynamic previous volumes if needed -->
                 </div>
 
                 <button class="text-green-700 hover:text-green-900 focus:outline-none">
@@ -50,11 +48,11 @@
             </button>
 
             <nav class="flex space-x-6 text-center overflow-x-auto scrollbar-hide">
-                <a href="#" class="text-green-700 font-bold border-b-2 border-green-700 pb-2 px-2">Issue 5</a>
-                <a href="#" class="text-green-700 hover:font-bold hover:border-b-2 hover:border-green-700 pb-2 px-2">Issue 4</a>
-                <a href="#" class="text-green-700 hover:font-bold hover:border-b-2 hover:border-green-700 pb-2 px-2">Issue 3</a>
-                <a href="#" class="text-green-700 hover:font-bold hover:border-b-2 hover:border-green-700 pb-2 px-2">Issue 2</a>
-                <a href="#" class="text-green-700 hover:font-bold hover:border-b-2 hover:border-green-700 pb-2 px-2">Issue 1</a>
+                @foreach($journalInfo->issues ?? [2, 1] as $issue)
+                    <a href="#" class="text-green-700 {{ request()->get('issue') == $issue ? 'font-bold border-b-2 border-green-700' : '' }} hover:font-bold hover:border-b-2 hover:border-green-700 pb-2 px-2">
+                        Issue {{ $issue }}
+                    </a>
+                @endforeach
             </nav>
 
             <button class="text-gray-700 hover:text-gray-900 focus:outline-none">

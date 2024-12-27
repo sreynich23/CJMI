@@ -35,9 +35,9 @@ class Submit extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function article(): HasMany
+    public function article(): BelongsTo
     {
-        return $this->hasMany(Article::class);
+        return $this->belongsTo(Article::class);
     }
 
     public function authors(): HasMany

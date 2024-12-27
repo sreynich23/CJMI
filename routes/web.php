@@ -6,14 +6,17 @@ use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
-// use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\SubmitController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\Admin\AdminSubmissionsController;
+use App\Http\Controllers\CurrentIssueController;
+use App\Http\Controllers\FileDownloadController;
 
 // Authentication Routes
-// Auth::routes();
+Auth::routes();
 
 // Public Routes
 Route::middleware(['web'])->group(function () {
@@ -22,10 +25,9 @@ Route::middleware(['web'])->group(function () {
     })->name('home');
 
     Route::get('/about', [AboutController::class, 'indexuser'])->name('about');
-    Route::get('/curr', function () {
-        return view('curr');
-    })->name('curr');
+    Route::get('/curr', [CurrentIssueController::class, 'index'])->name('curr');
     Route::get('/announcements', [AnnouncementsController::class, 'index'])->name('announcements');
+    Route::get('/current-issue', [CurrentIssueController::class, 'index'])->name('current-issue');
 });
 
 // Guest Routes (Only for non-authenticated users)
@@ -72,16 +74,27 @@ Route::middleware(AdminMiddleware::class)->prefix('admin')->name('admin.')->grou
     })->name('dashboard');
 
     // About Management
-    Route::get('/', [AboutController::class, 'index'])->name('abouts');
+    Route::get('/', [AboutController::class, 'index'])->name('about');
     Route::post('/about/store', [AboutController::class, 'store'])->name('about.store');
-    Route::put('/{id}', [AboutController::class, 'update'])->name('update');
-    Route::delete('/{id}', [AboutController::class, 'destroy'])->name('destroy');
+    Route::put('/about/{id}', [AboutController::class, 'update'])->name('about.update');
+    Route::delete('/about/{id}', [AboutController::class, 'destroy'])->name('about.destroy');
 
     // Submissions Management
-    Route::get('/submissions', [SubmissionController::class, 'index'])->name('submissions.index');
+    Route::get('/', [AboutController::class, 'index'])->name('submissions');
     Route::get('/submissions/{submission}', [SubmissionController::class, 'show'])->name('submissions.show');
-    Route::put('/submissions/{submission}', [SubmissionController::class, 'update'])->name('submissions.update');
-    Route::delete('/submissions/{submission}', [SubmissionController::class, 'destroy'])->name('submissions.destroy');
+    Route::post('/submissions/{submission}/approve', [SubmissionController::class, 'approve'])->name('submissions.approve');
+    Route::post('/submissions/{submission}/reject', [SubmissionController::class, 'reject'])->name('submissions.reject');
+
+    // Submissions Management
+    Route::get('/submissions', [SubmissionController::class, 'index'])->name('admin.submissions.index');
+    Route::get('/submissions/{submission}', [SubmissionController::class, 'show'])->name('admin.submissions.show');
+    Route::put('/submissions/{submission}', [SubmissionController::class, 'update'])->name('admin.submissions.update');
+    Route::get('/submit', [SubmitController::class, 'adminIndex'])->name('admin.submit');
+    Route::post('/submit/checklist', [SubmitController::class, 'storeChecklistItem'])->name('admin.submit.checklist.store');
+    Route::put('/submit/checklist/{id}', [SubmitController::class, 'updateChecklistItem'])->name('admin.submit.checklist.update');
+    Route::delete('/submit/checklist/{id}', [SubmitController::class, 'deleteChecklistItem'])->name('admin.submit.checklist.delete');
+    Route::put('/submit/contact', [SubmitController::class, 'updateContact'])->name('admin.submit.contact.update');
+    Route::put('/submit/policy', [SubmitController::class, 'updatePolicy'])->name('admin.submit.policy.update');
 
     // Submission System Admin-Specific
     Route::prefix('submit')->name('submit.')->group(function () {
@@ -97,3 +110,11 @@ Route::middleware(AdminMiddleware::class)->prefix('admin')->name('admin.')->grou
 
 // Resource Route for Pages
 Route::resource('pages', PageController::class);
+
+// File Download Routes
+Route::get('/files/{submission}/download', [FileDownloadController::class, 'download'])
+    ->name('files.download');
+Route::get('/files/{submission}/view', [FileDownloadController::class, 'show'])
+    ->name('files.show');
+Route::get('/files/{submission}/preview', [FileDownloadController::class, 'preview'])
+    ->name('files.preview');

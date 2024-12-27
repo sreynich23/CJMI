@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\About;
+use App\Models\FileSubmission;
 use Illuminate\Http\Request;
 
 class AboutController extends Controller
@@ -10,7 +11,17 @@ class AboutController extends Controller
     public function index()
     {
         $abouts = About::all();
-        return view('admin.dashboard', compact('abouts'));
+        $submissions = FileSubmission::with(['article', 'user'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('admin.dashboard', compact('abouts','submissions'));
+    }
+
+    public function indexuser()
+    {
+        $abouts = About::orderBy('created_at', 'desc')->get();
+        return view('about', compact('abouts'));
     }
 
     public function store(Request $request)
@@ -56,5 +67,19 @@ class AboutController extends Controller
     {
         $about = About::findOrFail($id);
         return response()->json($about);
+    }
+
+    public function approve(FileSubmission $submission)
+    {
+        $submission->update(['status' => 'approved']);
+
+        return redirect()->back()->with('success', 'Submission approved successfully.');
+    }
+
+    public function reject(FileSubmission $submission)
+    {
+        $submission->update(['status' => 'rejected']);
+
+        return redirect()->back()->with('success', 'Submission rejected successfully.');
     }
 }

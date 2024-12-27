@@ -4,18 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class JournalIssue extends Model
+class Journal extends Model
 {
     protected $fillable = [
         'journal_name',
         'current_volume',
         'current_issue',
-        'description',
-        'issues'
-    ];
-
-    protected $casts = [
-        'issues' => 'array'
+        'description'
     ];
 }
-

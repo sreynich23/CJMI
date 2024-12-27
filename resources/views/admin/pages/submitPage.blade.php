@@ -19,9 +19,17 @@
                                     {{ ucfirst($submission->status) }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 space-x-2">
                                 <a href="{{ route('admin.submissions.show', $submission) }}"
                                     class="text-blue-600 hover:text-blue-900">Review</a>
+                                <form action="{{ route('admin.submissions.approve', $submission) }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" class="text-green-600 hover:text-green-900">Approve</button>
+                                </form>
+                                <form action="{{ route('admin.submissions.reject', $submission) }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" class="text-red-600 hover:text-red-900">Reject</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach

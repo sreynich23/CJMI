@@ -4,17 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\FileSubmission;
+use App\Models\Submit;
 use Illuminate\Http\Request;
 
 class SubmissionController extends Controller
 {
     public function index()
     {
-        $submissions = FileSubmission::with(['article.authors'])
-            ->latest()
+        $submissions = FileSubmission::with(['article'])
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
-
-        return view('admin.submissions.index', compact('submissions'));
+        // dd($submissions);
+        return view('admin.dashboard', compact('submissions'));
     }
 
     public function show(FileSubmission $submission)

@@ -91,6 +91,8 @@
         addForm.classList.remove("hidden");
         // Reset form for new entry
         aboutForm.action = "{{ ('admin.about.store') }}";
+        // Fix the route syntax
+        aboutForm.action = "{{ route('admin.about.store') }}";
         aboutForm.method = "POST";
 
         // Remove any existing method field
@@ -107,7 +109,7 @@
     // Function to edit existing about
     function editAbout(id, title, description) {
         addForm.classList.remove("hidden");
-        aboutForm.action = `/about/${id}`;
+        aboutForm.action = `/admin/about/${id}`;
 
         const methodField = document.createElement('input');
         methodField.type = 'hidden';
