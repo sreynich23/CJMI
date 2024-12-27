@@ -3,8 +3,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build && cp -r public/* .vercel/output/static/",
-        "vercel-build": "npm run build"
+        "build": "vite build && php artisan config:cache && php artisan route:cache && php artisan view:cache",
+        "vercel-build": "composer install --no-dev --optimize-autoloader && npm ci && npm run build"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.20",
