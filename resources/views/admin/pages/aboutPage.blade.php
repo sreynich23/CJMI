@@ -89,8 +89,6 @@
     // Function to show the form
     function showForm() {
         addForm.classList.remove("hidden");
-        // Reset form for new entry
-        aboutForm.action = "{{ ('admin.about.store') }}";
         // Fix the route syntax
         aboutForm.action = "{{ route('admin.about.store') }}";
         aboutForm.method = "POST";
