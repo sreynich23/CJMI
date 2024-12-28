@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class JournalIssue extends Model
 {
     protected $fillable = [
-        'journal_name',
-        'current_volume',
-        'current_issue',
+        'title',
         'description',
-        'issues'
+        'year',
+        'volume',
+        'issue',
+        'publication_date',
     ];
 
     protected $casts = [
-        'issues' => 'array'
+        'publication_date' => 'date',
     ];
 }
-

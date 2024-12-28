@@ -81,8 +81,8 @@ Route::middleware(AdminMiddleware::class)->prefix('admin')->name('admin.')->grou
 
     // Submissions Management
     Route::get('/', [AboutController::class, 'index'])->name('submissions');
-    Route::post('/submissions/{submission}/approve', [AboutController::class, 'approve'])->name('submissions.approve');
-    Route::post('/submissions/{submission}/reject', [AboutController::class, 'reject'])->name('submissions.reject');
+    Route::post('/submissions/{submission}/approve', [SubmissionController::class, 'approve'])->name('submissions.approve');
+    Route::post('/submissions/{submission}/reject', [SubmissionController::class, 'reject'])->name('submissions.reject');
 
 
     // Submission System Admin-Specific
