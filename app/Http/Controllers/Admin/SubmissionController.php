@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Article;
 use App\Models\FileSubmission;
 use App\Models\JournalIssue;
 use App\Models\Submit;
@@ -55,13 +56,22 @@ class SubmissionController extends Controller
         ]);
 
         // Insert data into the journal_issues table
-        JournalIssue::create([
+        $journalIssue =JournalIssue::create([
             'title' => $submission->title,
             'description' => $submission->description ?? 'N/A',
             // 'year' => $request->year,
             'volume' => $request->volume,
             'issue' => $request->issue,
             'publication_date' => now(), // You can customize this as needed
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        Article::create([
+            'journal_issue_id' => $journalIssue->id,
+            'title' => $submission->title,
+            'abstract' => $submission->abstract,
+            'pdf_url' => $submission->file_path,
+            'user_id' => $submission->user_id,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

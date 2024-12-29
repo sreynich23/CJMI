@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\About;
 use App\Models\FileSubmission;
+use App\Models\JournalIssue;
 use App\Models\Submit;
 use Illuminate\Http\Request;
 
@@ -16,8 +17,9 @@ class AboutController extends Controller
             ->where('status', 'pending')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
+            $recentItems = JournalIssue::with('articles')->orderBy('publication_date', 'desc')->paginate(10);
         // dd($submissions);
-        return view('admin.dashboard', compact('abouts', 'submissions'));
+        return view('admin.dashboard', compact('abouts', 'submissions','recentItems'));
     }
 
     public function indexuser()

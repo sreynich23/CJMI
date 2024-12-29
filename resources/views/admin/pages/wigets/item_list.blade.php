@@ -20,7 +20,7 @@
                         Publication Date
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
+                        Articles
                     </th>
                 </tr>
             </thead>
@@ -31,7 +31,7 @@
                             <div class="text-sm font-medium text-gray-900">{{ $item->title }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ $item->year }}</div>
+                            <div class="text-sm text-gray-900">{{ $item->created_at->format('Y-m-d') }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-900">{{ $item->volume }}</div>
@@ -42,9 +42,12 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-900">{{ $item->publication_date->format('M d, Y') }}</div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button class="text-blue-600 hover:text-blue-900">Edit</button>
-                            <button class="text-red-600 hover:text-red-900">Delete</button>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <ul class="list-disc pl-5">
+                                @foreach($item->articles as $article)
+                                    <li class="text-sm text-gray-900">{{ $article->title }}</li>
+                                @endforeach
+                            </ul>
                         </td>
                     </tr>
                 @empty

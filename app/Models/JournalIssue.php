@@ -18,4 +18,9 @@ class JournalIssue extends Model
     protected $casts = [
         'publication_date' => 'date',
     ];
+
+    public function articles()
+    {
+        return $this->hasMany(Article::class, 'journal_issue_id');
+    }
 }
