@@ -25,7 +25,7 @@
             <div class="flex flex-col max-w-screen-xl text-white px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
                 <div class="flex flex-row items-center justify-between p-4">
                     <a href="#" class="text-lg text-white font-semibold tracking-widest uppercase rounded-lg focus:outline-none focus:shadow-outline">
-                        Admin Dashboard
+                        Cambodian Journal of Multidisciplinary Research and Innovation (CJMI)
                     </a>
                 </div>
                 <nav class="flex-col flex-grow pb-4 md:pb-0 md:flex md:justify-end md:flex-row">
@@ -51,10 +51,100 @@
             <div id="aboutPage" class="page hidden">
                 @include('admin.pages.aboutPage')
             </div>
+            <footer class="bg-gray-900 text-white py-4">
+                <div class="container mx-auto px-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Contact Information -->
+                        <div class="space-y-2">
+                            <h3 class="font-bold">{{ $journalInfo->journal_name ?? 'CJMI' }}</h3>
+                            <div class="text-sm text-gray-400 space-y-1">
+                                <p class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                    {{ $journalInfo->email ?? 'cjmi.journal@gmail.com' }}
+                                </p>
+                                <p class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                                    </svg>
+                                    {{ $journalInfo->telegram ?? '+855 85593115' }}
+                                </p>
+                                <p class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    {{ $journalInfo->editorial_office ?? 'Battabang, Cambodia' }}
+                                </p>
+                                <p class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                    </svg>
+                                    Designed & Developed by: {{ $journalInfo->developer ?? 'LONG SREYNICH' }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start justify-end">
+                            <button onclick="showjournalInfoModal()"
+                                class="rounded-md px-1 flex gap-2 border border-gray-500 text-white hover:border-gray-700">
+                                Edit
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
+    <div id="journalInfo-modal"
+    class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 w-96">
+        <h3 class="text-lg font-semibold mb-4">Update Journal Information</h3>
+        <form id="journalInfo-form" method="POST">
+            @csrf
+            <div class="mb-4">
+                <label for="journal_name" class="block text-sm font-medium text-gray-700">Journal Name</label>
+                <input type="text" name="journal_name" id="journal_name"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                    value="{{ $journalInfo->journal_name ?? '' }}" required>
+            </div>
+            <div class="mb-4">
+                <label for="editorial_office" class="block text-sm font-medium text-gray-700">Editorial Office</label>
+                <input type="text" name="editorial_office" id="editorial_office"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                    value="{{ $journalInfo->editorial_office ?? '' }}" required>
+            </div>
+            <div class="mb-4">
+                <label for="developer" class="block text-sm font-medium text-gray-700">Developer</label>
+                <input type="text" name="developer" id="developer"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                    value="{{ $journalInfo->developer ?? '' }}" required>
+            </div>
+            <div class="flex justify-end space-x-4">
+                <button type="button" class="text-gray-700" onclick="closeModal('journalInfo-modal')">Cancel</button>
+                <button type="submit" class="text-white bg-green-600 px-4 py-2 rounded-md">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
 
     <script>
+        function showjournalInfoModal() {
+        const journalInfoModal = document.getElementById('journalInfo-modal');
+        journalInfoModal.classList.remove('hidden');
+    }
+
         function switchScreen(screenId) {
             document.querySelectorAll('.page').forEach((page) => {
                 page.classList.add('hidden');

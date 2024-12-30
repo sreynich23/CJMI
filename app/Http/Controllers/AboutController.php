@@ -21,6 +21,7 @@ class AboutController extends Controller
         // dd($submissions);
         return view('admin.dashboard', compact('abouts', 'submissions','recentItems'));
     }
+    
 
     public function indexuser()
     {

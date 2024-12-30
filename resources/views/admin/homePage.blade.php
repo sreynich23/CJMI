@@ -21,7 +21,11 @@
             </div>
         </div>
         <!-- Row 2: 1/4 of the screen -->
-        <div class="w-1/4  py-10 px-4 bg-gray-100">
+        <div class="w-1/4  py-10 px-4 bg-gray-100 ">
+            <button class="flex rounded-md px-1 gap-2 border border-gray-500  hover:border-gray-700">Add cover<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg></button>
             <div class="sticky top-4">
                 <img src="https://img.freepik.com/premium-vector/vector-modern-book-cover-design-company-annual-report_812472-595.jpg?w=2000"
                     alt="Book Cover">

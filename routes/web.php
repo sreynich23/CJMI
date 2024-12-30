@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SubmissionController;
 use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\Auth\LoginController;
@@ -14,6 +15,7 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\Admin\AdminSubmissionsController;
 use App\Http\Controllers\CurrentIssueController;
 use App\Http\Controllers\FileDownloadController;
+use App\Http\Controllers\JournalInformationController;
 
 // Authentication Routes
 Auth::routes();
@@ -80,8 +82,9 @@ Route::middleware(AdminMiddleware::class)->prefix('admin')->name('admin.')->grou
     Route::delete('/about/{id}', [AboutController::class, 'destroy'])->name('about.destroy');
 
     // Submissions Management
-    Route::get('/', [AboutController::class, 'index'])->name('submissions');
+    // Route::get('/', [AboutController::class, 'index'])->name('submissions');
     Route::post('/submissions/{submission}/approve', [SubmissionController::class, 'approve'])->name('submissions.approve');
+    Route::post('/submissions/{submission}/updateJournalInfo', [SubmissionController::class, 'updateJournalInfo'])->name('submissions.updateJournalInfo');
     Route::post('/submissions/{submission}/reject', [SubmissionController::class, 'reject'])->name('submissions.reject');
 
 

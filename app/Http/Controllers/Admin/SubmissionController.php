@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\FileSubmission;
+use App\Models\JournalInformation;
 use App\Models\JournalIssue;
 use App\Models\Submit;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class SubmissionController extends Controller
             ->paginate(10);
         // dd($submissions);
         $recentItems = JournalIssue::orderBy('publication_date', 'desc')->paginate(10);
-        return view('admin.dashboard', compact('submissions','recentItems'));
+        return view('admin.dashboard', compact('submissions', 'recentItems'));
     }
 
     public function show(FileSubmission $submission)
@@ -43,7 +44,7 @@ class SubmissionController extends Controller
             ->route('admin.submissions.show', $submission)
             ->with('success', 'Submission status updated successfully');
     }
-    public function approve(Request $request,$id)
+    public function approve(Request $request, $id)
     {
         $submission = Submit::findOrFail($id); // Fetch the submission by ID
         $submission->update(['status' => 'approved']); // Update the status to approved
@@ -56,7 +57,7 @@ class SubmissionController extends Controller
         ]);
 
         // Insert data into the journal_issues table
-        $journalIssue =JournalIssue::create([
+        $journalIssue = JournalIssue::create([
             'title' => $submission->title,
             'description' => $submission->description ?? 'N/A',
             // 'year' => $request->year,
@@ -80,11 +81,29 @@ class SubmissionController extends Controller
         return redirect()->back()->with('success', 'Submission approved and added to Journal Issues successfully!');
     }
 
-    public function reject(Request $request,$id)
+    public function reject(Request $request, $id)
     {
         $submission = Submit::findOrFail($id); // Fetch the submission by ID
         $submission->update(['status' => 'rejected']); // Update the status to rejected
 
         return redirect()->back()->with('success', 'Submission rejected successfully.');
+    }
+
+    public function updateJournalInfo(Request $request)
+    {
+        $request->validate([
+            'journal_name' => 'required|string|max:255',
+            'editorial_office' => 'required|string|max:255',
+            'developer' => 'required|string|max:255',
+        ]);
+
+        $journalInfo = JournalInformation::first();
+        if ($journalInfo) {
+            $journalInfo->update($request->only(['journal_name', 'editorial_office', 'developer']));
+        } else {
+            JournalInformation::create($request->only(['journal_name', 'editorial_office', 'developer']));
+        }
+
+        return redirect()->back()->with('success', 'Journal information updated successfully!');
     }
 }
