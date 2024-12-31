@@ -60,23 +60,23 @@ class SubmissionController extends Controller
         $journalIssue = JournalIssue::create([
             'title' => $submission->title,
             'description' => $submission->description ?? 'N/A',
-            // 'year' => $request->year,
             'volume' => $request->volume,
             'issue' => $request->issue,
-            'publication_date' => now(), // You can customize this as needed
+            'publication_date' => now(),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         Article::create([
             'journal_issue_id' => $journalIssue->id,
             'title' => $submission->title,
+            'subtitle' => $submission->subtitle, // Add subtitle
             'abstract' => $submission->abstract,
+            'keywords' => $submission->keywords, // Add keywords
             'pdf_url' => $submission->file_path,
             'user_id' => $submission->user_id,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
         // Redirect with success message
         return redirect()->back()->with('success', 'Submission approved and added to Journal Issues successfully!');
     }

@@ -12,7 +12,16 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['journal_issue_id', 'title', 'abstract', 'pdf_url'];
+    protected $fillable = [
+        'journal_issue_id',
+        'title',
+        'subtitle', // Add the subtitle attribute
+        'abstract',
+        'keywords', // Add the keywords attribute
+        'pdf_url',
+        'cover_image',
+        'user_id',
+    ];
 
     public function journalIssue(): BelongsTo
     {

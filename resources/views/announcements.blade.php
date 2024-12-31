@@ -16,7 +16,6 @@
                 <div class="text-gray-600 mb-2">16-04-2024</div>
                 <div class="prose max-w-none">
                     <h3 class="text-lg font-semibold mb-2">Cambodian Journal of Educational Research</h3>
-                    <p class="mb-4">Volume 4, Number 1 & Number 2</p>
                     <div class="flex items-center space-x-4">
                         <a href="#" class="text-blue-600 hover:text-blue-800">Read More</a>
                         <span class="text-gray-400">|</span>

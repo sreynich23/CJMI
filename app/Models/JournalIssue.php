@@ -13,6 +13,7 @@ class JournalIssue extends Model
         'volume',
         'issue',
         'publication_date',
+        'year',
     ];
 
     protected $casts = [

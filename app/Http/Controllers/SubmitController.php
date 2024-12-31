@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Submit;
 use App\Models\ChecklistItem;
+use App\Models\JournalIssue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -13,14 +14,16 @@ class SubmitController extends Controller
 {
     public function index()
     {
-        return redirect()->route('submit.step1');
+        $latestYear = JournalIssue::query()->max('year');
+        return redirect()->route('submit.step1', compact('latestYear'));
     }
 
     // Step 1: Initial Requirements
     public function showStep1()
     {
         $checklistItems = ChecklistItem::all();
-        return view('submit.step1', compact('checklistItems'));
+        $latestYear = JournalIssue::query()->max('year');
+        return view('submit.step1', compact('checklistItems', 'latestYear'));
     }
 
     public function saveStep1(Request $request)
@@ -39,15 +42,17 @@ class SubmitController extends Controller
     // Step 2: File Upload
     public function showStep2()
     {
+        $latestYear = JournalIssue::query()->max('year');
         if (!session()->has('submission.requirements')) {
             return redirect()->route('submit.step1')
                 ->with('error', 'Please complete step 1 first');
         }
-        return view('submit.step2');
+        return view('submit.step2', compact('latestYear'));
     }
 
     public function saveStep2(Request $request)
     {
+
         $request->validate([
             'manuscript' => 'required|file|mimes:doc,docx,pdf|max:10240', // 10MB max
         ]);
@@ -72,6 +77,7 @@ class SubmitController extends Controller
     // Step 3: Metadata
     public function showStep3()
     {
+        $latestYear = JournalIssue::query()->max('year');
         if (!session()->has('submission.file_path')) {
             return redirect()->route('submit.step2')
                 ->with('error', 'Please upload your manuscript first');
@@ -84,7 +90,7 @@ class SubmitController extends Controller
             'metadata' => session('submission.metadata', []),
         ];
 
-        return view('submit.step3', compact('submission'));
+        return view('submit.step3', compact('submission', 'latestYear'));
     }
 
     public function saveStep3(Request $request)
@@ -113,6 +119,7 @@ class SubmitController extends Controller
     // Step 4: Review & Confirm
     public function showStep4()
     {
+        $latestYear = JournalIssue::query()->max('year');
         if (!session()->has('submission.metadata')) {
             return redirect()->route('submit.step3')
                 ->with('error', 'Please complete the metadata first');
@@ -125,7 +132,7 @@ class SubmitController extends Controller
             'comments' => session('submission.comments'),
         ];
 
-        return view('submit.step4', compact('submission'));
+        return view('submit.step4', compact('submission', 'latestYear'));
     }
 
     public function saveStep4(Request $request)
@@ -171,15 +178,17 @@ class SubmitController extends Controller
     // Step 5: Completion
     public function showStep5()
     {
+        $latestYear = JournalIssue::query()->max('year');
         if (!session()->has('submission.completed')) {
             return redirect()->route('submit.step4')
                 ->with('error', 'Please complete your submission first');
         }
-        return view('submit.step5');
+        return view('submit.step5', compact('latestYear'));
     }
 
     public function indexSubmissions(Request $request)
     {
+        $latestYear = JournalIssue::query()->max('year');
         $query = Submit::query()
             ->where('user_id', Auth::id())
             ->with('user');
@@ -206,7 +215,7 @@ class SubmitController extends Controller
             ->where('status', 'pending')
             ->count();
 
-        return view('submissions.index', compact('submissions', 'myQueueCount'));
+        return view('submissions.index', compact('submissions', 'myQueueCount', 'latestYear'));
     }
 
     public function deleteSubmission(Submit $submit)
@@ -235,12 +244,13 @@ class SubmitController extends Controller
 
     public function showSubmission(Submit $submit)
     {
+        $latestYear = JournalIssue::query()->max('year');
         // Check if user owns this submission
         if ($submit->user_id !== Auth::id()) {
             return back()->with('error', 'You are not authorized to view this submission.');
         }
 
-        return view('submissions.show', compact('submit'));
+        return view('submissions.show', compact('submit', 'latestYear'));
     }
 }
 

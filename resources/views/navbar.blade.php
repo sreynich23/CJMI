@@ -51,7 +51,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('curr') }}"
+                    <a href="{{ route('curr', ['issue' => 1, 'volume' => 1, 'year' => $latestYear]) }}"
                         class="px-4 py-2 border rounded text-white hover:bg-green-500 hover:text-black">
                         CURRENT
                     </a>

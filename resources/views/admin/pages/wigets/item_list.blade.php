@@ -31,7 +31,7 @@
                             <div class="text-sm font-medium text-gray-900">{{ $item->title }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ $item->created_at->format('Y-m-d') }}</div>
+                            <div class="text-sm text-gray-900">{{ $item->created_at->format('Y') }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-gray-900">{{ $item->volume }}</div>

@@ -6,6 +6,7 @@ use App\Models\About;
 use App\Models\FileSubmission;
 use App\Models\JournalIssue;
 use App\Models\Submit;
+use App\Models\VolumeIssueImage;
 use Illuminate\Http\Request;
 
 class AboutController extends Controller
@@ -13,20 +14,22 @@ class AboutController extends Controller
     public function index()
     {
         $abouts = About::all();
+        $image = VolumeIssueImage::latest()->first();
         $submissions = Submit::with(['article', 'user'])
             ->where('status', 'pending')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
             $recentItems = JournalIssue::with('articles')->orderBy('publication_date', 'desc')->paginate(10);
-        // dd($submissions);
-        return view('admin.dashboard', compact('abouts', 'submissions','recentItems'));
+        $latestYear = JournalIssue::query()->max('year');
+        return view('admin.dashboard', compact('abouts', 'submissions','recentItems','image','latestYear'));
     }
-    
+
 
     public function indexuser()
     {
         $abouts = About::orderBy('created_at', 'desc')->get();
-        return view('about', compact('abouts'));
+        $latestYear = JournalIssue::query()->max('year');
+        return view('about', compact('abouts','latestYear'));
     }
 
     public function store(Request $request)

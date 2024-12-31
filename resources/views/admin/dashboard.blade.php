@@ -81,13 +81,13 @@
                                     </svg>
                                     {{ $journalInfo->editorial_office ?? 'Battabang, Cambodia' }}
                                 </p>
-                                <p class="flex items-center">
+                                {{-- <p class="flex items-center">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                                     </svg>
                                     Designed & Developed by: {{ $journalInfo->developer ?? 'LONG SREYNICH' }}
-                                </p>
+                                </p> --}}
                             </div>
                         </div>
                         <div class="flex items-start justify-end">

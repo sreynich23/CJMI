@@ -13,8 +13,10 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\Admin\AdminSubmissionsController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CurrentIssueController;
 use App\Http\Controllers\FileDownloadController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JournalInformationController;
 
 // Authentication Routes
@@ -22,10 +24,11 @@ Auth::routes();
 
 // Public Routes
 Route::middleware(['web'])->group(function () {
-    Route::get('/', function () {
-        return view('home');
-    })->name('home');
-
+    // Route::get('/', function () {
+    //     return view('home');
+    // })->name('home');
+    Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/about', [AboutController::class, 'indexuser'])->name('about');
     Route::get('/curr', [CurrentIssueController::class, 'index'])->name('curr');
     Route::get('/announcements', [AnnouncementsController::class, 'index'])->name('announcements');
@@ -76,6 +79,7 @@ Route::middleware(AdminMiddleware::class)->prefix('admin')->name('admin.')->grou
     })->name('dashboard');
 
     // About Management
+    Route::post('/upload-cover', [DashboardController::class, 'uploadCover'])->name('uploadCover');
     Route::get('/', [AboutController::class, 'index'])->name('about');
     Route::post('/about/store', [AboutController::class, 'store'])->name('about.store');
     Route::put('/about/{id}', [AboutController::class, 'update'])->name('about.update');
@@ -99,9 +103,10 @@ Route::middleware(AdminMiddleware::class)->prefix('admin')->name('admin.')->grou
     });
 });
 
-
 // Resource Route for Pages
 Route::resource('pages', PageController::class);
+
+Route::get('/files/{id}/download', [CurrentIssueController::class, 'download'])->name('download');
 
 // File Download Routes
 Route::get('/files/{submission}/download', [FileDownloadController::class, 'download'])

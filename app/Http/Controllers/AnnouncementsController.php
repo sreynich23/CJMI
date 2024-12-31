@@ -3,13 +3,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JournalIssue;
 use Illuminate\Http\Request;
 
 class AnnouncementsController extends Controller
 {
     public function index()
     {
-        return view('announcements');  // Make sure there's a corresponding view named 'announcements.blade.php'
+        $latestYear = JournalIssue::query()->max('year');
+        return view('announcements',compact('latestYear'));  // Make sure there's a corresponding view named 'announcements.blade.php'
     }
 
     public function showPage($pages)
