@@ -27,7 +27,6 @@
                 <li class="text-gray-500"></li>
             @endforelse
         </ul>
-
     </div>
 
     <!-- Main Content -->

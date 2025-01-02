@@ -1,4 +1,4 @@
-<div class="border rounded-lg shadow-lg p-6 bg-white">
+<div class="border rounded-lg shadow-lg p-6 bg-white h-screen">
     <h2 class="text-2xl font-bold text-gray-800 mb-6">Submissions Management</h2>
     <div class="overflow-x-auto">
         <table class="min-w-full border border-gray-300 divide-y divide-gray-200 rounded-lg">
@@ -57,8 +57,8 @@
     <div class="mt-4">{{ $submissions->links() }}</div>
 </div>
 
-<div id="approve-modal" class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white rounded-lg p-6 w-96">
+<div id="approve-modal" class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center h-4/5">
+    <div class="bg-white rounded-lg p-6 w-96 h-full overflow-auto">
         <h3 class="text-lg font-semibold mb-4">Approve Submission</h3>
         <form id="approve-form" method="POST">
             @csrf
@@ -86,11 +86,10 @@
     </div>
 </div>
 
-
 <!-- Reject Modal -->
-<div id="reject-modal" class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white rounded-lg p-6 w-96">
-        <h3 class="text-lg font-semibold mb-4">Approve Submission</h3>
+<div id="reject-modal" class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center h-4/5">
+    <div class="bg-white rounded-lg p-6 w-96 h-full overflow-auto">
+        <h3 class="text-lg font-semibold mb-4">Reject Submission</h3>
         <form id="reject-form" method="POST">
             @csrf
             <div class="mb-4">
@@ -99,13 +98,12 @@
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
             </div>
             <div class="flex justify-end space-x-4">
-                <button type="button" class="text-gray-700" onclick="closeModal('approve-modal')">Cancel</button>
-                <button type="submit" class="text-white bg-green-600 px-4 py-2 rounded-md">Submit</button>
+                <button type="button" class="text-gray-700" onclick="closeModal('reject-modal')">Cancel</button>
+                <button type="submit" class="text-white bg-red-600 px-4 py-2 rounded-md">Submit</button>
             </div>
         </form>
     </div>
 </div>
-
 
 <script>
     function showApproveModal(submissionId, approveRoute) {
@@ -121,7 +119,6 @@
         rejectForm.action = rejectRoute.replace(':id', submissionId); // Replace placeholder with ID
         rejectModal.classList.remove('hidden');
     }
-
 
     function closeModal(modalId) {
         document.getElementById(modalId).classList.add('hidden');

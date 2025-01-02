@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,32 +10,41 @@
         ::-webkit-scrollbar {
             width: 8px;
         }
+
         ::-webkit-scrollbar-thumb {
             background-color: rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background-color: rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
+
 <body class="font-sans bg-gray-50 h-full">
     <div class="flex h-full bg-white">
         <!-- Admin Navigation -->
         <div class="w-full text-gray-700 bg-green-500">
-            <div class="flex flex-col max-w-screen-xl text-white px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
+            <div
+                class="flex flex-col max-w-screen-xl text-white px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
                 <div class="flex flex-row items-center justify-between p-4">
-                    <a href="#" class="text-lg text-white font-semibold tracking-widest uppercase rounded-lg focus:outline-none focus:shadow-outline">
+                    <a href="#"
+                        class="text-lg text-white font-semibold tracking-widest uppercase rounded-lg focus:outline-none focus:shadow-outline">
                         Cambodian Journal of Multidisciplinary Research and Innovation (CJMI)
                     </a>
                 </div>
                 <nav class="flex-col flex-grow pb-4 md:pb-0 md:flex md:justify-end md:flex-row">
-                    <button onclick="switchScreen('homePage')" class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Home</button>
-                    <button onclick="switchScreen('uploadPage')" class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Submit</button>
-                    <button onclick="switchScreen('aboutPage')" class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">About</button>
+                    <button onclick="switchScreen('homePage')"
+                        class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Home</button>
+                    <button onclick="switchScreen('uploadPage')"
+                        class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Submit</button>
+                    <button onclick="switchScreen('aboutPage')"
+                        class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">About</button>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
-                        <button type="submit" class="px-4 py-2 mt-2 text-sm font-semibold bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:shadow-outline text-white ml-2">
+                        <button type="submit"
+                            class="px-4 py-2 mt-2 text-sm font-semibold bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:shadow-outline text-white ml-2">
                             Logout
                         </button>
                     </form>
@@ -94,8 +104,8 @@
                             <button onclick="showjournalInfoModal()"
                                 class="rounded-md px-1 flex gap-2 border border-gray-500 text-white hover:border-gray-700">
                                 Edit
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                    stroke="currentColor" class="w-5 h-5">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="2" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9" />
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z" />
@@ -108,42 +118,50 @@
         </div>
     </div>
     <div id="journalInfo-modal"
-    class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white rounded-lg p-6 w-96">
-        <h3 class="text-lg font-semibold mb-4">Update Journal Information</h3>
-        <form id="journalInfo-form" method="POST">
-            @csrf
-            <div class="mb-4">
-                <label for="journal_name" class="block text-sm font-medium text-gray-700">Journal Name</label>
-                <input type="text" name="journal_name" id="journal_name"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                    value="{{ $journalInfo->journal_name ?? '' }}" required>
-            </div>
-            <div class="mb-4">
-                <label for="editorial_office" class="block text-sm font-medium text-gray-700">Editorial Office</label>
-                <input type="text" name="editorial_office" id="editorial_office"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                    value="{{ $journalInfo->editorial_office ?? '' }}" required>
-            </div>
-            <div class="mb-4">
-                <label for="developer" class="block text-sm font-medium text-gray-700">Developer</label>
-                <input type="text" name="developer" id="developer"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                    value="{{ $journalInfo->developer ?? '' }}" required>
-            </div>
-            <div class="flex justify-end space-x-4">
-                <button type="button" class="text-gray-700" onclick="closeModal('journalInfo-modal')">Cancel</button>
-                <button type="submit" class="text-white bg-green-600 px-4 py-2 rounded-md">Update</button>
-            </div>
-        </form>
+        class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-6 w-96">
+            <h3 class="text-lg font-semibold mb-4">Update Journal Information</h3>
+            <form id="journalInfo-form" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label for="journal_name" class="block text-sm font-medium text-gray-700">Journal Name</label>
+                    <input type="text" name="journal_name" id="journal_name"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                        value="{{ $journalInfo->journal_name ?? '' }}" required>
+                </div>
+                <div class="mb-4">
+                    <label for="editorial_office" class="block text-sm font-medium text-gray-700">Editorial
+                        Office</label>
+                    <input type="text" name="editorial_office" id="editorial_office"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                        value="{{ $journalInfo->editorial_office ?? '' }}" required>
+                </div>
+                <div class="mb-4">
+                    <label for="telegram" class="block text-sm font-medium text-gray-700">Phone</label>
+                    <input type="text" name="telegram" id="telegram"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                        value="{{ $journalInfo->telegram ?? '' }}" required>
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="text" name="email" id="email"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                        value="{{ $journalInfo->email ?? '' }}" required>
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button type="button" class="text-gray-700"
+                        onclick="closeModal('journalInfo-modal')">Cancel</button>
+                    <button type="submit" class="text-white bg-green-600 px-4 py-2 rounded-md">Update</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
     <script>
         function showjournalInfoModal() {
-        const journalInfoModal = document.getElementById('journalInfo-modal');
-        journalInfoModal.classList.remove('hidden');
-    }
+            const journalInfoModal = document.getElementById('journalInfo-modal');
+            journalInfoModal.classList.remove('hidden');
+        }
 
         function switchScreen(screenId) {
             document.querySelectorAll('.page').forEach((page) => {
@@ -153,4 +171,5 @@
         }
     </script>
 </body>
+
 </html>

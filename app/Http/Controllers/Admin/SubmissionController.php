@@ -9,6 +9,9 @@ use App\Models\JournalInformation;
 use App\Models\JournalIssue;
 use App\Models\Submit;
 use Illuminate\Http\Request;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\Settings;
+use Illuminate\Support\Facades\Storage;
 
 class SubmissionController extends Controller
 {
@@ -44,6 +47,7 @@ class SubmissionController extends Controller
             ->route('admin.submissions.show', $submission)
             ->with('success', 'Submission status updated successfully');
     }
+
     public function approve(Request $request, $id)
     {
         $submission = Submit::findOrFail($id); // Fetch the submission by ID
@@ -54,6 +58,7 @@ class SubmissionController extends Controller
             'year' => 'required|numeric|min:1900|max:' . date('Y'),
             'volume' => 'required|string|max:255',
             'issue' => 'required|string|max:255',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Insert data into the journal_issues table
@@ -62,23 +67,53 @@ class SubmissionController extends Controller
             'description' => $submission->description ?? 'N/A',
             'volume' => $request->volume,
             'issue' => $request->issue,
+            'year' => $request->year,
             'publication_date' => now(),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        // Ensure the directory exists
+        $pdfDirectory = storage_path('app/public/pdf_articles');
+        if (!file_exists($pdfDirectory)) {
+            mkdir($pdfDirectory, 0777, true);
+        }
+
+        // Get the file path of the submitted file
+        $filePath = storage_path('app/public/' . $submission->file_path);
+
+        // Convert file to PDF (depending on the type of the file)
+        $convertedPdfPath = $pdfDirectory . '/' . $submission->id . '.pdf';
+
+        if (strtolower(pathinfo($filePath, PATHINFO_EXTENSION)) === 'docx') {
+            // Set the PDF renderer path and name
+            $domPdfPath = base_path('vendor/dompdf/dompdf');
+            Settings::setPdfRendererPath($domPdfPath);
+            Settings::setPdfRendererName('DomPDF');
+
+            // Convert DOCX to PDF using PhpWord
+            $phpWord = IOFactory::load($filePath);
+            $pdfWriter = IOFactory::createWriter($phpWord, 'PDF');
+            $pdfWriter->save($convertedPdfPath);
+        } else {
+            return redirect()->back()->with('error', 'Unsupported file format for conversion.');
+        }
+
+        // Create the article record with the generated PDF URL
         Article::create([
             'journal_issue_id' => $journalIssue->id,
             'title' => $submission->title,
             'subtitle' => $submission->subtitle, // Add subtitle
             'abstract' => $submission->abstract,
             'keywords' => $submission->keywords, // Add keywords
-            'pdf_url' => $submission->file_path,
-            'user_id' => $submission->user_id,
+            'pdf_url' => 'storage/pdf_articles/' . $submission->id . '.pdf', // Save the URL of the PDF
+            'cover_image' => $request->file('cover_image') ? $request->file('cover_image')->store('cover_images', 'public') : null,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
         // Redirect with success message
-        return redirect()->back()->with('success', 'Submission approved and added to Journal Issues successfully!');
+        return redirect()->back()->with('success', 'Submission approved, converted to PDF, and added to Journal Issues successfully!');
     }
 
     public function reject(Request $request, $id)
@@ -94,14 +129,15 @@ class SubmissionController extends Controller
         $request->validate([
             'journal_name' => 'required|string|max:255',
             'editorial_office' => 'required|string|max:255',
-            'developer' => 'required|string|max:255',
+            'email' => 'required|string|max:255',
+            'telegram' => 'required|string|max:255',
         ]);
 
         $journalInfo = JournalInformation::first();
         if ($journalInfo) {
-            $journalInfo->update($request->only(['journal_name', 'editorial_office', 'developer']));
+            $journalInfo->update($request->only(['journal_name', 'editorial_office', 'email', 'telegram']));
         } else {
-            JournalInformation::create($request->only(['journal_name', 'editorial_office', 'developer']));
+            JournalInformation::create($request->only(['journal_name', 'editorial_office', 'email', 'telegram']));
         }
 
         return redirect()->back()->with('success', 'Journal information updated successfully!');
