@@ -70,7 +70,6 @@
 
             <!-- Articles List -->
             <div class="bg-white p-6 rounded-lg shadow-sm">
-                <h2 class="text-2xl font-semibold mb-4">Recent Journal Issues</h2>
                 @forelse($recentItems as $item)
                     <div class="border-b pb-4 mb-4">
                         <h3 class="text-xl font-semibold text-blue-900 mb-2">

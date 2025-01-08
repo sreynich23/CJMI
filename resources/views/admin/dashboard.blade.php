@@ -41,6 +41,8 @@
                         class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Submit</button>
                     <button onclick="switchScreen('aboutPage')"
                         class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">About</button>
+                    <button onclick="switchScreen('announcementPage')"
+                        class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Announcements</button>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
                         <button type="submit"
@@ -60,6 +62,9 @@
             </div>
             <div id="aboutPage" class="page hidden">
                 @include('admin.pages.aboutPage')
+            </div>
+            <div id="announcementPage" class="page hidden">
+                @include('admin.pages.announcements')
             </div>
             <footer class="bg-gray-900 text-white py-4">
                 <div class="container mx-auto px-4">
@@ -121,7 +126,7 @@
         class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
         <div class="bg-white rounded-lg p-6 w-96">
             <h3 class="text-lg font-semibold mb-4">Update Journal Information</h3>
-            <form id="journalInfo-form" method="POST">
+            <form id="journalInfo-form" method="POST" action="{{ route('admin.about.updateJournalInfo') }}">
                 @csrf
                 <div class="mb-4">
                     <label for="journal_name" class="block text-sm font-medium text-gray-700">Journal Name</label>

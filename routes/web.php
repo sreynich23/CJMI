@@ -14,13 +14,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\Admin\AdminSubmissionsController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CurrController;
 use App\Http\Controllers\CurrentIssueController;
 use App\Http\Controllers\FileDownloadController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JournalInformationController;
 
 // Authentication Routes
-Auth::routes();
+// Auth::routes();
 
 // Public Routes
 Route::middleware(['web'])->group(function () {
@@ -33,6 +34,8 @@ Route::middleware(['web'])->group(function () {
     Route::get('/curr', [CurrentIssueController::class, 'index'])->name('curr');
     Route::get('/announcements', [AnnouncementsController::class, 'index'])->name('announcements');
     Route::get('/current-issue', [CurrentIssueController::class, 'index'])->name('current-issue');
+    Route::get('/all_volumes', [CurrentIssueController::class, 'allVolumes'])->name('all_volumes');
+    Route::get('/volume/{volume}/issue/{issue}', [CurrentIssueController::class, 'showVolumeIssueDetails'])->name('volume.issue.details');
 });
 
 // Guest Routes (Only for non-authenticated users)
@@ -69,39 +72,42 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{submit}', [SubmitController::class, 'showSubmission'])->name('show');
         Route::delete('/{submit}', [SubmitController::class, 'deleteSubmission'])->name('destroy');
     });
-});
 
-// Admin Routes
-Route::middleware(AdminMiddleware::class)->prefix('admin')->name('admin.')->group(function () {
-    // Dashboard
-    Route::get('/', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    // Admin Routes
+    Route::middleware(AdminMiddleware::class)->prefix('admin')->name('admin.')->group(function () {
+        // Dashboard
+        Route::get('/', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
 
-    // About Management
-    Route::post('/upload-cover', [DashboardController::class, 'uploadCover'])->name('uploadCover');
-    Route::get('/', [AboutController::class, 'index'])->name('about');
-    Route::post('/about/store', [AboutController::class, 'store'])->name('about.store');
-    Route::put('/about/{id}', [AboutController::class, 'update'])->name('about.update');
-    Route::delete('/about/{id}', [AboutController::class, 'destroy'])->name('about.destroy');
+        // About Management
+        Route::post('/upload-cover', [DashboardController::class, 'uploadCover'])->name('uploadCover');
+        Route::get('/', [AboutController::class, 'index'])->name('about');
+        Route::post('/about/store', [AboutController::class, 'store'])->name('about.store');
+        Route::put('/about/{id}', [AboutController::class, 'update'])->name('about.update');
+        Route::delete('/about/{id}', [AboutController::class, 'destroy'])->name('about.destroy');
+        Route::post('/updateJournalInfo', [AboutController::class, 'updateJournalInfo'])->name('about.updateJournalInfo');
+        Route::post('/updateAnnouncement', [AboutController::class, 'updateAnnouncements'])->name('about.updateAnnouncements');
 
-    // Submissions Management
-    // Route::get('/', [AboutController::class, 'index'])->name('submissions');
-    Route::post('/submissions/{submission}/approve', [SubmissionController::class, 'approve'])->name('submissions.approve');
-    Route::post('/submissions/{submission}/updateJournalInfo', [SubmissionController::class, 'updateJournalInfo'])->name('submissions.updateJournalInfo');
-    Route::post('/submissions/{submission}/reject', [SubmissionController::class, 'reject'])->name('submissions.reject');
+        // Submissions Management
+        // Route::get('/', [AboutController::class, 'index'])->name('submissions');
+        Route::post('/submissions/{submission}/approve', [SubmissionController::class, 'approve'])->name('submissions.approve');
+        Route::post('/submissions/{submission}/reject', [SubmissionController::class, 'reject'])->name('submissions.reject');
 
 
-    // Submission System Admin-Specific
-    Route::prefix('submit')->name('submit.')->group(function () {
-        Route::get('/', [SubmitController::class, 'adminIndex'])->name('index');
-        Route::post('/checklist', [SubmitController::class, 'storeChecklistItem'])->name('checklist.store');
-        Route::put('/checklist/{id}', [SubmitController::class, 'updateChecklistItem'])->name('checklist.update');
-        Route::delete('/checklist/{id}', [SubmitController::class, 'deleteChecklistItem'])->name('checklist.delete');
-        Route::put('/contact', [SubmitController::class, 'updateContact'])->name('contact.update');
-        Route::put('/policy', [SubmitController::class, 'updatePolicy'])->name('policy.update');
+        // Submission System Admin-Specific
+        Route::prefix('submit')->name('submit.')->group(function () {
+            Route::get('/', [SubmitController::class, 'adminIndex'])->name('index');
+            Route::post('/checklist', [SubmitController::class, 'storeChecklistItem'])->name('checklist.store');
+            Route::put('/checklist/{id}', [SubmitController::class, 'updateChecklistItem'])->name('checklist.update');
+            Route::delete('/checklist/{id}', [SubmitController::class, 'deleteChecklistItem'])->name('checklist.delete');
+            Route::put('/contact', [SubmitController::class, 'updateContact'])->name('contact.update');
+            Route::put('/policy', [SubmitController::class, 'updatePolicy'])->name('policy.update');
+        });
     });
 });
+
+
 
 // Resource Route for Pages
 Route::resource('pages', PageController::class);

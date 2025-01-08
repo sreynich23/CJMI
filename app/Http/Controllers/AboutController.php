@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\About;
+use App\Models\Announcement;
 use App\Models\FileSubmission;
+use App\Models\JournalInformation;
 use App\Models\JournalIssue;
 use App\Models\Submit;
 use App\Models\VolumeIssueImage;
@@ -15,13 +17,15 @@ class AboutController extends Controller
     {
         $abouts = About::all();
         $image = VolumeIssueImage::latest()->first();
+        $journalInfo = JournalInformation::first();
+        $announcements = Announcement::first();
         $submissions = Submit::with(['article', 'user'])
             ->where('status', 'pending')
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
-            $recentItems = JournalIssue::with('articles')->orderBy('publication_date', 'desc')->paginate(10);
+            ->paginate(100);
+        $recentItems = JournalIssue::with('articles')->orderBy('publication_date', 'desc')->paginate(100);
         $latestYear = JournalIssue::query()->max('year');
-        return view('admin.dashboard', compact('abouts', 'submissions','recentItems','image','latestYear'));
+        return view('admin.dashboard', compact('abouts', 'submissions', 'recentItems', 'image', 'latestYear', 'journalInfo','announcements'));
     }
 
 
@@ -29,7 +33,7 @@ class AboutController extends Controller
     {
         $abouts = About::orderBy('created_at', 'desc')->get();
         $latestYear = JournalIssue::query()->max('year');
-        return view('about', compact('abouts','latestYear'));
+        return view('about', compact('abouts', 'latestYear'));
     }
 
     public function store(Request $request)
@@ -99,5 +103,35 @@ class AboutController extends Controller
         $submission->update(['status' => 'rejected']); // Update the status to rejected
 
         return redirect()->back()->with('success', 'Submission rejected successfully.');
+    }
+    public function updateJournalInfo(Request $request)
+    {
+        $request->validate([
+            'journal_name' => 'required|string|max:255',
+            'editorial_office' => 'required|string|max:255',
+            'email' => 'required|string|max:255',
+            'telegram' => 'required|string|max:255',
+        ]);
+
+        // Update if exists, or create a new record
+        JournalInformation::updateOrCreate(
+            ['id' => 1],
+            $request->only(['journal_name', 'editorial_office', 'email', 'telegram'])
+        );
+
+        return redirect()->back()->with('success', 'Journal information updated successfully!');
+    }
+    public function updateAnnouncements(Request $request)
+    {
+        $request->validate([
+            'content' => 'required|string|max:1000',
+        ]);
+        // Update if exists, or create a new record
+        Announcement::updateOrCreate(
+            ['id' => 1],
+            $request->only(['content'])
+        );
+
+        return redirect()->back()->with('success', 'Announcement updated successfully!');
     }
 }

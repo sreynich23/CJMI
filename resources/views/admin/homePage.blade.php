@@ -1,5 +1,5 @@
 <aside class="p-2 flex bg-white">
-    <div class="flex w-full">
+    <div class="flex w-full h-screen">
         <!-- Row 1: 3/4 of the screen -->
         <div class="w-3/4 p-6 overflow-y-auto bg-gray-100">
             <!-- Title Section -->

@@ -18,11 +18,13 @@ class SubmissionController extends Controller
     public function index()
     {
         $submissions = FileSubmission::with(['article'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->orderBy('created_at', 'desc');
+            // ->paginate(10);
         // dd($submissions);
-        $recentItems = JournalIssue::orderBy('publication_date', 'desc')->paginate(10);
-        return view('admin.dashboard', compact('submissions', 'recentItems'));
+        $journalInfo = JournalInformation::first();
+        $recentItems = JournalIssue::orderBy('publication_date', 'desc');
+
+        return view('admin.dashboard', compact('submissions', 'recentItems','journalInfo'));
     }
 
     public function show(FileSubmission $submission)
@@ -106,7 +108,7 @@ class SubmissionController extends Controller
             'subtitle' => $submission->subtitle, // Add subtitle
             'abstract' => $submission->abstract,
             'keywords' => $submission->keywords, // Add keywords
-            'pdf_url' => 'storage/pdf_articles/' . $submission->id . '.pdf', // Save the URL of the PDF
+            'pdf_url' => 'pdf_articles/' . $submission->id . '.pdf', // Save the URL of the PDF
             'cover_image' => $request->file('cover_image') ? $request->file('cover_image')->store('cover_images', 'public') : null,
             'created_at' => now(),
             'updated_at' => now(),
@@ -124,22 +126,5 @@ class SubmissionController extends Controller
         return redirect()->back()->with('success', 'Submission rejected successfully.');
     }
 
-    public function updateJournalInfo(Request $request)
-    {
-        $request->validate([
-            'journal_name' => 'required|string|max:255',
-            'editorial_office' => 'required|string|max:255',
-            'email' => 'required|string|max:255',
-            'telegram' => 'required|string|max:255',
-        ]);
-
-        $journalInfo = JournalInformation::first();
-        if ($journalInfo) {
-            $journalInfo->update($request->only(['journal_name', 'editorial_office', 'email', 'telegram']));
-        } else {
-            JournalInformation::create($request->only(['journal_name', 'editorial_office', 'email', 'telegram']));
-        }
-
-        return redirect()->back()->with('success', 'Journal information updated successfully!');
-    }
+    
 }

@@ -82,4 +82,40 @@ class CurrentIssueController extends Controller
 
         return Storage::download($filePath, $article->title . '.pdf');
     }
+
+    public function allVolumes()
+    {
+        $latestYear = JournalIssue::query()->max('year'); // Get the latest year for reference
+
+        // Fetch all volumes with their issues, ordered by year and volume
+        $volumes = JournalIssue::query()
+            ->select('volume', 'issue', 'year', 'publication_date') // Select necessary fields
+            ->orderBy('year', 'desc') // Order by year (descending)
+            ->orderBy('volume', 'asc') // Then order by volume (ascending)
+            ->orderBy('issue', 'asc') // Then order by issue (ascending)
+            ->get()
+            ->groupBy('volume'); // Group issues by volume for easier handling
+
+        // Pass the data to the view
+        return view('all_volume', compact('volumes', 'latestYear'));
+    }
+    public function showVolumeIssueDetails(Request $request)
+    {
+        $latestYear = JournalIssue::query()->max('year');
+        // Retrieve the query parameters from the request
+        $issue = $request->query('issue');
+        $volume = $request->query('volume');
+        $year = $request->query('year');
+
+        // Query the database using the retrieved parameters
+        $data = JournalIssue::query()
+            ->when($issue, fn($query) => $query->where('issue', $issue))
+            ->when($volume, fn($query) => $query->where('volume', $volume))
+            ->whereYear('publication_date', $year)
+            ->with('articles') // Assuming a relationship with articles or similar data
+            ->get();
+
+        // Return the view with the data
+        return view('volume_issue_details', compact('data', 'volume', 'issue', 'year', 'latestYear'));
+    }
 }
