@@ -3,6 +3,16 @@
 @section('content')
     <article class="border-b pb-4 last:border-b-0 p-8 w-full">
         <div class="bg-gray-100 rounded-lg shadow-lg p-6 mb-6">
+                <p class="text-gray-600 mb-2">
+                    Volume: {{ $article->volume }}, Issue: {{ $article->issue }}
+                </p>
+                <div class="h-120 w-60">
+                    @if ($image)
+                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Cover Image">
+                    @else
+                        <p>No image available</p>
+                    @endif
+                </div>
             <h3 class="text-4xl font-semibold text-blue-900 mb-2">
                 {{ $article->title }}
             </h3>

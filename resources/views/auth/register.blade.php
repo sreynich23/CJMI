@@ -31,7 +31,7 @@
                     <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                     <input type="text" name="name" id="name"
                         value="{{ old('name') }}" required
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-700 focus:ring-green-700 @error('name') border-red-500 @enderror">
+                        class="mt-1 block w-full rounded-md border px-3 border-gray-800 shadow-sm focus:border-green-700 focus:ring-green-700 @error('name') border-red-500 @enderror">
                     @error('name')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
@@ -41,7 +41,7 @@
                     <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                     <input type="email" name="email" id="email"
                         value="{{ old('email') }}" required
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-700 focus:ring-green-700 @error('email') border-red-500 @enderror">
+                        class="mt-1 block w-full rounded-md border px-3 border-gray-800 shadow-sm focus:border-green-700 focus:ring-green-700 @error('email') border-red-500 @enderror">
                     @error('email')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
@@ -50,7 +50,7 @@
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                     <input type="password" name="password" id="password" required
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-700 focus:ring-green-700">
+                        class="mt-1 block w-full rounded-md border px-3 border-gray-800 shadow-sm focus:border-green-700 focus:ring-green-700">
                     <p class="mt-1 text-sm text-gray-500">Password must be at least 8 characters and contain both letters and numbers.</p>
                     @error('password')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -60,7 +60,7 @@
                 <div>
                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
                     <input type="password" name="password_confirmation" id="password_confirmation" required
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-700 focus:ring-green-700">
+                        class="mt-1 block w-full rounded-md border px-3 border-gray-800 shadow-sm focus:border-green-700 focus:ring-green-700">
                 </div>
 
                 <div>

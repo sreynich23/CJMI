@@ -1,4 +1,79 @@
-<div class="border rounded-lg shadow-lg p-6 bg-white h-screen">
+<div class="container h-screen bg-white border border-gray-300 rounded-lg p-6">
+    <h2 class="text-xl font-semibold mb-4">Editors</h2>
+    <table class="min-w-full border border-gray-300 divide-y divide-gray-200 rounded-lg">
+        <thead class="bg-gray-100">
+            <tr>
+                {{-- <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">#</th> --}}
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Reviewer
+                </th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            <tr>
+                <td></td>
+                <td>Status</td>
+                <td>Long Sreynich, Dalin, Sinin</td>
+                <td>
+                    {{-- <button
+                        onclick="openModal('approve', {{ $submission->id }}, '{{ route('admin.submissions.approve', ':id') }}')"
+                        class="text-green-600 hover:text-green-900">Approve</button>
+                    <button
+                        onclick="openModal('reject', {{ $submission->id }}, '{{ route('admin.submissions.reject', ':id') }}')"
+                        class="text-red-600 hover:text-red-900">Reject</button> --}}
+                        <button class="bg-green-600 hover:bg-green-900 text-white rounded-md p-2">Approve</button>
+                        <button class="bg-red-600 hover:bg-red-900 text-white rounded-md p-2">Reject</button>
+                        <button class="bg-blue-600 hover:bg-blue-900 text-white rounded-md p-2">Reviewer feedback</button>
+
+                </td>
+                <td>
+                    {{-- <button onclick="assignReviewer({{ $editor->id }})" class="btn btn-success btn-sm">Assign Reviewer</button> --}}
+                </td>
+            </tr>
+            {{-- @foreach ($editors as $editor)
+            <tr data-id="{{ $editor->id }}">
+                <td>{{ $editor->id }}</td>
+                <td>{{ $editor->name }}</td>
+                <td>{{ $editor->status }}</td>
+                <td>
+                    <select name="reviewer" class="form-select">
+                        @foreach ($reviewers as $reviewer)
+                            <option value="{{ $reviewer->id }}">{{ $reviewer->name }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td>
+                    <button onclick="assignReviewer({{ $editor->id }})" class="btn btn-success btn-sm">Assign Reviewer</button>
+                </td>
+            </tr>
+            @endforeach --}}
+        </tbody>
+    </table>
+</div>
+{{-- <script>
+    function assignReviewer(editorId) {
+        // const selectElement = document.querySelector(`tr[data-id="${editorId}"] select[name="reviewer"]`);
+        const reviewerId = selectElement.value;
+        // const url = `{{ route('admin.editors.assignReviewer', ['editor' => ':editorId', 'reviewer' => ':reviewerId']) }}`.replace(':editorId', editorId).replace(':reviewerId', reviewerId);
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        }).then(response => {
+            if (response.ok) {
+                alert('Reviewer assigned successfully');
+            } else {
+                alert('Failed to assign reviewer');
+            }
+        });
+    }
+</script> --}}
+
+{{-- <div class="border rounded-lg shadow-lg p-6 bg-white h-screen">
     <h2 class="text-2xl font-bold text-gray-800 mb-6">Submissions Management</h2>
     <div class="overflow-x-auto">
         <table class="min-w-full border border-gray-300 divide-y divide-gray-200 rounded-lg">
@@ -123,4 +198,4 @@
     function closeModal(modalId) {
         document.getElementById(modalId).classList.add('hidden');
     }
-</script>
+</script> --}}

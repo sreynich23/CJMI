@@ -7,8 +7,11 @@ use App\Models\Announcement;
 use App\Models\FileSubmission;
 use App\Models\JournalInformation;
 use App\Models\JournalIssue;
+use App\Models\Navbar;
 use App\Models\Submit;
 use App\Models\VolumeIssueImage;
+use App\Models\Editor;
+use App\Models\Review;
 use Illuminate\Http\Request;
 
 class AboutController extends Controller
@@ -17,6 +20,7 @@ class AboutController extends Controller
     {
         $abouts = About::all();
         $image = VolumeIssueImage::latest()->first();
+        $navbar = Navbar::latest()->first();
         $journalInfo = JournalInformation::first();
         $announcements = Announcement::first();
         $submissions = Submit::with(['article', 'user'])
@@ -25,15 +29,30 @@ class AboutController extends Controller
             ->paginate(100);
         $recentItems = JournalIssue::with('articles')->orderBy('publication_date', 'desc')->paginate(100);
         $latestYear = JournalIssue::query()->max('year');
-        return view('admin.dashboard', compact('abouts', 'submissions', 'recentItems', 'image', 'latestYear', 'journalInfo','announcements'));
+        return view('admin.dashboard', compact('abouts', 'submissions', 'recentItems', 'image', 'latestYear','navbar', 'journalInfo', 'announcements'));
     }
 
+    public function assignReviewer(Request $request, Editor $editor, Review $reviewer)
+    {
+        // Validate that the editor and reviewer exist
+        if (!$editor || !$reviewer) {
+            return response()->json(['error' => 'Invalid editor or reviewer'], 400);
+        }
+
+        // Assign the reviewer to the editor
+        $editor->reviewer_id = $reviewer->id;
+        $editor->status = 'Assigned'; // Optionally update status
+        $editor->save();
+
+        return response()->json(['message' => 'Reviewer assigned successfully'], 200);
+    }
 
     public function indexuser()
     {
         $abouts = About::orderBy('created_at', 'desc')->get();
         $latestYear = JournalIssue::query()->max('year');
-        return view('about', compact('abouts', 'latestYear'));
+        $navbar = Navbar::latest()->first();
+        return view('about', compact('abouts', 'latestYear','navbar'));
     }
 
     public function store(Request $request)
@@ -133,5 +152,23 @@ class AboutController extends Controller
         );
 
         return redirect()->back()->with('success', 'Announcement updated successfully!');
+    }
+
+    public function updateNavbar(Request $request)
+    {
+        $navbar = Navbar::firstOrCreate([]);
+
+        if ($request->hasFile('logo')) {
+            $navbar->logo_path = $request->file('logo')->store('images', 'public');
+        }
+
+        if ($request->hasFile('background_image')) {
+            $navbar->background_color = $request->file('background_image')->store('images', 'public');
+        }
+
+        $navbar->title = $request->input('title');
+        $navbar->save();
+
+        return redirect()->back()->with('success', 'Navbar updated successfully!');
     }
 }

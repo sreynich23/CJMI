@@ -1,7 +1,7 @@
 <aside class="p-2 flex bg-white">
     <div class="flex w-full h-screen">
         <!-- Row 1: 3/4 of the screen -->
-        <div class="w-3/4 p-6 overflow-y-auto bg-gray-100">
+        <div class="w-4/5 p-6 overflow-y-auto bg-gray-100">
             <!-- Title Section -->
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-3xl font-semibold text-gray-800">All Submit</h2>
@@ -21,7 +21,7 @@
         </div>
 
         <!-- Row 2: 1/4 of the screen -->
-        <div class="w-1/4 py-10 px-4 bg-gray-100">
+        <div class="w-1/5 py-10 px-4 bg-gray-100">
             <!-- Form for uploading cover image -->
             <form action="{{ route('admin.uploadCover') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -45,13 +45,6 @@
                     Upload Cover
                 </button>
             </form>
-
-            <!-- Success message -->
-            @if (session('success'))
-                <div class="bg-green-200 text-green-800 p-4 rounded-md mb-4">
-                    {{ session('success') }}
-                </div>
-            @endif
 
             <!-- Success message -->
             @if (session('success'))

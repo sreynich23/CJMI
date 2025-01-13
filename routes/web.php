@@ -19,9 +19,13 @@ use App\Http\Controllers\CurrentIssueController;
 use App\Http\Controllers\FileDownloadController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JournalInformationController;
+use App\Http\Controllers\ReviewerFeedbackController;
+use App\Models\JournalIssue;
+use App\Models\Navbar;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 // Authentication Routes
-// Auth::routes();
+Auth::routes();
 
 // Public Routes
 Route::middleware(['web'])->group(function () {
@@ -36,6 +40,10 @@ Route::middleware(['web'])->group(function () {
     Route::get('/current-issue', [CurrentIssueController::class, 'index'])->name('current-issue');
     Route::get('/all_volumes', [CurrentIssueController::class, 'allVolumes'])->name('all_volumes');
     Route::get('/volume/{volume}/issue/{issue}', [CurrentIssueController::class, 'showVolumeIssueDetails'])->name('volume.issue.details');
+    Route::get('/reviewer', function () {
+        return view('reviewer');
+    })->name('reviewer');
+    Route::get('/reviewer/{id}', [ReviewerFeedbackController::class, 'show'])->name('reviewer.show'); // New route added
 });
 
 // Guest Routes (Only for non-authenticated users)
@@ -44,10 +52,14 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/register', [RegisterController::class, 'register']);
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login']);
+    Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 });
 
 // Authenticated Routes
 Route::middleware(['auth'])->group(function () {
+    $navbar = Navbar::latest()->first();
+    $latestYear = JournalIssue::query()->max('year');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
 
@@ -80,6 +92,7 @@ Route::middleware(['auth'])->group(function () {
             return view('admin.dashboard');
         })->name('dashboard');
 
+
         // About Management
         Route::post('/upload-cover', [DashboardController::class, 'uploadCover'])->name('uploadCover');
         Route::get('/', [AboutController::class, 'index'])->name('about');
@@ -88,12 +101,17 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/about/{id}', [AboutController::class, 'destroy'])->name('about.destroy');
         Route::post('/updateJournalInfo', [AboutController::class, 'updateJournalInfo'])->name('about.updateJournalInfo');
         Route::post('/updateAnnouncement', [AboutController::class, 'updateAnnouncements'])->name('about.updateAnnouncements');
+        Route::post('/updateNavbar', [AboutController::class, 'updateNavbar'])->name('navbar.update');
 
         // Submissions Management
         // Route::get('/', [AboutController::class, 'index'])->name('submissions');
         Route::post('/submissions/{submission}/approve', [SubmissionController::class, 'approve'])->name('submissions.approve');
         Route::post('/submissions/{submission}/reject', [SubmissionController::class, 'reject'])->name('submissions.reject');
 
+        // Reviewer Management
+        Route::get('/reviewers', [ReviewerFeedbackController::class, 'index'])->name('reviewers.index');
+        Route::post('/reviewers/assign', [ReviewerFeedbackController::class, 'assign'])->name('reviewers.assign');
+        Route::post('/reviewers/feedback', [ReviewerFeedbackController::class, 'storeFeedback'])->name('reviewers.feedback.store');
 
         // Submission System Admin-Specific
         Route::prefix('submit')->name('submit.')->group(function () {
@@ -106,8 +124,6 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 });
-
-
 
 // Resource Route for Pages
 Route::resource('pages', PageController::class);

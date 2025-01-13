@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - CJMRI</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
     <style>
         ::-webkit-scrollbar {
             width: 8px;
@@ -27,18 +29,22 @@
         <!-- Admin Navigation -->
         <div class="w-full text-gray-700 bg-green-500">
             <div
-                class="flex flex-col max-w-screen-xl text-white px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
+                class="flex flex-col max-w-screen-xl text-white mx-auto md:items-center md:justify-between md:flex-row md:px-2 lg:px-4">
+                <div class="">
+                    <img src="{{ asset('storage/' . $navbar->logo_path) }}" alt="Logo" height="100"
+                        width="100">
+                </div>
                 <div class="flex flex-row items-center justify-between p-4">
                     <a href="#"
                         class="text-lg text-white font-semibold tracking-widest uppercase rounded-lg focus:outline-none focus:shadow-outline">
-                        Cambodian Journal of Multidisciplinary Research and Innovation (CJMI)
+                        {{ $navbar->title ?? '' }}
                     </a>
                 </div>
                 <nav class="flex-col flex-grow pb-4 md:pb-0 md:flex md:justify-end md:flex-row">
                     <button onclick="switchScreen('homePage')"
                         class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Home</button>
                     <button onclick="switchScreen('uploadPage')"
-                        class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Submit</button>
+                        class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Editor</button>
                     <button onclick="switchScreen('aboutPage')"
                         class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">About</button>
                     <button onclick="switchScreen('announcementPage')"
@@ -50,7 +56,20 @@
                             Logout
                         </button>
                     </form>
+
                 </nav>
+                <div class="flex items-center px-4 py-2 mt-2">
+                    <button onclick="showNavbarModal()"
+                        class="rounded-md px-1 flex gap-2 border bg-green-500 text-white ">
+                        Edit
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z" />
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             <!-- Main content -->
@@ -162,6 +181,37 @@
         </div>
     </div>
 
+    <div id="navbar-modal"
+    class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 w-96">
+        <h3 class="text-lg font-semibold mb-4">Update Navbar Information</h3>
+        <form id="navbar-form" action="{{ route('admin.navbar.update') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="mb-4">
+                <label for="logo" class="block text-sm font-medium text-gray-700">Logo</label>
+                <input type="file" name="logo" id="logo"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div class="mb-4">
+                <label for="background_image" class="block text-sm font-medium text-gray-700">Background Image</label>
+                <input type="file" name="background_image" id="background_image"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div class="mb-4">
+                <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                <input type="text" name="title" id="title"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                    value="{{ $navbar->title ?? '' }}">
+            </div>
+            <div class="flex justify-end space-x-4">
+                <button type="button" class="text-gray-700"
+                    onclick="closeModal('navbar-modal')">Cancel</button>
+                <button type="submit" class="text-white bg-green-600 px-4 py-2 rounded-md">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+
     <script>
         function showjournalInfoModal() {
             const journalInfoModal = document.getElementById('journalInfo-modal');
@@ -174,6 +224,15 @@
             });
             document.getElementById(screenId).classList.remove('hidden');
         }
+
+        function showNavbarModal() {
+        const navbarModal = document.getElementById('navbar-modal');
+        navbarModal.classList.remove('hidden');
+    }
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.classList.add('hidden');
+    }
     </script>
 </body>
 

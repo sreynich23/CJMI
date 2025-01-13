@@ -3,7 +3,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Announcement;
 use App\Models\JournalIssue;
+use App\Models\Navbar;
 use Illuminate\Http\Request;
 
 class AnnouncementsController extends Controller
@@ -11,7 +13,9 @@ class AnnouncementsController extends Controller
     public function index()
     {
         $latestYear = JournalIssue::query()->max('year');
-        return view('announcements',compact('latestYear'));  // Make sure there's a corresponding view named 'announcements.blade.php'
+        $navbar = Navbar::latest()->first();
+        $announcements = Announcement::first();
+        return view('announcements',compact('latestYear','navbar','announcements'));  // Make sure there's a corresponding view named 'announcements.blade.php'
     }
 
     public function showPage($pages)

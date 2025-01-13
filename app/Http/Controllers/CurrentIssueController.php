@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\FileSubmission;
 use App\Models\JournalIssue;
+use App\Models\Navbar;
+use App\Models\VolumeIssueImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,6 +14,8 @@ class CurrentIssueController extends Controller
 {
     public function index(Request $request)
     {
+        $image = VolumeIssueImage::latest()->first();
+        $navbar = Navbar::latest()->first();
         $issue = $request->query('issue');
         $volume = $request->query('volume');
         $year = $request->query('year');
@@ -64,6 +68,8 @@ class CurrentIssueController extends Controller
             'previousVolume' => $previousVolume,
             'nextVolume' => $nextVolume,
             'latestYear' => $latestYear,
+            'navbar' => $navbar,
+            'image' => $image
         ]);
     }
 
@@ -85,6 +91,7 @@ class CurrentIssueController extends Controller
 
     public function allVolumes()
     {
+        $navbar = Navbar::latest()->first();
         $latestYear = JournalIssue::query()->max('year'); // Get the latest year for reference
 
         // Fetch all volumes with their issues, ordered by year and volume
@@ -97,11 +104,12 @@ class CurrentIssueController extends Controller
             ->groupBy('volume'); // Group issues by volume for easier handling
 
         // Pass the data to the view
-        return view('all_volume', compact('volumes', 'latestYear'));
+        return view('all_volume', compact('volumes', 'latestYear','navbar'));
     }
     public function showVolumeIssueDetails(Request $request)
     {
         $latestYear = JournalIssue::query()->max('year');
+        $navbar = Navbar::latest()->first();
         // Retrieve the query parameters from the request
         $issue = $request->query('issue');
         $volume = $request->query('volume');
@@ -116,6 +124,6 @@ class CurrentIssueController extends Controller
             ->get();
 
         // Return the view with the data
-        return view('volume_issue_details', compact('data', 'volume', 'issue', 'year', 'latestYear'));
+        return view('volume_issue_details', compact('data', 'volume', 'issue', 'year', 'latestYear','navbar'));
     }
 }

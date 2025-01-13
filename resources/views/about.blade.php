@@ -4,7 +4,7 @@
 <div class="container mx-auto p-6">
     <aside class="flex bg-white gap-5">
         <!-- Sidebar -->
-        <div class="w-1/5 sticky top-4">
+        <div class="w-1/5 sticky top-4 p-5 rounded-md">
             <ul class="space-y-2">
                 @forelse ($abouts as $about)
                     <li>
