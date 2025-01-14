@@ -24,6 +24,7 @@ use App\Models\JournalIssue;
 use App\Models\Navbar;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\EditorialController;
 
 // Authentication Routes
 Auth::routes();
@@ -45,6 +46,7 @@ Route::middleware(['web'])->group(function () {
         return view('reviewer');
     })->name('reviewer');
     Route::get('/reviewer/{id}', [ReviewerFeedbackController::class, 'show'])->name('reviewer.show'); // New route added
+    Route::get('/all-editorial', [EditorialController::class, 'index']);
 });
 
 // Guest Routes (Only for non-authenticated users)
