@@ -23,6 +23,7 @@ use App\Http\Controllers\ReviewerFeedbackController;
 use App\Models\JournalIssue;
 use App\Models\Navbar;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\PasswordResetController;
 
 // Authentication Routes
 Auth::routes();
@@ -137,3 +138,8 @@ Route::get('/files/{submission}/view', [FileDownloadController::class, 'show'])
     ->name('files.show');
 Route::get('/files/{submission}/preview', [FileDownloadController::class, 'preview'])
     ->name('files.preview');
+
+Route::get('forgot-password', [PasswordResetController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('forgot-password', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('reset-password/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
+Route::post('reset-password', [PasswordResetController::class, 'reset'])->name('password.update');

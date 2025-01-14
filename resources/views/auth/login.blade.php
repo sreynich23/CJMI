@@ -48,7 +48,7 @@
                             <label for="remember" class="ml-2 text-sm text-gray-600">Remember me</label>
                         </div>
                         <div>
-                            <a href="{{ route('password.request') }}" class="text-sm text-green-700 hover:underline">Forgot Password?</a>
+                            <a href="{{ route('password.email') }}" class="text-sm text-green-700 hover:underline">Forgot Password?</a>
                         </div>
                     </div>
 

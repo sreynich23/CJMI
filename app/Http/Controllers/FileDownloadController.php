@@ -15,7 +15,7 @@ class FileDownloadController extends Controller
             abort(404, 'File not found');
         }
 
-        // Return file download response
+        // Return file download response with original filename
         return Storage::download(
             $submission->file_path,
             $submission->original_filename,

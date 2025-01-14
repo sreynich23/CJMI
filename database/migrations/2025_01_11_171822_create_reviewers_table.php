@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateReviewersTable extends Migration
 {
@@ -14,12 +14,11 @@ class CreateReviewersTable extends Migration
     public function up()
     {
         Schema::create('reviewers', function (Blueprint $table) {
-            $table->id(); // Primary key
-            $table->string('name'); // Name of the reviewer
-            $table->string('email')->unique(); // Email address
-            $table->string('expertise')->nullable(); // Expertise area (optional)
-            $table->boolean('active')->default(true); // Whether the reviewer is active
-            $table->timestamps(); // Created and updated timestamps
+            $table->increments('id');
+            $table->integer('reviewer_id');
+            $table->integer('article_id');
+            $table->enum('status', ['articles_under_review', 'accepted_articles', 'major_revisions', 'minor_revisions', 'rejected'])->default('articles_under_review');
+            $table->timestamps();
         });
     }
 
