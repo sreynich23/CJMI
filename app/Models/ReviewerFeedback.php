@@ -18,7 +18,7 @@ class ReviewerFeedback extends Model
 
     public function submission()
     {
-        return $this->belongsTo(Submission::class);
+        return $this->belongsTo(Submit::class);
     }
 
     public function reviewer()

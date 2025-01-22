@@ -1,201 +1,191 @@
 <div class="container h-screen bg-white border border-gray-300 rounded-lg p-6">
-    <h2 class="text-xl font-semibold mb-4">Editors</h2>
     <table class="min-w-full border border-gray-300 divide-y divide-gray-200 rounded-lg">
+        <h2 class="text-xl font-semibold mb-4">Reviewers Request</h1>
+            <thead class="bg-gray-100">
+                <tr>
+                    <th>Reviewer Name</th>
+                    <th>Reviewer Position</th>
+                    <th>Reviewer Expertise</th>
+                    <th>Reviewer Country</th>
+                    <th>Reviewer Email</th>
+                    <th>Reviewer CV</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($reviewers as $reviewer)
+                    @if ($reviewer->active == 0)
+                        <!-- Check explicitly for 0 -->
+                        <tr data-id="{{ $reviewer->id }}">
+                            <td class="px-6 py-4 text-sm text-gray-900">{{ $reviewer->name }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{ $reviewer->position }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{ ucfirst($reviewer->expertise) }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{ ucfirst($reviewer->country) }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{ ucfirst($reviewer->email) }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">
+                                <a href="{{ asset('storage/' . $reviewer->cv) }}"
+                                    class="text-blue-600 hover:text-blue-900" download>
+                                    Download CV
+                                </a>
+                            </td>
+                            <td class="px-6 py-4">
+                                <a href="admin/reviewer/approve/{{ $reviewer->id }}"
+                                    class="text-green-600 hover:text-green-900 rounded-md p-2">
+                                    Approve
+                                </a>
+                                <button onclick="rejectReviewer({{ $reviewer->id }})"
+                                    class="text-red-600 hover:text-red-900 rounded-md p-2">
+                                    Reject
+                                </button>
+                            </td>
+                        </tr>
+                    @endif
+                @endforeach
+            </tbody>
+
+    </table>
+
+    <h2 class="text-xl font-semibold mb-4">Editors</h2>
+    <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-100">
             <tr>
-                {{-- <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">#</th> --}}
-                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Title</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">File</th>
                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Status</th>
                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Reviewer
                 </th>
-                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Actions</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Actions
+                </th>
             </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-            <tr>
-                <td></td>
-                <td>Status</td>
-                <td>Long Sreynich, Dalin, Sinin</td>
-                <td>
-                    {{-- <button
-                        onclick="openModal('approve', {{ $submission->id }}, '{{ route('admin.submissions.approve', ':id') }}')"
-                        class="text-green-600 hover:text-green-900">Approve</button>
-                    <button
-                        onclick="openModal('reject', {{ $submission->id }}, '{{ route('admin.submissions.reject', ':id') }}')"
-                        class="text-red-600 hover:text-red-900">Reject</button> --}}
-                        <button class="bg-green-600 hover:bg-green-900 text-white rounded-md p-2">Approve</button>
-                        <button class="bg-red-600 hover:bg-red-900 text-white rounded-md p-2">Reject</button>
-                        <button class="bg-blue-600 hover:bg-blue-900 text-white rounded-md p-2">Reviewer feedback</button>
-
-                </td>
-                <td>
-                    {{-- <button onclick="assignReviewer({{ $editor->id }})" class="btn btn-success btn-sm">Assign Reviewer</button> --}}
-                </td>
-            </tr>
-            {{-- @foreach ($editors as $editor)
-            <tr data-id="{{ $editor->id }}">
-                <td>{{ $editor->id }}</td>
-                <td>{{ $editor->name }}</td>
-                <td>{{ $editor->status }}</td>
-                <td>
-                    <select name="reviewer" class="form-select">
-                        @foreach ($reviewers as $reviewer)
-                            <option value="{{ $reviewer->id }}">{{ $reviewer->name }}</option>
+            @foreach ($reviewing as $submissionId => $reviews)
+                <tr>
+                    <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $reviews->first()->title }}</td>
+                    <td class="px-6 py-4">
+                        <a href="{{ 'storage/' . $reviews->first()->file_path }}"
+                            class="text-blue-600 hover:text-blue-900">
+                            Download
+                        </a>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                        @foreach ($reviews as $review)
+                            <span class="block">{{ $review->status }}</span>
                         @endforeach
-                    </select>
-                </td>
-                <td>
-                    <button onclick="assignReviewer({{ $editor->id }})" class="btn btn-success btn-sm">Assign Reviewer</button>
-                </td>
-            </tr>
-            @endforeach --}}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                        @foreach ($reviews as $review)
+                            <span class="block">{{ $review->reviewer_name }}</span>
+                        @endforeach
+                    </td>
+                    <td class="px-6 py-4 text-sm font-medium">
+                        <div class="flex space-x-3">
+                            <button
+                                onclick="openModal('approve', {{ $submissionId }}, '{{ route('admin.submissions.approve', ':id') }}')"
+                                class="text-green-600 hover:text-green-900">Approve</button>
+                            <button
+                                onclick="openModal('reject', {{ $submissionId }}, '{{ route('admin.submissions.reject', ':id') }}')"
+                                class="text-red-600 hover:text-red-900">Reject</button>
+                            <button onclick="openModalButton({{$review->user_id}}, {{$submissionId}})" class="text-gray-600 hover:text-gray-900">Request
+                                Update</button>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 </div>
-{{-- <script>
-    function assignReviewer(editorId) {
-        // const selectElement = document.querySelector(`tr[data-id="${editorId}"] select[name="reviewer"]`);
-        const reviewerId = selectElement.value;
-        // const url = `{{ route('admin.editors.assignReviewer', ['editor' => ':editorId', 'reviewer' => ':reviewerId']) }}`.replace(':editorId', editorId).replace(':reviewerId', reviewerId);
-
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
-        }).then(response => {
-            if (response.ok) {
-                alert('Reviewer assigned successfully');
-            } else {
-                alert('Failed to assign reviewer');
-            }
-        });
-    }
-</script> --}}
-
-{{-- <div class="border rounded-lg shadow-lg p-6 bg-white h-screen">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6">Submissions Management</h2>
-    <div class="overflow-x-auto">
-        <table class="min-w-full border border-gray-300 divide-y divide-gray-200 rounded-lg">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
-                        Title
-                    </th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
-                        Status
-                    </th>
-                    <th class="px-12 py-3 text-right text-sm font-semibold text-gray-700 uppercase tracking-wider ">
-                        Actions
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($submissions ?? [] as $submission)
-                    <tr class="hover:bg-gray-50 transition">
-                        <!-- Title -->
-                        <td class="px-6 py-4 text-gray-900 text-sm">
-                            {{ $submission->title }}
-                        </td>
-                        <!-- Status -->
-                        <td class="px-6 py-4">
-                            <span
-                                class="px-3 py-1 text-xs font-medium rounded-full {{ $submission->status_badge ?? 'bg-gray-200 text-gray-800' }}">
-                                {{ ucfirst($submission->status) }}
-                            </span>
-                        </td>
-                        <!-- Actions -->
-                        <td class="px-6 py-4 text-sm font-medium">
-                            <div class="flex space-x-3">
-                                @if ($submission->status === 'pending')
-                                    <button
-                                        onclick="showApproveModal({{ $submission->id }}, '{{ route('admin.submissions.approve', ':id') }}')"
-                                        class="text-green-600 hover:text-green-900">Approve</button>
-                                    <button
-                                        onclick="showRejectModal({{ $submission->id }}, '{{ route('admin.submissions.reject', ':id') }}')"
-                                        class="text-red-600 hover:text-red-900">Reject</button>
-                                @endif
-                            </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="3" class="px-6 py-4 text-center text-gray-500 text-sm">
-                            No submissions found.
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-    <!-- Pagination -->
-    <div class="mt-4">{{ $submissions->links() }}</div>
-</div>
-
-<div id="approve-modal" class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center h-4/5">
-    <div class="bg-white rounded-lg p-6 w-96 h-full overflow-auto">
-        <h3 class="text-lg font-semibold mb-4">Approve Submission</h3>
-        <form id="approve-form" method="POST">
+<!-- Modals -->
+<div id="modal-container" class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 w-96">
+        <h3 class="text-lg font-semibold mb-4" id="modal-title">Modal Title</h3>
+        <form id="modal-form" method="POST">
             @csrf
-            <input type="hidden" name="submission_id" id="approve-submission-id">
-            <div class="mb-4">
-                <label for="year" class="block text-sm font-medium text-gray-700">Year</label>
-                <input type="text" name="year" id="year"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-            </div>
-            <div class="mb-4">
-                <label for="volume" class="block text-sm font-medium text-gray-700">Volume</label>
-                <input type="text" name="volume" id="volume"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-            </div>
-            <div class="mb-4">
-                <label for="issue" class="block text-sm font-medium text-gray-700">Issue</label>
-                <input type="text" name="issue" id="issue"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-            </div>
+            <input type="hidden" name="submission_id" id="modal-submission-id">
+            <div id="modal-fields"></div>
             <div class="flex justify-end space-x-4">
-                <button type="button" class="text-gray-700" onclick="closeModal('approve-modal')">Cancel</button>
+                <button type="button" class="text-gray-700" onclick="closeModalSubmit()">Cancel</button>
                 <button type="submit" class="text-white bg-green-600 px-4 py-2 rounded-md">Submit</button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- Reject Modal -->
-<div id="reject-modal" class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center h-4/5">
-    <div class="bg-white rounded-lg p-6 w-96 h-full overflow-auto">
-        <h3 class="text-lg font-semibold mb-4">Reject Submission</h3>
-        <form id="reject-form" method="POST">
+<!-- Modal -->
+<div id="feedbackModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-xl font-semibold mb-4">Provide Feedback</h2>
+
+        <!-- Feedback Form -->
+        <form id="feedbackForm" method="POST">
             @csrf
-            <div class="mb-4">
-                <label for="reason" class="block text-sm font-medium text-gray-700">Reason for Rejection</label>
-                <textarea name="reason" id="reason" rows="4"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
+            <div class="form-group mb-4">
+                <label for="comment" class="block text-sm font-medium text-gray-700">Feedback Comment</label>
+                <textarea name="comment" id="comment"
+                    class="form-control mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    required></textarea>
             </div>
+
             <div class="flex justify-end space-x-4">
-                <button type="button" class="text-gray-700" onclick="closeModal('reject-modal')">Cancel</button>
-                <button type="submit" class="text-white bg-red-600 px-4 py-2 rounded-md">Submit</button>
+                <!-- Close Button -->
+                <button type="button" id="closeModalButton" class="text-gray-600 hover:text-gray-900">Cancel</button>
+                <!-- Submit Button -->
+                <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md">Send
+                    Feedback</button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
-    function showApproveModal(submissionId, approveRoute) {
-        const approveModal = document.getElementById('approve-modal');
-        const approveForm = document.getElementById('approve-form');
-        approveForm.action = approveRoute.replace(':id', submissionId); // Replace placeholder with ID
-        approveModal.classList.remove('hidden');
+    function openModalButton(userId, submissionId) {
+        // Get modal and close button elements
+        const feedbackModal = document.getElementById('feedbackModal');
+        const closeModalButton = document.getElementById('closeModalButton');
+
+        // Show the modal
+        feedbackModal.classList.remove('hidden');
+
+        // Set form action dynamically
+        const feedbackForm = document.getElementById('feedbackForm');
+        feedbackForm.action = `/admin/feedback/send/${userId}/${submissionId}`;
+
+        // Close the modal when the close button is clicked
+        closeModalButton.addEventListener('click', function () {
+            feedbackModal.classList.add('hidden');
+        });
+
+        // Close the modal when clicking outside the modal content
+        feedbackModal.addEventListener('click', function (event) {
+            if (event.target === feedbackModal) {
+                feedbackModal.classList.add('hidden');
+            }
+        });
     }
 
-    function showRejectModal(submissionId, rejectRoute) {
-        const rejectModal = document.getElementById('reject-modal');
-        const rejectForm = document.getElementById('reject-form');
-        rejectForm.action = rejectRoute.replace(':id', submissionId); // Replace placeholder with ID
-        rejectModal.classList.remove('hidden');
+    function openModal(type, submissionId, route) {
+        const modal = document.getElementById('modal-container');
+        const modalForm = document.getElementById('modal-form');
+        const modalTitle = document.getElementById('modal-title');
+        const modalFields = document.getElementById('modal-fields');
+
+        modalForm.action = route.replace(':id', submissionId);
+        modalTitle.innerText = type === 'approve' ? 'Approve Submission' : 'Reject Submission';
+
+        modalFields.innerHTML = type === 'approve' ?
+            `<div class="mb-4"><label for="year" class="block text-sm font-medium text-gray-700">Year</label>
+                 <input type="text" name="year" id="year" class="mt-1 block w-full border rounded-md shadow-sm"></div>
+               <div class="mb-4"><label for="volume" class="block text-sm font-medium text-gray-700">Volume</label>
+                 <input type="text" name="volume" id="volume" class="mt-1 block w-full border rounded-md shadow-sm"></div>
+               <div class="mb-4"><label for="issue" class="block text-sm font-medium text-gray-700">Issue</label>
+                 <input type="text" name="issue" id="issue" class="mt-1 block w-full border rounded-md shadow-sm"></div>` :
+            `<div class="mb-4"><label for="reason" class="block text-sm font-medium text-gray-700">Reason for Rejection</label>
+                 <textarea name="reason" id="reason" rows="4" class="mt-1 block w-full border rounded-md shadow-sm"></textarea></div>`;
+
+        modal.classList.remove('hidden');
     }
 
-    function closeModal(modalId) {
-        document.getElementById(modalId).classList.add('hidden');
+    function closeModalSubmit() {
+        document.getElementById('modal-container').classList.add('hidden');
     }
-</script> --}}
+</script>

@@ -25,6 +25,8 @@ use App\Models\Navbar;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\EditorialController;
+use App\Http\Controllers\reviewer;
+use App\Http\Controllers\ReviewerController;
 
 // Authentication Routes
 Auth::routes();
@@ -42,11 +44,11 @@ Route::middleware(['web'])->group(function () {
     Route::get('/current-issue', [CurrentIssueController::class, 'index'])->name('current-issue');
     Route::get('/all_volumes', [CurrentIssueController::class, 'allVolumes'])->name('all_volumes');
     Route::get('/volume/{volume}/issue/{issue}', [CurrentIssueController::class, 'showVolumeIssueDetails'])->name('volume.issue.details');
-    Route::get('/reviewer', function () {
-        return view('reviewer');
-    })->name('reviewer');
-    Route::get('/reviewer/{id}', [ReviewerFeedbackController::class, 'show'])->name('reviewer.show'); // New route added
-    Route::get('/all-editorial', [EditorialController::class, 'index']);
+    Route::get('/reviewer', [ReviewerController::class, 'index'])->name('reviewer');
+    Route::post('/reviewer/feedback/{id}', [ReviewerFeedbackController::class, 'storeFeedback'])->name('reviewer.feedback');
+    Route::get('/all-editorials', [HomeController::class, 'allEditorials'])->name('all-editorials');
+    Route::post('/all-editorials/create', [ReviewerController::class, 'requestRoleChange'])->name('reviewer.create');
+
 });
 
 // Guest Routes (Only for non-authenticated users)
@@ -55,16 +57,17 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/register', [RegisterController::class, 'register']);
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login']);
-    Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-    Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
 });
 
 // Authenticated Routes
 Route::middleware(['auth'])->group(function () {
+    Route::get('/allEditorial', [HomeController::class, 'allEditorials']);
     $navbar = Navbar::latest()->first();
     $latestYear = JournalIssue::query()->max('year');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::post('/request-role-change', [ReviewerController::class, 'requestRoleChange']);
 
     // Submission Wizard for Users
     Route::prefix('submit')->name('submit.')->group(function () {
@@ -79,6 +82,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/step4', [SubmitController::class, 'showStep4'])->name('step4');
         Route::post('/step4', [SubmitController::class, 'saveStep4'])->name('saveStep4');
         Route::get('/step5', [SubmitController::class, 'showStep5'])->name('step5');
+        Route::get('/updateSubmit/{submission}', [SubmitController::class, 'edit'])->name('updateSubmit');
+        Route::post('/update/{submission}', [SubmitController::class, 'updateSubmit'])->name('updateSubmited');
     });
 
     // User Submissions
@@ -113,7 +118,7 @@ Route::middleware(['auth'])->group(function () {
 
         // Reviewer Management
         Route::get('/reviewers', [ReviewerFeedbackController::class, 'index'])->name('reviewers.index');
-        Route::post('/reviewers/assign', [ReviewerFeedbackController::class, 'assign'])->name('reviewers.assign');
+        Route::post('/assign-reviewers', [ReviewerController::class, 'assign_reviewers'])->name('reviewers.assign');
         Route::post('/reviewers/feedback', [ReviewerFeedbackController::class, 'storeFeedback'])->name('reviewers.feedback.store');
 
         // Submission System Admin-Specific
@@ -125,6 +130,9 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/contact', [SubmitController::class, 'updateContact'])->name('contact.update');
             Route::put('/policy', [SubmitController::class, 'updatePolicy'])->name('policy.update');
         });
+        //mails
+        Route::get('/reviewer/approve/{id}', [ReviewerController::class, 'approveReviewer'])->name('reviewer.approve');
+        Route::post('/feedback/send/{authorId}/{submissionId}', [AboutController::class, 'sendReviewFeedback'])->name('feedback.send');
     });
 });
 
@@ -141,7 +149,7 @@ Route::get('/files/{submission}/view', [FileDownloadController::class, 'show'])
 Route::get('/files/{submission}/preview', [FileDownloadController::class, 'preview'])
     ->name('files.preview');
 
-Route::get('forgot-password', [PasswordResetController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('forgot-password', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::get('reset-password/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
-Route::post('reset-password', [PasswordResetController::class, 'reset'])->name('password.update');
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgot-password');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('send-otp');
+    Route::get('/reset-password', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset-password');
+    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('reset-password');

@@ -90,9 +90,16 @@
                                     </span>
 
                                     <!-- View Button -->
+                                    @csrf
+                                    @method('PUT')
                                     <a href="{{ route('submissions.show', $submission) }}"
                                         class="inline-flex items-center px-3 py-1 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
                                         View
+                                    </a>
+                                    <!-- Update Button -->
+                                    <a href="{{ route('submit.updateSubmit', ['submission' => $submission->id]) }}"
+                                        class="inline-flex items-center px-3 py-1 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                                        Update
                                     </a>
 
                                     <!-- Actions Dropdown -->
@@ -110,7 +117,7 @@
                                         <div x-show="open"
                                              @click.away="open = false"
                                              x-cloak
-                                             class="fixed top-auto left-auto transform -translate-x-full mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                                             class="absolute left-3 transform -translate-x-full mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
                                             <div class="py-1">
                                                 <a href="{{ route('submissions.show', $submission) }}"
                                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">

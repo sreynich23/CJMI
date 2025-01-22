@@ -10,6 +10,7 @@ class FileDownloadController extends Controller
 {
     public function download(FileSubmission $submission)
     {
+        dd($submission);
         // Check if file exists
         if (!Storage::exists($submission->file_path)) {
             abort(404, 'File not found');

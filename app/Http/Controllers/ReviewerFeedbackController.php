@@ -2,38 +2,79 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FileSubmission;
 use Illuminate\Http\Request;
 use App\Models\ReviewerFeedback;
 use App\Models\Submission;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ReviewerFeedbackController extends Controller
 {
     public function index()
     {
         $reviewers = User::where('role', 'reviewer')->get();
-        $submissions = Submission::all();
+        $submissions = FileSubmission::all();
         return view('admin.reviewers.index', compact('reviewers', 'submissions'));
     }
 
     public function assign(Request $request)
     {
-        $submission = Submission::find($request->submission_id);
+        $submission = FileSubmission::find($request->submission_id);
         $submission->reviewers()->attach($request->reviewer_id);
         return redirect()->route('admin.reviewers.index')->with('success', 'Reviewer assigned successfully.');
     }
 
-    public function storeFeedback(Request $request)
+    public function storeFeedback(Request $request, $id)
     {
-        $feedback = new ReviewerFeedback();
-        $feedback->submission_id = $request->submission_id;
-        $feedback->reviewer_id = $request->reviewer_id;
-        $feedback->comments = $request->comments;
-        $feedback->recommendation = $request->recommendation;
-        $feedback->save();
+        // Validate the request inputs
+        $request->validate([
+            'recommendation' => 'required|in:accepted,major revisions,minor revisions,rejected',
+            'comments' => 'nullable|string|max:1000',
+        ]);
 
-        return redirect()->route('admin.reviewers.index')->with('success', 'Feedback submitted successfully.');
+        // Check if feedback already exists for this submission
+        $feedback = DB::table('reviewer_feedback')->where('submission_id', $id)->first();
+
+        // Determine the status for the reviewers table based on the recommendation
+        $status = match ($request->recommendation) {
+            'accepted' => 'approved',
+            'major revisions' => 'major_revisions',
+            'minor revisions' => 'minor_revisions',
+            'rejected' => 'rejected',
+        };
+
+        if (!$feedback) {
+            // Insert feedback into reviewer_feedback table
+            DB::table('reviewer_feedback')->insert([
+                'submission_id' => $id,
+                'reviewer_id' => Auth::user()->id,
+                'recommendation' => $request->recommendation,
+                'comments' => $request->recommendation !== 'accepted' ? $request->comments : null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        } else {
+            // Update existing feedback in reviewer_feedback table
+            DB::table('reviewer_feedback')->where('submission_id', $id)->update([
+                'recommendation' => $request->recommendation,
+                'comments' => $request->recommendation !== 'accepted' ? $request->comments : null,
+                'updated_at' => now(),
+            ]);
+        }
+
+        // Update the status in the reviewers table
+        DB::table('reviewers')->where('submission_id', $id)->update([
+            'status' => $status,
+            'updated_at' => now(),
+        ]);
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Feedback submitted and status updated successfully.');
     }
+
+
 
     public function show($id)
     {

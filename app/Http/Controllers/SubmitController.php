@@ -262,5 +262,53 @@ class SubmitController extends Controller
 
         return view('submissions.show', compact('submit', 'latestYear','navbar'));
     }
+    public function edit($id)
+{
+    // Fetch the submission by its ID
+    $submission = Submit::findOrFail($id);
+
+    // Return the edit view with the submission data
+    return view('submit.update', compact('submission'));
+}
+
+
+    // Update the submission
+    public function updateSubmit(Request $request, $id)
+{
+    // Find the submission by ID
+    $submission = Submit::findOrFail($id);
+
+    // Validate the request data
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'abstract' => 'required|string',
+        'keywords' => 'required|string|max:255',
+        'prefix' => 'nullable|string|max:50',
+        'subtitle' => 'nullable|string|max:255',
+        'file_path' => 'nullable|file|mimes:pdf,docx|max:10240', // Updated to file_path
+    ]);
+    $status = $submission->status != 'pending' ? 'update' : $submission->status;
+
+    // Update the submission data
+    $submission->update([
+        'title' => $validated['title'],
+        'abstract' => $validated['abstract'],
+        'keywords' => $validated['keywords'],
+        'prefix' => $validated['prefix'] ?? $submission->prefix,
+        'subtitle' => $validated['subtitle'] ?? $submission->subtitle,
+        'status' => $status,
+    ]);
+
+    // Handle manuscript file upload if present
+    if ($request->hasFile('file_path')) {  // Updated to file_path
+        $path = $request->file('file_path')->store('manuscripts', 'public'); // Updated to file_path
+        $submission->file_path = $path; // Updated to file_path
+        $submission->save();
+    }
+
+    // Redirect or return a response
+    return redirect()->route('submissions.index')->with('success', 'Submission updated successfully.');
+}
+
 }
 

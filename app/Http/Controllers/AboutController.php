@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\FeedbackAuthor;
 use App\Models\About;
 use App\Models\Announcement;
 use App\Models\FileSubmission;
@@ -12,7 +13,12 @@ use App\Models\Submit;
 use App\Models\VolumeIssueImage;
 use App\Models\Editor;
 use App\Models\Review;
+use App\Models\Reviewer;
+use App\Models\Reviewers;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class AboutController extends Controller
 {
@@ -23,28 +29,25 @@ class AboutController extends Controller
         $navbar = Navbar::latest()->first();
         $journalInfo = JournalInformation::first();
         $announcements = Announcement::first();
+        $reviewers = Reviewer::all();
+        $reviewersEditorial = Reviewers::all();
         $submissions = Submit::with(['article', 'user'])
             ->where('status', 'pending')
             ->orderBy('created_at', 'desc')
             ->paginate(100);
+        $submissionsUpdate = Submit::with(['article', 'user'])
+            ->where('status', 'update')
+            ->orderBy('created_at', 'desc')
+            ->paginate(100);
+        $reviewing = DB::table('reviewers')
+            ->join('submits', 'reviewers.submission_id', '=', 'submits.id')
+            ->join('reviewer', 'reviewers.reviewer_id', '=', 'reviewer.id')
+            ->select('submits.title as title', 'submits.file_path as file_path', 'reviewers.status', 'reviewers.submission_id', 'reviewer.name as reviewer_name','reviewer.user_id as user_id')
+            ->get()
+            ->groupBy('submission_id');
         $recentItems = JournalIssue::with('articles')->orderBy('publication_date', 'desc')->paginate(100);
         $latestYear = JournalIssue::query()->max('year');
-        return view('admin.dashboard', compact('abouts', 'submissions', 'recentItems', 'image', 'latestYear','navbar', 'journalInfo', 'announcements'));
-    }
-
-    public function assignReviewer(Request $request, Editor $editor, Review $reviewer)
-    {
-        // Validate that the editor and reviewer exist
-        if (!$editor || !$reviewer) {
-            return response()->json(['error' => 'Invalid editor or reviewer'], 400);
-        }
-
-        // Assign the reviewer to the editor
-        $editor->reviewer_id = $reviewer->id;
-        $editor->status = 'Assigned'; // Optionally update status
-        $editor->save();
-
-        return response()->json(['message' => 'Reviewer assigned successfully'], 200);
+        return view('admin.dashboard', compact('abouts', 'submissions', 'recentItems', 'image', 'latestYear', 'navbar', 'journalInfo', 'announcements', 'reviewers', 'reviewersEditorial', 'reviewing', 'submissionsUpdate'));
     }
 
     public function indexuser()
@@ -52,7 +55,7 @@ class AboutController extends Controller
         $abouts = About::orderBy('created_at', 'desc')->get();
         $latestYear = JournalIssue::query()->max('year');
         $navbar = Navbar::latest()->first();
-        return view('about', compact('abouts', 'latestYear','navbar'));
+        return view('about', compact('abouts', 'latestYear', 'navbar'));
     }
 
     public function store(Request $request)
@@ -170,5 +173,21 @@ class AboutController extends Controller
         $navbar->save();
 
         return redirect()->back()->with('success', 'Navbar updated successfully!');
+    }
+    public function sendReviewFeedback($authorId, $submissionId, Request $request)
+    {
+        // Fetch the author and submission data
+        $author = User::findOrFail($authorId);
+        $submission = Submit::findOrFail($submissionId);
+        $request->validate([
+            'comment' => 'required|string|max:1000',
+        ]);
+        $comment = $request->input('comment');
+        $submission->update(['status' => 'waiting_update']);
+
+        // Send the email with feedback
+        Mail::to($author->email)->send(new FeedbackAuthor($submission, $author, $comment));
+
+        return redirect()->back()->with('success', 'Feedback sent successfully.');
     }
 }

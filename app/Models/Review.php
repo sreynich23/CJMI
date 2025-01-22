@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Http\Controllers\Admin\SubmissionController;
 use CreateReviewersTable;
+use CreateReviewerTable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,16 +17,7 @@ class Review extends Model
      *
      * @var array
      */
-    protected $fillable = ['submission_id', 'editor_id', 'reviewer_id', 'feedback', 'status'];
-
-    /**
-     * Define the relationship between Review and Editor.
-     * A review belongs to one editor.
-     */
-    public function editor()
-    {
-        return $this->belongsTo(Editor::class);
-    }
+    protected $fillable = ['submission_id', 'reviewer_id', 'feedback', 'status'];
 
     /**
      * Define the relationship between Review and Reviewer.
@@ -33,7 +25,7 @@ class Review extends Model
      */
     public function reviewer()
     {
-        return $this->belongsTo(CreateReviewersTable::class);
+        return $this->belongsTo(CreateReviewerTable::class);
     }
 
     /**

@@ -48,16 +48,6 @@
                 </div>
             </form>
         </div>
-
-        <!-- Contact Information -->
-        <div class="mt-12 p-6 bg-gray-50 rounded-lg">
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">Contact Information</h3>
-            <ul class="space-y-2 text-gray-600">
-                <li>Email: journal@example.com</li>
-                <li>Phone: +855 XX XXX XXX</li>
-                <li>Office: Phnom Penh, Cambodia</li>
-            </ul>
-        </div>
     </div>
 </div>
 @endsection

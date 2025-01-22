@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -12,7 +13,8 @@ class RegisterController extends Controller
 {
     public function showRegistrationForm()
     {
-        return view('auth.register'); // Ensure this view exists
+        $countries = json_decode(file_get_contents(storage_path('countries.json')), true);
+        return view('register', compact('countries'));
     }
 
     public function register(Request $request)
@@ -26,8 +28,9 @@ class RegisterController extends Controller
                     'string',
                     'min:8',
                     'confirmed',
-                    'regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/'
+                    'regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/'
                 ],
+                'country' => 'nullable|string|min:2|max:2',
             ], [
                 'password.regex' => 'Password must contain at least one letter and one number',
                 'email.unique' => 'This email address is already registered',
@@ -39,7 +42,8 @@ class RegisterController extends Controller
                 'password' => Hash::make($request->password),
                 'role' => 'user',
                 'notifications_enabled' => $request->has('notifications'),
-                'reviewer_available' => $request->has('reviewer')
+                'reviewer_available' => $request->has('reviewer'),
+                'country' => strtoupper($request->country),
             ]);
 
             Auth::login($user);

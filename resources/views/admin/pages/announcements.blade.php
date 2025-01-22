@@ -24,7 +24,7 @@
                     <!-- Featured Announcement -->
                     <div class="mb-8 bg-white rounded-lg border p-6">
                         <h2 class="text-xl font-bold mb-2">Call for Papers</h2>
-                        <div class="text-gray-600 mb-2">{{$announcements->published_at}}</div>
+                        <div class="text-gray-600 mb-2">{{$announcements->updated_at}}</div>
                         <div class="prose max-w-none">
                             <h3 class="text-lg font-semibold mb-2">Cambodian Journal of Educational Research</h3>
                             <div class="flex items-center space-x-4">

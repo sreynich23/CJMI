@@ -16,7 +16,7 @@ class CreateReviewersTable extends Migration
         Schema::create('reviewers', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('reviewer_id');
-            $table->integer('article_id');
+            $table->integer('submission_id');
             $table->enum('status', ['articles_under_review', 'accepted_articles', 'major_revisions', 'minor_revisions', 'rejected'])->default('articles_under_review');
             $table->timestamps();
         });

@@ -48,7 +48,7 @@
                             <label for="remember" class="ml-2 text-sm text-gray-600">Remember me</label>
                         </div>
                         <div>
-                            <a href="{{ route('password.email') }}" class="text-sm text-green-700 hover:underline">Forgot Password?</a>
+                            <a href="{{ route('forgot-password') }}" class="text-sm text-green-700 hover:underline">Forgot Password?</a>
                         </div>
                     </div>
 
@@ -66,7 +66,7 @@
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                         <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                            class="mt-1 block w-full rounded-md border px-3 border-gray-800  focus:border-green-700 focus:ring-green-700">
+                            class="mt-1 block w-full rounded-md border px-3 border-gray-800 focus:border-green-700 focus:ring-green-700">
                         @error('name')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -75,7 +75,7 @@
                     <div>
                         <label for="register-email" class="block text-sm font-medium text-gray-700">Email</label>
                         <input type="email" name="email" id="register-email" value="{{ old('email') }}" required
-                            class="mt-1 block w-full rounded-md border px-3 border-gray-800  focus:border-green-700 focus:ring-green-700">
+                            class="mt-1 block w-full rounded-md border px-3 border-gray-800 focus:border-green-700 focus:ring-green-700">
                         @error('email')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -84,7 +84,7 @@
                     <div>
                         <label for="register-password" class="block text-sm font-medium text-gray-700">Password</label>
                         <input type="password" name="password" id="register-password" required
-                            class="mt-1 block w-full rounded-md border px-3 border-gray-800  focus:border-green-700 focus:ring-green-700">
+                            class="mt-1 block w-full rounded-md border px-3 border-gray-800 focus:border-green-700 focus:ring-green-700">
                         @error('password')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -93,7 +93,17 @@
                     <div>
                         <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
                         <input type="password" name="password_confirmation" id="password_confirmation" required
-                            class="mt-1 block w-full rounded-md border px-3 border-gray-800  focus:border-green-700 focus:ring-green-700">
+                            class="mt-1 block w-full rounded-md border px-3 border-gray-800 focus:border-green-700 focus:ring-green-700">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <select name="country" id="country" class="form-control">
+                            <option value="">Select Country</option>
+                            @foreach ($countries as $country)
+                                <option value="{{ $country['alpha2'] }}">{{ $country['en'] }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="flex items-center">
@@ -147,16 +157,12 @@
             }
         }
 
-        // Check hash on page load and when hash changes
         function checkHash() {
             const hash = window.location.hash.replace('#', '') || 'login';
             switchTab(hash);
         }
 
-        // Initial check
         checkHash();
-
-        // Listen for hash changes
         window.addEventListener('hashchange', checkHash);
 
         const passwordInput = document.getElementById('register-password');
@@ -181,20 +187,6 @@
 
         passwordInput.addEventListener('input', validatePassword);
         confirmPasswordInput.addEventListener('input', validateConfirmPassword);
-
-        // Add CSRF token to all AJAX requests
-        document.addEventListener('DOMContentLoaded', function() {
-            let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            document.querySelectorAll('form').forEach(form => {
-                if (!form.querySelector('input[name="_token"]')) {
-                    let input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = '_token';
-                    input.value = token;
-                    form.appendChild(input);
-                }
-            });
-        });
     </script>
 </body>
 </html>

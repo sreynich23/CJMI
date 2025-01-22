@@ -13,7 +13,8 @@ class LoginController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login');
+        $countries = json_decode(file_get_contents(public_path('storage/countries.json')), true);
+        return view('auth.login', compact('countries'));
     }
 
     public function login(Request $request)
@@ -52,7 +53,7 @@ class LoginController extends Controller
                     'string',
                     'min:8',
                     'confirmed',
-                    'regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/'
+                    'regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/'
                 ],
             ], [
                 'password.regex' => 'Password must contain at least one letter and one number',
