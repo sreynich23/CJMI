@@ -23,13 +23,17 @@
                 @csrf
                 <!-- Metadata Fields -->
                 <div class="space-y-6">
-                    <!-- Prefix -->
+                    <!-- Author Name -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Prefix</label>
-                        <input type="text" name="prefix"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                            value="{{ old('prefix', $submission['metadata']['prefix'] ?? '') }}">
-                        <p class="mt-1 text-sm text-gray-500">Examples: A, The</p>
+                        <label class="block text-sm font-medium text-gray-700">
+                            Author Name <span class="text-red-600">*</span>
+                        </label>
+                        <input type="text" name="author_name" required
+                            class="mt-1 block w-full rounded-md border-gray-300 border px-1 focus:border-blue-500 focus:ring-blue-500"
+                            value="{{ old('author_name', $submission['metadata']['author_name'] ?? '') }}">
+                        @error('author_name')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- Title -->
@@ -38,7 +42,7 @@
                             Title <span class="text-red-600">*</span>
                         </label>
                         <input type="text" name="title" required
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            class="mt-1 block w-full rounded-md border-gray-300 border px-1 focus:border-blue-500 focus:ring-blue-500"
                             value="{{ old('title', $submission['metadata']['title'] ?? '') }}">
                         @error('title')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -49,7 +53,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Subtitle</label>
                         <input type="text" name="subtitle"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            class="mt-1 block w-full rounded-md border-gray-300 border px-1 focus:border-blue-500 focus:ring-blue-500"
                             value="{{ old('subtitle', $submission['metadata']['subtitle'] ?? '') }}">
                     </div>
 
@@ -59,7 +63,7 @@
                             Abstract <span class="text-red-600">*</span>
                         </label>
                         <textarea name="abstract" rows="10" required
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ old('abstract', $submission['metadata']['abstract'] ?? '') }}</textarea>
+                            class="mt-1 block w-full rounded-md border-gray-300 border px-1 focus:border-blue-500 focus:ring-blue-500">{{ old('abstract', $submission['metadata']['abstract'] ?? '') }}</textarea>
                         @error('abstract')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -71,7 +75,7 @@
                             Keywords <span class="text-red-600">*</span>
                         </label>
                         <input type="text" name="keywords" required
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            class="mt-1 block w-full rounded-md border-gray-300 border px-1 focus:border-blue-500 focus:ring-blue-500"
                             value="{{ old('keywords', $submission['metadata']['keywords'] ?? '') }}"
                             placeholder="Enter keywords separated by commas">
                         @error('keywords')

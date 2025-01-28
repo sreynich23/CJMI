@@ -13,8 +13,8 @@ class RegisterController extends Controller
 {
     public function showRegistrationForm()
     {
-        $countries = json_decode(file_get_contents(storage_path('countries.json')), true);
-        return view('register', compact('countries'));
+        $countries = json_decode(file_get_contents(public_path('storage/countries.json')), true);
+        return view('auth.register', compact('countries'));
     }
 
     public function register(Request $request)

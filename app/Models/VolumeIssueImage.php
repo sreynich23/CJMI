@@ -11,7 +11,9 @@ class VolumeIssueImage extends Model
     use HasFactory;
 
     protected $fillable = [
-        'volume_issue_id',
+        'volume',
+        'issue',
+        'year',
         'image_path',
     ];
 
@@ -19,4 +21,11 @@ class VolumeIssueImage extends Model
     {
         return $this->belongsTo(VolumeIssueImage::class);
     }
+
+    // In VolumeIssueImage model
+public function journalIssue()
+{
+    return $this->belongsTo(JournalIssue::class); // Inverse relation
+}
+
 }

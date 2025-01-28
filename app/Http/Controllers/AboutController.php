@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\accept_review;
 use App\Mail\FeedbackAuthor;
+use App\Mail\reject_review;
 use App\Models\About;
 use App\Models\Announcement;
 use App\Models\FileSubmission;
@@ -16,8 +18,10 @@ use App\Models\Review;
 use App\Models\Reviewer;
 use App\Models\Reviewers;
 use App\Models\User;
+use App\Models\VolumeIssue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class AboutController extends Controller
@@ -39,21 +43,52 @@ class AboutController extends Controller
             ->where('status', 'update')
             ->orderBy('created_at', 'desc')
             ->paginate(100);
+        $submissionsApproved = Submit::with(['article', 'user'])
+            ->where('status', 'approved')
+            ->orderBy('created_at', 'desc')
+            ->paginate(100);
         $reviewing = DB::table('reviewers')
             ->join('submits', 'reviewers.submission_id', '=', 'submits.id')
             ->join('reviewer', 'reviewers.reviewer_id', '=', 'reviewer.id')
-            ->select('submits.title as title', 'submits.file_path as file_path', 'reviewers.status', 'reviewers.submission_id', 'reviewer.name as reviewer_name','reviewer.user_id as user_id')
+            ->select('submits.title as title', 'submits.file_path as file_path', 'reviewers.status', 'reviewers.submission_id', 'reviewer.name as reviewer_name', 'reviewer.user_id as user_id')
             ->get()
             ->groupBy('submission_id');
-        $recentItems = JournalIssue::with('articles')->orderBy('publication_date', 'desc')->paginate(100);
-        $latestYear = JournalIssue::query()->max('year');
-        return view('admin.dashboard', compact('abouts', 'submissions', 'recentItems', 'image', 'latestYear', 'navbar', 'journalInfo', 'announcements', 'reviewers', 'reviewersEditorial', 'reviewing', 'submissionsUpdate'));
+        // Fetch all volumes with their issues, ordered by year, volume, and issue
+        $volumes = VolumeIssue::query()
+            ->select('id', 'volume', 'issue', 'year') // Select necessary fields
+            ->orderBy('year', 'desc') // Order by year (descending)
+            ->orderBy('volume', 'asc') // Then order by volume (ascending)
+            ->orderBy('issue', 'asc') // Then order by issue (ascending)
+            ->get();
+        // Fetch images for each volume issue
+        $volumeImages = VolumeIssueImage::query()
+            ->whereIn('id_volume_issue', $volumes->pluck('id')) // Get images for volumes that exist
+            ->get();
+
+        // Group volumes by year
+        $groupedVolumes = $volumes->groupBy('year');
+
+        // Format the volumes for each year
+        $formattedVolumes = [];
+        foreach ($groupedVolumes as $year => $volumesByYear) {
+            $formattedVolumes[$year] = $volumesByYear->map(function ($volume) use ($volumeImages) {
+                // Get the image path for the current volume
+                $imagePath = $volumeImages->where('id_volume_issue', $volume->id)->first()?->image_path;
+                return [
+                    'id_volume_issue' => $volume->id, // Include id_volume_issue
+                    'volume' => 'Vol. ' . $volume->volume . ' No. ' . $volume->issue . ' (' . $volume->year . ')',
+                    'image' => $imagePath,
+                ];
+            });
+        }
+        $latestYear = VolumeIssue::query()->max('year');
+        return view('admin.dashboard', compact('abouts', 'submissions', 'formattedVolumes', 'image', 'latestYear', 'navbar', 'journalInfo', 'announcements', 'reviewers', 'reviewersEditorial', 'reviewing', 'submissionsUpdate', 'submissionsApproved'));
     }
 
     public function indexuser()
     {
         $abouts = About::orderBy('created_at', 'desc')->get();
-        $latestYear = JournalIssue::query()->max('year');
+        $latestYear = VolumeIssue::query()->max('year');
         $navbar = Navbar::latest()->first();
         return view('about', compact('abouts', 'latestYear', 'navbar'));
     }
@@ -106,12 +141,28 @@ class AboutController extends Controller
     public function approve($id)
     {
         $submission = Submit::findOrFail($id); // Fetch the submission by ID
+
         $submission->update(['status' => 'approved']); // Update the status to approved
+
+        // Send email notification to the user
+        try {
+            Mail::to($submission->user->email)->send(new \App\Mail\SubmissionApproved($submission));
+        } catch (\Exception $e) {
+            // Log error if email fails
+            Log::error('Failed to send approval email: ' . $e->getMessage());
+        }
+        return redirect()->back()->with('success', 'Submission approved successfully, and an email notification has been sent.');
+    }
+
+    public function publicSubmission($id)
+    {
+        $submission = Submit::findOrFail($id); // Fetch the submission by ID
+        $submission->update(['status' => 'public']);
         // Insert details into the journal_issues table
         \App\Models\JournalIssue::create([
             'publication_date' => now(),
             'title' => $submission->title ?? 'Untitled',
-            'description' => $submission->description ?? 'No description provided',
+            'description' => $submission->author_name ?? 'No description provided',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -119,13 +170,6 @@ class AboutController extends Controller
         return redirect()->back()->with('success', 'Submission approved successfully.');
     }
 
-    public function reject($id)
-    {
-        $submission = Submit::findOrFail($id); // Fetch the submission by ID
-        $submission->update(['status' => 'rejected']); // Update the status to rejected
-
-        return redirect()->back()->with('success', 'Submission rejected successfully.');
-    }
     public function updateJournalInfo(Request $request)
     {
         $request->validate([
@@ -189,5 +233,52 @@ class AboutController extends Controller
         Mail::to($author->email)->send(new FeedbackAuthor($submission, $author, $comment));
 
         return redirect()->back()->with('success', 'Feedback sent successfully.');
+    }
+    public function reject($authorId, $submissionId, Request $request)
+    {
+        // Fetch the author and submission data
+        $author = User::findOrFail($authorId);
+        $submission = Submit::findOrFail($submissionId);
+        $request->validate([
+            'reason' => 'required|string|max:1000',
+        ]);
+        $reason = $request->input('reason');
+        $submission->update(['status' => 'rejected']);
+
+        // Send the email with feedback
+        Mail::to($author->email)->send(new reject_review($submission, $author, $reason));
+
+        return redirect()->back()->with('success', 'Reject sent successfully.');
+    }
+
+    public function acceptReview($authorId, $submissionId)
+    {
+        // Fetch the author and submission data
+        $author = User::findOrFail($authorId);
+        $submission = Submit::findOrFail($submissionId);
+
+        // Send the email with feedback
+        Mail::to($author->email)->send(new accept_review($submission, $author));
+
+        return redirect()->back()->with('success', 'accept sent successfully.');
+    }
+    public function showVolumeIssueDetails($id)
+    {
+        $latestYear = VolumeIssue::query()->max('year');
+        $navbar = Navbar::latest()->first();
+
+        // Use the passed ID ($id) to filter JournalIssue records
+        $data = JournalIssue::query()
+            ->where('id_volume_issue', $id)
+            ->with('articles')
+            ->get();
+        $volumeIssue = VolumeIssue::query()
+            ->where('id', $id)
+            ->first();
+        $volumeImages = VolumeIssueImage::query()
+            ->where('id_volume_issue', $id)
+            ->get();
+        // Return the view with the filtered data
+        return view('admin.volume_issue_details', compact('data', 'id','volumeImages','volumeIssue', 'latestYear', 'navbar'));
     }
 }

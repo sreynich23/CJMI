@@ -47,7 +47,7 @@
             <div class="flex-1 max-w-lg">
                 <form action="{{ route('submissions.index') }}" method="GET" class="flex">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Search submissions..."
-                        class="w-full rounded-l border-gray-300 shadow-sm focus:border-green-700 focus:ring-green-700">
+                        class="w-full rounded-l border-gray-300 border px-1 focus:border-green-700 focus:ring-green-700">
                     <button type="submit"
                         class="px-4 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r hover:bg-gray-200">
                         <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

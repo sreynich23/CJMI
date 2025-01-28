@@ -9,13 +9,12 @@
                         <tr>
                             <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
                                 Title</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Author</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Author</th>
                             <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
                                 File</th>
                             <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
                                 Status</th>
-                            <th
-                                class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
                                 Actions
                             </th>
                         </tr>
@@ -33,7 +32,7 @@
                                     </a>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-500">
-                                        {{ $submissionsUpdates->status }}
+                                    {{ $submissionsUpdates->status }}
                                 </td>
                                 <td class="px-6 py-4 text-sm font-medium">
                                     <div class="flex space-x-3">
@@ -43,8 +42,10 @@
                                         <button
                                             onclick="openModal('reject', {{ $submissionsUpdates->id }}, '{{ route('admin.submissions.reject', ':id') }}')"
                                             class="text-red-600 hover:text-red-900">Reject</button>
-                                            <button onclick="openModalFeedBack({{$submissionsUpdates->user->id}}, {{$submissionsUpdates->id}})" class="text-gray-600 hover:text-gray-900">Request
-                                                Update</button>
+                                        <button
+                                            onclick="openModalFeedBack({{ $submissionsUpdates->user->id }}, {{ $submissionsUpdates->id }})"
+                                            class="text-gray-600 hover:text-gray-900">Request
+                                            Update</button>
                                     </div>
                                 </td>
                             </tr>
@@ -156,12 +157,12 @@
         feedbackForms.action = `/admin/feedback/send/${userId}/${submissionId}`;
 
         // Close the modal when the close button is clicked
-        closeModalButtons.addEventListener('click', function () {
+        closeModalButtons.addEventListener('click', function() {
             feedbackModals.classList.add('hidden');
         });
 
         // Close the modal when clicking outside the modal content
-        feedbackModals.addEventListener('click', function (event) {
+        feedbackModals.addEventListener('click', function(event) {
             if (event.target === feedbackModals) {
                 feedbackModals.classList.add('hidden');
             }

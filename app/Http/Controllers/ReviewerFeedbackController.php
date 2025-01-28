@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\FileSubmission;
+use App\Models\Navbar;
 use Illuminate\Http\Request;
 use App\Models\ReviewerFeedback;
 use App\Models\Submission;
 use App\Models\User;
+use App\Models\VolumeIssue;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -14,9 +16,11 @@ class ReviewerFeedbackController extends Controller
 {
     public function index()
     {
+        $navbar = Navbar::latest()->first();
+        $latestYear = VolumeIssue::all();
         $reviewers = User::where('role', 'reviewer')->get();
         $submissions = FileSubmission::all();
-        return view('admin.reviewers.index', compact('reviewers', 'submissions'));
+        return view('admin.reviewers.index', compact('reviewers', 'submissions', 'navbar'));
     }
 
     public function assign(Request $request)
@@ -32,7 +36,12 @@ class ReviewerFeedbackController extends Controller
         $request->validate([
             'recommendation' => 'required|in:accepted,major revisions,minor revisions,rejected',
             'comments' => 'nullable|string|max:1000',
+            'feedback_file' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ]);
+        $filePath = null;
+        if ($request->hasFile('feedback_file')) {
+            $filePath = $request->file('feedback_file')->store('reviewer_feedback_files', 'public');
+        }
 
         // Check if feedback already exists for this submission
         $feedback = DB::table('reviewer_feedback')->where('submission_id', $id)->first();
@@ -52,6 +61,7 @@ class ReviewerFeedbackController extends Controller
                 'reviewer_id' => Auth::user()->id,
                 'recommendation' => $request->recommendation,
                 'comments' => $request->recommendation !== 'accepted' ? $request->comments : null,
+                'file_path' => $filePath,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

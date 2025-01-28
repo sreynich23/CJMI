@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class VolumeIssue extends Model
 {
     use HasFactory;
-
+    protected $table = 'volume_issue';
     protected $fillable = ['volume', 'issue', 'year'];
 }
 

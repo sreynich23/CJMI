@@ -6,8 +6,10 @@ use App\Models\Article;
 use App\Models\FileSubmission;
 use App\Models\JournalIssue;
 use App\Models\Navbar;
+use App\Models\VolumeIssue;
 use App\Models\VolumeIssueImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class CurrentIssueController extends Controller
@@ -16,62 +18,38 @@ class CurrentIssueController extends Controller
     {
         $image = VolumeIssueImage::latest()->first();
         $navbar = Navbar::latest()->first();
-        $issue = $request->query('issue');
-        $volume = $request->query('volume');
-        $year = $request->query('year');
-        $latestYear = JournalIssue::query()->max('year');
-        // Fetch journal info
-        $journalInfo = FileSubmission::with('issues')->first(); // Replace with your actual query
-
-        // Fetch recent items filtered by issue, volume, and year
-        $recentItems = JournalIssue::query()
-            ->when($issue, fn($query) => $query->where('issue', $issue))
-            ->when($volume, fn($query) => $query->where('volume', $volume))
-            ->when($year, fn($query) => $query->whereYear('publication_date', $year))
-            ->orderBy('publication_date', 'desc')
+        $latestYear = VolumeIssue::query()
+            ->orderByDesc('created_at')
+            ->first();
+        $journalInfo = FileSubmission::with('issues')->first();
+        $recentItems = DB::table('volume_issue')
+            ->join('journal_issues', 'volume_issue.id', '=', 'journal_issues.id_volume_issue')
+            ->select(
+                'journal_issues.id',
+                'journal_issues.publication_date',
+                'journal_issues.title',
+                'journal_issues.description',
+                'journal_issues.created_at',
+                'journal_issues.updated_at',
+                'volume_issue.id AS id_volume_issue'
+            )
+            ->where('volume_issue.id', function ($query) {
+                $query->select('id')
+                    ->from('volume_issue')
+                    ->orderByDesc('created_at')
+                    ->limit(1);
+            })
             ->get();
-
-        // Determine navigation values (Previous/Next Issue & Volume)
-        $previousIssue = $issue > 1 ? $issue - 1 : null;
-        $nextIssue = $issue ? $issue + 1 : null;
-
-        // Determine next volume and year
-        if ($volume) {
-            if ($volume == 2) {
-                // If volume is 2, navigate to the next year
-                $nextVolume = null;
-                $nextYear = $year + 1;
-            } else {
-                $nextVolume = $volume + 1;
-            }
-        } else {
-            $nextVolume = 1; // Default to volume 1 if not set
-        }
-
-        // Determine previous volume and year
-        if ($volume && $volume > 1) {
-            $previousVolume = $volume - 1;
-        } else {
-            // If volume is 1, navigate to the previous year
-            $previousVolume = null;
-            if ($year > $latestYear) {
-                $previousYear = $year - 1;
-            }
-        }
-
-
         return view('curr', [
             'journalInfo' => $journalInfo,
             'recentItems' => $recentItems,
-            'previousIssue' => $previousIssue,
-            'nextIssue' => $nextIssue,
-            'previousVolume' => $previousVolume,
-            'nextVolume' => $nextVolume,
+            'previousVolume' => $previousVolume ?? null,
             'latestYear' => $latestYear,
             'navbar' => $navbar,
-            'image' => $image
+            'image' => $image,
         ]);
     }
+
 
     public function download($id)
     {
@@ -92,38 +70,57 @@ class CurrentIssueController extends Controller
     public function allVolumes()
     {
         $navbar = Navbar::latest()->first();
-        $latestYear = JournalIssue::query()->max('year'); // Get the latest year for reference
+        $latestYear = VolumeIssue::query()->max('year'); // Get the latest year for reference
 
-        // Fetch all volumes with their issues, ordered by year and volume
-        $volumes = JournalIssue::query()
-            ->select('volume', 'issue', 'year', 'publication_date') // Select necessary fields
+        // Fetch all volumes with their issues, ordered by year, volume, and issue
+        $volumes = VolumeIssue::query()
+            ->select('id', 'volume', 'issue', 'year') // Select necessary fields
             ->orderBy('year', 'desc') // Order by year (descending)
             ->orderBy('volume', 'asc') // Then order by volume (ascending)
             ->orderBy('issue', 'asc') // Then order by issue (ascending)
-            ->get()
-            ->groupBy('volume'); // Group issues by volume for easier handling
-
-        // Pass the data to the view
-        return view('all_volume', compact('volumes', 'latestYear','navbar'));
-    }
-    public function showVolumeIssueDetails(Request $request)
-    {
-        $latestYear = JournalIssue::query()->max('year');
-        $navbar = Navbar::latest()->first();
-        // Retrieve the query parameters from the request
-        $issue = $request->query('issue');
-        $volume = $request->query('volume');
-        $year = $request->query('year');
-
-        // Query the database using the retrieved parameters
-        $data = JournalIssue::query()
-            ->when($issue, fn($query) => $query->where('issue', $issue))
-            ->when($volume, fn($query) => $query->where('volume', $volume))
-            ->whereYear('publication_date', $year)
-            ->with('articles') // Assuming a relationship with articles or similar data
+            ->get();
+        // Fetch images for each volume issue
+        $volumeImages = VolumeIssueImage::query()
+            ->whereIn('id_volume_issue', $volumes->pluck('id')) // Get images for volumes that exist
             ->get();
 
-        // Return the view with the data
-        return view('volume_issue_details', compact('data', 'volume', 'issue', 'year', 'latestYear','navbar'));
+        // Group volumes by year
+        $groupedVolumes = $volumes->groupBy('year');
+
+        // Format the volumes for each year
+        $formattedVolumes = [];
+        foreach ($groupedVolumes as $year => $volumesByYear) {
+            $formattedVolumes[$year] = $volumesByYear->map(function ($volume) use ($volumeImages) {
+                // Get the image path for the current volume
+                $imagePath = $volumeImages->where('id_volume_issue', $volume->id)->first()?->image_path;
+                return [
+                    'id_volume_issue' => $volume->id, // Include id_volume_issue
+                    'volume' => 'Vol. ' . $volume->volume . ' No. ' . $volume->issue . ' (' . $volume->year . ')',
+                    'image' => $imagePath,
+                ];
+            });
+        }
+        return view('all_volume', compact('formattedVolumes', 'latestYear', 'navbar'));
+    }
+
+
+    public function showVolumeIssueDetails($id)
+    {
+        $latestYear = VolumeIssue::query()->max('year');
+        $navbar = Navbar::latest()->first();
+
+        // Use the passed ID ($id) to filter JournalIssue records
+        $data = JournalIssue::query()
+            ->where('id_volume_issue', $id)
+            ->with('articles')
+            ->get();
+        $volumeIssue = VolumeIssue::query()
+            ->where('id', $id)
+            ->first();
+        $volumeImages = VolumeIssueImage::query()
+            ->where('id_volume_issue', $id)
+            ->get();
+        // Return the view with the filtered data
+        return view('volume_issue_details', compact('data', 'id','volumeImages','volumeIssue', 'latestYear', 'navbar'));
     }
 }

@@ -47,7 +47,7 @@
                     <button onclick="switchScreen('editorailPage')"
                         class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Editorials</button>
                     <button onclick="switchScreen('aboutPage')"
-                        class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">About CJMRI</button>
+                        class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">About</button>
                     <button onclick="switchScreen('announcementPage')"
                         class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Announcements</button>
                     <form method="POST" action="{{ route('logout') }}" class="inline">

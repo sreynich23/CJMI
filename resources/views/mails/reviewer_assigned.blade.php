@@ -9,5 +9,9 @@
     <p>Please log in to the system to start reviewing.</p>
     <p>Best regards,</p>
     <p>The Review Team</p>
+    <p>
+        <strong>File:</strong>
+        <a href="{{ url('storage/submissions/' . $submission->file) }}" target="_blank">Click here to view the file</a>
+    </p>
 </body>
 </html>

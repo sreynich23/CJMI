@@ -173,12 +173,7 @@
         modalTitle.innerText = type === 'approve' ? 'Approve Submission' : 'Reject Submission';
 
         modalFields.innerHTML = type === 'approve' ?
-            `<div class="mb-4"><label for="year" class="block text-sm font-medium text-gray-700">Year</label>
-                 <input type="text" name="year" id="year" class="mt-1 block w-full border rounded-md shadow-sm"></div>
-               <div class="mb-4"><label for="volume" class="block text-sm font-medium text-gray-700">Volume</label>
-                 <input type="text" name="volume" id="volume" class="mt-1 block w-full border rounded-md shadow-sm"></div>
-               <div class="mb-4"><label for="issue" class="block text-sm font-medium text-gray-700">Issue</label>
-                 <input type="text" name="issue" id="issue" class="mt-1 block w-full border rounded-md shadow-sm"></div>` :
+            `<div class="mb-4"></div>` :
             `<div class="mb-4"><label for="reason" class="block text-sm font-medium text-gray-700">Reason for Rejection</label>
                  <textarea name="reason" id="reason" rows="4" class="mt-1 block w-full border rounded-md shadow-sm"></textarea></div>`;
 

@@ -18,7 +18,7 @@ class ProfileController extends Controller
      */
     public function show(Request $request): View
     {
-        $latestYear = JournalIssue::query()->max('year');
+        $latestYear = JournalIssue::all();
         $navbar = Navbar::latest()->first();
         return view('wigets.show_profile',compact('latestYear','navbar'));
     }

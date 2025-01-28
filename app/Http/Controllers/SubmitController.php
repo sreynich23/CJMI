@@ -6,6 +6,7 @@ use App\Models\Submit;
 use App\Models\ChecklistItem;
 use App\Models\JournalIssue;
 use App\Models\Navbar;
+use App\Models\VolumeIssue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +17,7 @@ class SubmitController extends Controller
     public function index()
     {
         $navbar = Navbar::latest()->first();
-        $latestYear = JournalIssue::query()->max('year');
+        $latestYear = VolumeIssue::query()->max('year');
         $navbar = Navbar::latest()->first();
         return redirect()->route('submit.step1', compact('latestYear','navbar','latestYear'));
     }
@@ -26,7 +27,7 @@ class SubmitController extends Controller
     {
         $navbar = Navbar::latest()->first();
         $checklistItems = ChecklistItem::all();
-        $latestYear = JournalIssue::query()->max('year');
+        $latestYear = VolumeIssue::query()->max('year');
         return view('submit.step1', compact('checklistItems', 'latestYear','navbar'));
     }
 
@@ -46,7 +47,7 @@ class SubmitController extends Controller
     // Step 2: File Upload
     public function showStep2()
     {
-        $latestYear = JournalIssue::query()->max('year');
+        $latestYear = VolumeIssue::query()->max('year');
         $navbar = Navbar::latest()->first();
         if (!session()->has('submission.requirements')) {
             return redirect()->route('submit.step1')
@@ -82,7 +83,7 @@ class SubmitController extends Controller
     // Step 3: Metadata
     public function showStep3()
     {
-        $latestYear = JournalIssue::query()->max('year');
+        $latestYear = VolumeIssue::query()->max('year');
         $navbar = Navbar::latest()->first();
         if (!session()->has('submission.file_path')) {
             return redirect()->route('submit.step2')
@@ -104,6 +105,7 @@ class SubmitController extends Controller
         try {
             $validated = $request->validate([
                 'title' => 'required|string|max:255',
+                'author_name' => 'required|string|max:255',
                 'abstract' => 'required|string|min:100',
                 'keywords' => 'required|string|max:255',
                 'prefix' => 'nullable|string|max:10',
@@ -125,7 +127,7 @@ class SubmitController extends Controller
     // Step 4: Review & Confirm
     public function showStep4()
     {
-        $latestYear = JournalIssue::query()->max('year');
+        $latestYear = VolumeIssue::query()->max('year');
         $navbar = Navbar::latest()->first();
         if (!session()->has('submission.metadata')) {
             return redirect()->route('submit.step3')
@@ -152,6 +154,7 @@ class SubmitController extends Controller
             $submission = Submit::create([
                 'user_id' => Auth::id(),
                 'prefix' => session('submission.metadata.prefix'),
+                'author_name' => session('submission.metadata.author_name'),
                 'title' => session('submission.metadata.title'),
                 'subtitle' => session('submission.metadata.subtitle'),
                 'abstract' => session('submission.metadata.abstract'),
@@ -186,7 +189,7 @@ class SubmitController extends Controller
     public function showStep5()
     {
         $navbar = Navbar::latest()->first();
-        $latestYear = JournalIssue::query()->max('year');
+        $latestYear = VolumeIssue::query()->max('year');
         if (!session()->has('submission.completed')) {
             return redirect()->route('submit.step4')
                 ->with('error', 'Please complete your submission first');
@@ -196,7 +199,7 @@ class SubmitController extends Controller
 
     public function indexSubmissions(Request $request)
     {
-        $latestYear = JournalIssue::query()->max('year');
+        $latestYear = VolumeIssue::query()->max('year');
         $navbar = Navbar::latest()->first();
         $query = Submit::query()
             ->where('user_id', Auth::id())
@@ -254,7 +257,7 @@ class SubmitController extends Controller
     public function showSubmission(Submit $submit)
     {
         $navbar = Navbar::latest()->first();
-        $latestYear = JournalIssue::query()->max('year');
+        $latestYear = VolumeIssue::query()->max('year');
         // Check if user owns this submission
         if ($submit->user_id !== Auth::id()) {
             return back()->with('error', 'You are not authorized to view this submission.');

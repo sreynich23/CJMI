@@ -11,6 +11,7 @@ class Submit extends Model
 {
     protected $fillable = [
         'user_id',
+        'author_name',
         'prefix',
         'title',
         'subtitle',

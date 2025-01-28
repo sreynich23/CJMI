@@ -15,7 +15,7 @@ class ArticleController extends Controller
         $article = Article::findOrFail($id);
         $image = VolumeIssueImage::latest()->first();
         $navbar = Navbar::latest()->first();
-        $latestYear = JournalIssue::query()->max('year');
+        $latestYear = JournalIssue::all();
         return view('articles.show', compact('article','latestYear','navbar','image'));
     }
 }

@@ -1,11 +1,11 @@
 <div class="border rounded-lg p-6">
-    
+
     <h2 class="text-xl font-semibold mb-4">All Submissions</h2>
 
     @if ($submissions->isEmpty())
         <p class="text-gray-500">No submissions found.</p>
     @else
-        <div class="overflow-x-auto">
+        <div class="">
             <!-- Submissions Table -->
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
@@ -42,15 +42,21 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-sm font-medium">
-                                <div class="flex space-x-3">
+                                <div class="flex space-x-3 items-center">
                                     @if ($submission->status === 'pending')
-                                        <button
-                                            onclick="openModalSubmit('approve', {{ $submission->id }}, '{{ route('admin.submissions.approve', ':id') }}')"
-                                            class="text-green-600 hover:text-green-900">Approve</button>
-                                        <button
-                                            onclick="openModalSubmit('reject', {{ $submission->id }}, '{{ route('admin.submissions.reject', ':id') }}')"
-                                            class="text-red-600 hover:text-red-900">Reject</button>
+                                        <form
+                                            action="{{ route('admin.accept.send', ['authorId' => $submission->user->id, 'submissionId' => $submission->id]) }}"
+                                            method="POST" style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="text-green-600 hover:text-green-900"
+                                                style="background: none; border: none; padding: 0; cursor: pointer;">
+                                                Approve
+                                            </button>
+                                        </form>
 
+                                        <button
+                                            onclick="openModalReject({{ $submission->user->id }}, {{ $submission->id }})"
+                                            class="text-red-600 hover:text-red-900">Reject</button>
                                         <!-- Reviewers Dropdown -->
                                         <div class="relative" x-data="{ open: false }">
                                             <button @click="open = !open" type="button"
@@ -107,48 +113,89 @@
         <div class="mt-4">{{ $submissions->links() }}</div>
     @endif
 </div>
+<div>
 
-<!-- Modals -->
-<div id="modal-containers" class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white rounded-lg p-6 w-96">
-        <h3 class="text-lg font-semibold mb-4" id="modal-titles">Modal Title</h3>
-        <form id="modal-forms" method="POST">
+    <h2 class="text-xl font-semibold mb-4">All Submissions Approve</h2>
+@if ($submissionsApproved->isEmpty())
+@else
+    <table class="min-w-full divide-y divide-gray-200 border rounded-lg p-6">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                    Title</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Author</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                    File</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            @foreach ($submissionsApproved as $submissionsApproveds)
+                <tr>
+                    <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $submissionsApproveds->title }}
+                    </td>
+                    <td class="px-6 py-4">{{ $submissionsApproveds->user->name ?? 'N/A' }}</td>
+                    <td class="px-6 py-4">
+                        <a href="{{ 'storage/' . $submissionsApproveds->file_path }}"
+                            class="text-blue-600 hover:text-blue-900">
+                            Download
+                        </a>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+@endif
+</div>
+<!-- Modal -->
+<div id="rejectModals" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-xl font-semibold mb-4">Provide Feedback</h2>
+
+        <!-- Feedback Form -->
+        <form id="rejectForms" method="POST">
             @csrf
-            <input type="hidden" name="submission_id" id="modal-submission-id">
-            <div id="modal-field"></div>
+            <div class="form-group mb-4">
+                <label for="reason" class="block text-sm font-medium text-gray-700">reason</label>
+                <textarea name="reason" id="reason"
+                    class="form-control mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    required></textarea>
+            </div>
+
             <div class="flex justify-end space-x-4">
-                <button type="button" class="text-gray-700" onclick="hideFormSubmit()">Cancel</button>
-                <button type="submit" class="text-white bg-green-600 px-4 py-2 rounded-md">Submit</button>
+                <!-- Close Button -->
+                <button type="button" id="closeModalButtons"
+                    class="text-gray-600 hover:text-gray-900">Cancel</button>
+                <!-- Submit Button -->
+                <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md">Send
+                </button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
-    const modal = document.getElementById('modal-containers');
-    const modalForm = document.getElementById('modal-forms');
-    const modalTitle = document.getElementById('modal-titles');
-    const modalFields = document.getElementById('modal-field');
-    function openModalSubmit(type, submissionId, route) {
+    function openModalReject(userId, submissionId) {
+        // Get modal and close button elements
+        const rejectModals = document.getElementById('rejectModals');
+        const closeModalButtons = document.getElementById('closeModalButtons');
 
-        modalForm.action = route.replace(':id', submissionId);
-        modalTitle.innerText = type === 'approve' ? 'Approve Submission' : 'Reject Submission';
+        // Show the modal
+        rejectModals.classList.remove('hidden');
 
-        modalFields.innerHTML = type === 'approve' ?
-            `<div class="mb-4"><label for="year" class="block text-sm font-medium text-gray-700">Year</label>
-             <input type="text" name="year" id="year" class="mt-1 block w-full border rounded-md shadow-sm"></div>
-           <div class="mb-4"><label for="volume" class="block text-sm font-medium text-gray-700">Volume</label>
-             <input type="text" name="volume" id="volume" class="mt-1 block w-full border rounded-md shadow-sm"></div>
-           <div class="mb-4"><label for="issue" class="block text-sm font-medium text-gray-700">Issue</label>
-             <input type="text" name="issue" id="issue" class="mt-1 block w-full border rounded-md shadow-sm"></div>` :
-            `<div class="mb-4"><label for="reason" class="block text-sm font-medium text-gray-700">Reason for Rejection</label>
-             <textarea name="reason" id="reason" rows="4" class="mt-1 block w-full border rounded-md shadow-sm"></textarea></div>`;
+        // Set form action dynamically
+        const rejectForms = document.getElementById('rejectForms');
+        rejectForms.action = `/admin/reject/${userId}/${submissionId}`;
 
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-    }
+        // Close the modal when the close button is clicked
+        closeModalButtons.addEventListener('click', function() {
+            rejectModals.classList.add('hidden');
+        });
 
-    function hideFormSubmit() {
-        modal.classList.add("hidden");
+        // Close the modal when clicking outside the modal content
+        rejectModals.addEventListener('click', function(event) {
+            if (event.target === rejectModals) {
+                rejectModals.classList.add('hidden');
+            }
+        });
     }
 </script>

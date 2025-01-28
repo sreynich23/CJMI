@@ -2,63 +2,24 @@
     <h2 class="text-xl font-semibold mb-4">Recent Journal Issues</h2>
     <!-- Add horizontal scrolling for the table -->
     <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 table-auto">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Title
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Articles
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Year
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Volume
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Issue
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Publication Date
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($recentItems ?? [] as $item)
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">{{ $item->title }}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <ul class="list-disc pl-5">
-                                @foreach($item->articles as $article)
-                                    <li class="text-sm text-gray-900">{{ $article->title }}</li>
-                                @endforeach
-                            </ul>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ $item->created_at->format('Y') }}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ $item->volume }}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ $item->issue }}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ $item->publication_date->format('M d, Y') }}</div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="6" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            No items found
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+        @foreach ($formattedVolumes as $year => $volumes)
+            <h3 class="text-3xl font-bold mb-4 text-center">{{ $year }}</h3>
+            <div class="grid grid-cols-4 gap-4 border-b-2 pb-8">
+                @foreach ($volumes as $volume)
+                    <ul>
+                        <li><a href="{{ route('admin.volume.issue.details', ['id' => $volume['id_volume_issue']]) }}">
+                            @if ($volume['image'])
+                                <img src="{{ asset('storage/' . $volume['image']) }}" alt="Volume Image"
+                                    class="w-full h-auto mt-2">
+                            @else
+                                <p>No image available</p>
+                            @endif
+                            {{ $volume['volume'] }}
+                        </a>
+                        </li>
+                    </ul>
+                @endforeach
+            </div>
+        @endforeach
     </div>
 </div>

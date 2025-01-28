@@ -24,4 +24,10 @@ class JournalIssue extends Model
     {
         return $this->hasMany(Article::class, 'journal_issue_id');
     }
+    // In JournalIssue model
+public function volumeIssueImages()
+{
+    return $this->hasMany(VolumeIssueImage::class);
+}
+
 }

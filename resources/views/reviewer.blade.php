@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="border rounded-lg p-6">
+<div class="p-6">
     <h2 class="text-xl font-semibold mb-4">All Review</h2>
 
     @if ($reviewers->isEmpty())
         <p class="text-gray-500">Empty.</p>
     @else
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
+            <table class="min-w-full divide-y divide-gray-200 border">
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
@@ -51,19 +51,19 @@
     @endif
 </div>
 
-<div class="border rounded-lg p-6">
+<div class="p-6">
     <h2 class="text-xl font-semibold mb-4">All Review Done</h2>
 
     @if ($reviewers->isEmpty())
         <p class="text-gray-500">Empty.</p>
     @else
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
+            <table class="min-w-full divide-y divide-gray-200 border">
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">File</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                        {{-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th> --}}
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -74,22 +74,6 @@
                                     <td class="px-6 py-4">{{ $submission->title }}</td>
                                     <td class="px-6 py-4">
                                         <a href="{{ asset('storage/' . $submission->file_path) }}" class="text-blue-600 hover:text-blue-900" target="_blank">Download</a>
-                                    </td>
-                                    <td class="px-6 py-4 text-sm font-medium">
-                                        <div class="flex space-x-3">
-                                            <button
-                                                onclick="showFeedbackModal({{ $submission->submission_id }}, 'Accepted')"
-                                                class="text-green-600 hover:text-green-900">Accepted</button>
-                                            <button
-                                                onclick="showFeedbackModal({{ $submission->submission_id }}, 'Major Revisions')"
-                                                class="text-gray-500 hover:text-green-900">Major Revisions</button>
-                                            <button
-                                                onclick="showFeedbackModal({{ $submission->submission_id }}, 'Minor Revisions')"
-                                                class="text-gray-400 hover:text-green-900">Minor Revisions</button>
-                                            <button
-                                                onclick="showFeedbackModal({{ $submission->submission_id }}, 'Rejected')"
-                                                class="text-red-600 hover:text-red-900">Rejected</button>
-                                        </div>
                                     </td>
                                 </tr>
                             @endif
@@ -113,6 +97,7 @@
                 class="border rounded w-full p-2 text-gray-700 mt-2"
                 placeholder="Provide comments here..."
                 required></textarea>
+                <input type="file" name="feedback_file" class="form-input">
             <div class="mt-4 flex space-x-4">
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
                     Submit

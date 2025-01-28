@@ -12,7 +12,7 @@ class AnnouncementsController extends Controller
 {
     public function index()
     {
-        $latestYear = JournalIssue::query()->max('year');
+        $latestYear = JournalIssue::all();
         $navbar = Navbar::latest()->first();
         $announcements = Announcement::first();
         return view('announcements',compact('latestYear','navbar','announcements'));  // Make sure there's a corresponding view named 'announcements.blade.php'

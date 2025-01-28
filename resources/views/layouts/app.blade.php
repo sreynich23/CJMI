@@ -22,7 +22,7 @@
     </style>
 </head>
 
-<body class="bg-gray-100 flex flex-col min-h-screen">
+<body class="bg-gray-100 flex flex-col min-h-screen w-3/4 justify-center mx-auto">
     @include('navbar')
 
     @if (session('success'))
@@ -39,7 +39,7 @@
         </div>
     @endif
 
-    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8">
+    <main class="flex-grow container mx-auto px-2 sm:px-2 lg:px-1 bg-white">
         @yield('content')
     </main>
 

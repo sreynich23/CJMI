@@ -27,6 +27,7 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\EditorialController;
 use App\Http\Controllers\reviewer;
 use App\Http\Controllers\ReviewerController;
+use App\Models\VolumeIssue;
 
 // Authentication Routes
 Auth::routes();
@@ -43,12 +44,12 @@ Route::middleware(['web'])->group(function () {
     Route::get('/announcements', [AnnouncementsController::class, 'index'])->name('announcements');
     Route::get('/current-issue', [CurrentIssueController::class, 'index'])->name('current-issue');
     Route::get('/all_volumes', [CurrentIssueController::class, 'allVolumes'])->name('all_volumes');
-    Route::get('/volume/{volume}/issue/{issue}', [CurrentIssueController::class, 'showVolumeIssueDetails'])->name('volume.issue.details');
+    Route::get('/VolumeIssue/{id}', [CurrentIssueController::class, 'showVolumeIssueDetails'])->name('volume.issue.details');
     Route::get('/reviewer', [ReviewerController::class, 'index'])->name('reviewer');
     Route::post('/reviewer/feedback/{id}', [ReviewerFeedbackController::class, 'storeFeedback'])->name('reviewer.feedback');
     Route::get('/all-editorials', [HomeController::class, 'allEditorials'])->name('all-editorials');
     Route::post('/all-editorials/create', [ReviewerController::class, 'requestRoleChange'])->name('reviewer.create');
-
+    Route::get('/files/{id}/download', [CurrentIssueController::class, 'download'])->name('download');
 });
 
 // Guest Routes (Only for non-authenticated users)
@@ -64,7 +65,6 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/allEditorial', [HomeController::class, 'allEditorials']);
     $navbar = Navbar::latest()->first();
-    $latestYear = JournalIssue::query()->max('year');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::post('/request-role-change', [ReviewerController::class, 'requestRoleChange']);
@@ -100,7 +100,6 @@ Route::middleware(['auth'])->group(function () {
             return view('admin.dashboard');
         })->name('dashboard');
 
-
         // About Management
         Route::post('/upload-cover', [DashboardController::class, 'uploadCover'])->name('uploadCover');
         Route::get('/', [AboutController::class, 'index'])->name('about');
@@ -110,6 +109,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/updateJournalInfo', [AboutController::class, 'updateJournalInfo'])->name('about.updateJournalInfo');
         Route::post('/updateAnnouncement', [AboutController::class, 'updateAnnouncements'])->name('about.updateAnnouncements');
         Route::post('/updateNavbar', [AboutController::class, 'updateNavbar'])->name('navbar.update');
+        Route::get('/VolumeIssue/{id}', [AboutController::class, 'showVolumeIssueDetails'])->name('volume.issue.details');
 
         // Submissions Management
         // Route::get('/', [AboutController::class, 'index'])->name('submissions');
@@ -133,13 +133,14 @@ Route::middleware(['auth'])->group(function () {
         //mails
         Route::get('/reviewer/approve/{id}', [ReviewerController::class, 'approveReviewer'])->name('reviewer.approve');
         Route::post('/feedback/send/{authorId}/{submissionId}', [AboutController::class, 'sendReviewFeedback'])->name('feedback.send');
+        Route::post('/accept/{authorId}/{submissionId}', [AboutController::class, 'acceptReview'])->name('accept.send');
+        Route::post('/reject/{authorId}/{submissionId}', [AboutController::class, 'reject'])->name('reject.send');
     });
 });
-
 // Resource Route for Pages
 Route::resource('pages', PageController::class);
 
-Route::get('/files/{id}/download', [CurrentIssueController::class, 'download'])->name('download');
+
 
 // File Download Routes
 Route::get('/files/{submission}/download', [FileDownloadController::class, 'download'])

@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Mail\ReviewerApprovedMail;
 use App\Mail\ReviewerAssignedMail;
+use App\Models\Navbar;
 use App\Models\reviewer;
 use App\Models\Reviewers;
 use App\Models\Submit;
 use App\Models\User;
+use App\Models\VolumeIssue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -17,14 +19,16 @@ class ReviewerController extends Controller
 {
     public function index()
     {
+        $navbar = Navbar::latest()->first();
+        $latestYear = VolumeIssue::all();
         $reviewers = DB::table('reviewers')
-        ->join('submits', 'reviewers.submission_id', '=', 'submits.id')
+            ->join('submits', 'reviewers.submission_id', '=', 'submits.id')
             ->join('reviewer', 'reviewers.reviewer_id', '=', 'reviewer.id')
-            ->select('submits.title as title','submits.file_path as file_path', 'reviewers.status', 'reviewers.submission_id', 'reviewer.user_id as user_id')
+            ->select('submits.title as title', 'submits.file_path as file_path', 'reviewers.status', 'reviewers.submission_id', 'reviewer.user_id as user_id')
             ->get()
             ->groupBy('reviewer_id');
 
-        return view('reviewer', compact('reviewers'));
+        return view('reviewer', compact('reviewers', 'navbar'));
     }
     public function requestRoleChange(Request $request)
     {
@@ -49,8 +53,8 @@ class ReviewerController extends Controller
             Reviewer::create([
                 'name' => $user->name,
                 'email' => $user->email,
-                'position'=> $request->position,
-                'country'=> $user->country,
+                'position' => $request->position,
+                'country' => $user->country,
                 'cv' => $cvPath,
                 'expertise' => $request->expertise,
                 'active' => false,
@@ -70,23 +74,22 @@ class ReviewerController extends Controller
 
     public function assign_reviewers(Request $request)
     {
-        // Validate the incoming request
-        $request->validate([
-            'reviewers' => 'required|array|min:1', // Ensure at least one reviewer is selected
-            'reviewers.*' => 'exists:users,id',   // Ensure each selected reviewer exists in the users table
-            'submission_id' => 'required|exists:articles,id', // Ensure article exists
-        ]);
-
+        $reviewersIds = $request->input('reviewers', []);
+        $submissionId = $request->input('submission_id');
         $articleId = $request->input('submission_id');
-        $reviewerIds = $request->input('reviewers');
-        $submission = Submit::findOrFail($articleId); // Fetch the submission by ID
-        $submission->update(['status' => 'reviewing']); // Update the status to reviewing
-        $reviewers = User::whereIn('id', $reviewerIds)->get();
 
+        // Retrieve the reviewers from the database
+        $reviewers = Reviewer::whereIn('id', $reviewersIds)->get();
+
+        // Get the submission (if needed)
+        $submission = Submit::find($submissionId);
+        $submission->update(['status' => 'reviewing']);
+        // Send emails to the selected reviewers
         foreach ($reviewers as $reviewer) {
             Mail::to($reviewer->email)->send(new ReviewerAssignedMail($submission, $reviewer));
         }
-        foreach ($reviewerIds as $reviewerId) {
+
+        foreach ($reviewersIds as $reviewerId) {
             Reviewers::create([
                 'reviewer_id' => $reviewerId,
                 'submission_id' => $articleId,

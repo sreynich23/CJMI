@@ -3,9 +3,12 @@
 @section('content')
     <div class="container mx-auto py-8">
         <h1 class="text-3xl font-bold text-center mb-6">
-            Volume {{ $volume }} Issue {{ $issue }} ({{ $year }})
+            Volume {{ $volumeIssue->volume }} Issue {{ $volumeIssue->issue }} ({{ $volumeIssue->year }})
         </h1>
-
+        <div class="">
+            <img src="{{ asset('storage/' . $volumeImages->first()->image_path) }}" alt="Volume Image"
+                                    class="w-1/4 m-6">
+        </div>
         <div class="bg-white p-6 rounded-lg shadow-sm">
             @forelse ($data as $item)
                 <div class="border-b pb-4 mb-4">

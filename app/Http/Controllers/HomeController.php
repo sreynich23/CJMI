@@ -9,6 +9,7 @@ use App\Models\JournalIssue;
 use App\Models\Navbar;
 use App\Models\Reviewer;
 use App\Models\User;
+use App\Models\VolumeIssue;
 use App\Models\VolumeIssueImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -26,12 +27,12 @@ class HomeController extends Controller
                 ->get();
         } else {
             // Otherwise, show all articles
-            $articles = Article::with('journalIssue')->latest()->limit(5)->get();
+            $articles = Article::with('journalIssue')->latest()->limit(6)->get();
         }
         $image = VolumeIssueImage::latest()->first();
         $journalInfo = JournalInformation::first();
         // $articles = Article::with('journalIssue')->latest()->limit(5)->get();
-        $latestYear = JournalIssue::query()->max('year');
+        $latestYear = VolumeIssue::all();
 
         if (is_array($articles) || is_object($articles)) {
             return view('home', compact('journalInfo', 'articles', 'latestYear', 'image', 'navbar'));
@@ -45,7 +46,7 @@ class HomeController extends Controller
     {
         $navbar = Navbar::latest()->first();
         $journalInfo = JournalInformation::first();
-        $latestYear = JournalIssue::query()->max('year');
+        $latestYear = VolumeIssue::query()->max('year');
         $editorials = User::where('role','admin')->get();
         $users = User::all();
         $reviewers = Reviewer::all();
