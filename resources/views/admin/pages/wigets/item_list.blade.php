@@ -4,18 +4,19 @@
     <div class="overflow-x-auto">
         @foreach ($formattedVolumes as $year => $volumes)
             <h3 class="text-3xl font-bold mb-4 text-center">{{ $year }}</h3>
-            <div class="grid grid-cols-4 gap-4 border-b-2 pb-8">
+            <div class="grid grid-cols-4 gap-8 border-b-2 pb-10">
                 @foreach ($volumes as $volume)
                     <ul>
-                        <li><a href="{{ route('admin.volume.issue.details', ['id' => $volume['id_volume_issue']]) }}">
-                            @if ($volume['image'])
-                                <img src="{{ asset('storage/' . $volume['image']) }}" alt="Volume Image"
-                                    class="w-full h-auto mt-2">
-                            @else
-                                <p>No image available</p>
-                            @endif
-                            {{ $volume['volume'] }}
-                        </a>
+                        <li>
+                            <a href="{{ route('admin.volume.issue.details', ['id' => $volume['id_volume_issue']]) }}">
+                                {{ $volume['volume'] }}
+                                @if ($volume['image'])
+                                    <img src="{{ asset('storage/' . $volume['image']) }}" alt="Volume Image"
+                                        class="w-9/12 h-auto mt-2">
+                                @else
+                                    <p>No image available</p>
+                                @endif
+                            </a>
                         </li>
                     </ul>
                 @endforeach

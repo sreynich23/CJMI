@@ -23,7 +23,7 @@
                             <td class="px-6 py-4 text-sm text-gray-900">{{ ucfirst($reviewer->country) }}</td>
                             <td class="px-6 py-4 text-sm text-gray-900">{{ ucfirst($reviewer->email) }}</td>
                             <td class="px-6 py-4 text-sm text-gray-900">
-                                <a href="{{ asset('storage/' . $reviewer->cv) }}"
+                                <a href="{{ route('admin.download.cv',  $reviewer->id) }}"
                                     class="text-blue-600 hover:text-blue-900" download>
                                     Download CV
                                 </a>
@@ -63,7 +63,7 @@
                 <tr>
                     <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $reviews->first()->title }}</td>
                     <td class="px-6 py-4">
-                        <a href="{{ 'storage/' . $reviews->first()->file_path }}"
+                        <a href="{{ route('admin.download', $submissionId) }}"
                             class="text-blue-600 hover:text-blue-900">
                             Download
                         </a>

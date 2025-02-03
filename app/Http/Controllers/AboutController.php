@@ -23,6 +23,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class AboutController extends Controller
 {
@@ -280,5 +281,35 @@ class AboutController extends Controller
             ->get();
         // Return the view with the filtered data
         return view('admin.volume_issue_details', compact('data', 'id','volumeImages','volumeIssue', 'latestYear', 'navbar'));
+    }
+    public function download($id)
+    {
+        $submit = Submit::findOrFail($id);
+
+        if (!$submit->file_path) {
+            return redirect()->back()->with('error', 'File not found.');
+        }
+
+        $filePath = 'public/' . $submit->file_path;
+        if (!Storage::exists($filePath)) {
+            return redirect()->back()->with('error', 'File not found.');
+        }
+
+        return Storage::download($filePath, $submit->title . '.pdf');
+    }
+    public function downloadCV($id)
+    {
+        $reviewer = Reviewer::findOrFail($id);
+
+        if (!$reviewer->cv) {
+            return redirect()->back()->with('error', 'File not found.');
+        }
+
+        $filePath = 'public/' . $reviewer->cv;
+        if (!Storage::exists($filePath)) {
+            return redirect()->back()->with('error', 'File not found.');
+        }
+
+        return Storage::download($filePath, $reviewer->name . '.pdf');
     }
 }

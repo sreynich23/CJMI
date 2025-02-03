@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('file_size');
             $table->integer('version')->default(1);
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->text('reviewer_comments')->nullable();
             $table->timestamps();
         });
     }

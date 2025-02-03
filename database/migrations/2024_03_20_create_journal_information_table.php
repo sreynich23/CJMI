@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('license_text')->default('This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.');
             $table->string('developer')->default('LONG SREYNICH');
             $table->string('publisher')->default('Cambodian Education Forum');
+            $table->string('website')->default('https://example.com');
             $table->timestamps();
         });
     }

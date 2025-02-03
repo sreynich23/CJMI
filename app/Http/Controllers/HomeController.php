@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Editor;
+use App\Models\EditorialTeam;
 use App\Models\JournalInformation;
 use App\Models\JournalIssue;
 use App\Models\Navbar;
@@ -46,10 +47,8 @@ class HomeController extends Controller
     {
         $navbar = Navbar::latest()->first();
         $journalInfo = JournalInformation::first();
-        $latestYear = VolumeIssue::query()->max('year');
-        $editorials = User::where('role','admin')->get();
-        $users = User::all();
+        $teamMembers = EditorialTeam::all();
         $reviewers = Reviewer::all();
-        return view('all_editorial', compact('journalInfo', 'latestYear', 'navbar', 'reviewers', 'users', 'editorials'));
+        return view('all_editorial', compact('journalInfo', 'navbar','teamMembers', 'reviewers'));
     }
 }

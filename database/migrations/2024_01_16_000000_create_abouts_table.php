@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
+            $table->string('contact_email')->nullable();
             $table->timestamps();
         });
     }

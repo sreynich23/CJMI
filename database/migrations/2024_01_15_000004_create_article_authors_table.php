@@ -13,6 +13,7 @@ return new class extends Migration
             $table->foreignId('article_id')->constrained()->onDelete('cascade');
             $table->foreignId('author_id')->constrained()->onDelete('cascade');
             $table->unique(['article_id', 'author_id']);
+            $table->string('contribution')->nullable();
         });
     }
 

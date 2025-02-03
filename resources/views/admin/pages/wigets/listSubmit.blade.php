@@ -24,8 +24,8 @@
                             <td class="px-6 py-4">{{ $submission->title ?? 'N/A' }}</td>
                             <td class="px-6 py-4">{{ $submission->user->name ?? 'N/A' }}</td>
                             <td class="px-6 py-4">
-                                <a href="{{ $submission->getFileUrl() }}" class="text-blue-600 hover:text-blue-900"
-                                    target="_blank">
+                                <a href="{{ route('admin.download', $submission->id) }}"
+                                    class="text-blue-600 hover:text-blue-900" target="_blank">
                                     Download
                                 </a>
                                 <span class="text-xs text-gray-500 block">
@@ -114,37 +114,96 @@
     @endif
 </div>
 <div>
+    <div class="flex items-center justify-between mb-6 mt-7">
+        <h2 class="text-xl font-semibold mb-4">All Submissions Approved</h2>
 
-    <h2 class="text-xl font-semibold mb-4">All Submissions Approve</h2>
-@if ($submissionsApproved->isEmpty())
-@else
-    <table class="min-w-full divide-y divide-gray-200 border rounded-lg p-6">
-        <thead class="bg-gray-100">
-            <tr>
-                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
-                    Title</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Author</th>
-                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
-                    File</th>
-            </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-            @foreach ($submissionsApproved as $submissionsApproveds)
+        <!-- Button to toggle the form visibility -->
+        <button type="button" class="bg-blue-500 rounded-lg p-3 text-white font-semibold" id="showFormBtn">
+            Public Submissions
+        </button>
+    </div>
+
+    @if ($submissionsApproved->isEmpty())
+    @else
+        <table class="min-w-full divide-y divide-gray-200 border rounded-lg p-6">
+            <thead class="bg-gray-100">
                 <tr>
-                    <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $submissionsApproveds->title }}
-                    </td>
-                    <td class="px-6 py-4">{{ $submissionsApproveds->user->name ?? 'N/A' }}</td>
-                    <td class="px-6 py-4">
-                        <a href="{{ 'storage/' . $submissionsApproveds->file_path }}"
-                            class="text-blue-600 hover:text-blue-900">
-                            Download
-                        </a>
-                    </td>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Title
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Author</th>
+                    <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">File
+                    </th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
-@endif
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @foreach ($submissionsApproved as $submissionsApproveds)
+                    <tr>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $submissionsApproveds->title }}</td>
+                        <td class="px-6 py-4">{{ $submissionsApproveds->user->name ?? 'N/A' }}</td>
+                        <td class="px-6 py-4">
+                            <a href="{{ route('admin.download', $submissionsApproveds->id) }}"
+                                class="text-blue-600 hover:text-blue-900">
+                                Download
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
+</div>
+<!-- Form to display (hidden by default) -->
+<div id="submissionForm" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <form action="{{ route('admin.publicSubmission') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <!-- Display validation errors for year, volume, issue, and cover_image -->
+            <div class="mb-4">
+                <label for="year" class="block text-sm font-medium text-gray-700">Year</label>
+                <input type="text" id="year" name="year"
+                    class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    value="{{ old('year') }}">
+                @error('year')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label for="volume" class="block text-sm font-medium text-gray-700">Volume</label>
+                <input type="text" id="volume" name="volume"
+                    class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    value="{{ old('volume') }}">
+                @error('volume')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label for="issue" class="block text-sm font-medium text-gray-700">Issue</label>
+                <input type="text" id="issue" name="issue"
+                    class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    value="{{ old('issue') }}">
+                @error('issue')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label for="cover_image" class="block text-sm font-medium text-gray-700">Cover Image</label>
+                <input type="file" id="cover_image" name="cover_image"
+                    class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+                @error('cover_image')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+            <button type="button" class="bg-gray-500 rounded-lg p-3 text-white font-semibold" id="cancelBtn">
+                Cancel
+            </button>
+            <button type="submit" class="bg-blue-500 rounded-lg p-3 text-white font-semibold">
+                Submit Submissions
+            </button>
+        </form>
+    </div>
 </div>
 <!-- Modal -->
 <div id="rejectModals" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center hidden">
@@ -162,10 +221,8 @@
             </div>
 
             <div class="flex justify-end space-x-4">
-                <!-- Close Button -->
                 <button type="button" id="closeModalButtons"
                     class="text-gray-600 hover:text-gray-900">Cancel</button>
-                <!-- Submit Button -->
                 <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md">Send
                 </button>
             </div>
@@ -174,6 +231,18 @@
 </div>
 
 <script>
+    const submissionForm = document.getElementById('submissionForm');
+    const cancelBtn = document.getElementById('cancelBtn');
+
+    cancelBtn.addEventListener('click', function() {
+        submissionForm.classList.add('hidden');  // Hide the form
+    });
+
+    const showFormBtn = document.getElementById('showFormBtn');
+
+    showFormBtn.addEventListener('click', function() {
+        submissionForm.classList.toggle('hidden');  // Toggle the 'hidden' class
+    });
     function openModalReject(userId, submissionId) {
         // Get modal and close button elements
         const rejectModals = document.getElementById('rejectModals');

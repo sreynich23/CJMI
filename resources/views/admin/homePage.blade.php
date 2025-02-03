@@ -26,7 +26,7 @@
                                 </td>
                                 <td class="px-6 py-4">{{ $submissionsUpdates->user->name ?? 'N/A' }}</td>
                                 <td class="px-6 py-4">
-                                    <a href="{{ 'storage/' . $submissionsUpdates->file_path }}"
+                                    <a href="{{ route('admin.download', $submissionsUpdates->id )}}"
                                         class="text-blue-600 hover:text-blue-900">
                                         Download
                                     </a>
@@ -37,10 +37,10 @@
                                 <td class="px-6 py-4 text-sm font-medium">
                                     <div class="flex space-x-3">
                                         <button
-                                            onclick="openModal('approve', {{ $submissionsUpdates->id }}, '{{ route('admin.submissions.approve', ':id') }}')"
+                                            onclick="openModals('approve', {{ $submissionsUpdates->id }}, '{{ route('admin.submissions.approve', ':id') }}')"
                                             class="text-green-600 hover:text-green-900">Approve</button>
                                         <button
-                                            onclick="openModal('reject', {{ $submissionsUpdates->id }}, '{{ route('admin.submissions.reject', ':id') }}')"
+                                            onclick="openModals('reject', {{ $submissionsUpdates->id }}, '{{ route('admin.submissions.reject', ':id') }}')"
                                             class="text-red-600 hover:text-red-900">Reject</button>
                                         <button
                                             onclick="openModalFeedBack({{ $submissionsUpdates->user->id }}, {{ $submissionsUpdates->id }})"
@@ -142,6 +142,22 @@
     </div>
 </div>
 
+<!-- Modals -->
+<div id="modal-containers" class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 w-96">
+        <h3 class="text-lg font-semibold mb-4" id="modal-title">Modal Title</h3>
+        <form id="modal-forms" method="POST">
+            @csrf
+            <input type="hidden" name="submission_id" id="modal-submission-id">
+            <div id="modal-fields"></div>
+            <div class="flex justify-end space-x-4">
+                <button type="button" class="text-gray-700" onclick="closeModalSubmits()">Cancel</button>
+                <button type="submit" class="text-white bg-green-600 px-4 py-2 rounded-md">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- JavaScript to toggle file input visibility -->
 <script>
     function openModalFeedBack(userId, submissionId) {
@@ -173,4 +189,25 @@
         var fileInputDiv = document.getElementById('fileInputDiv');
         fileInputDiv.classList.toggle('hidden');
     });
+
+    function openModals(type, submissionId, route) {
+        const modal = document.getElementById('modal-containers');
+        const modalForm = document.getElementById('modal-forms');
+        const modalTitle = document.getElementById('modal-title');
+        const modalFields = document.getElementById('modal-fields');
+
+        modalForm.action = route.replace(':id', submissionId);
+        modalTitle.innerText = type === 'approve' ? 'Approve Submission' : 'Reject Submission';
+
+        modalFields.innerHTML = type === 'approve' ?
+            `<div class="mb-4"></div>` :
+            `<div class="mb-4"><label for="reason" class="block text-sm font-medium text-gray-700">Reason for Rejection</label>
+                 <textarea name="reason" id="reason" rows="4" class="mt-1 block w-full border rounded-md shadow-sm"></textarea></div>`;
+
+        modal.classList.remove('hidden');
+    }
+
+    function closeModalSubmits() {
+        document.getElementById('modal-containers').classList.add('hidden');
+    }
 </script>

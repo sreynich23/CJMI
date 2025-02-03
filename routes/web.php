@@ -50,6 +50,14 @@ Route::middleware(['web'])->group(function () {
     Route::get('/all-editorials', [HomeController::class, 'allEditorials'])->name('all-editorials');
     Route::post('/all-editorials/create', [ReviewerController::class, 'requestRoleChange'])->name('reviewer.create');
     Route::get('/files/{id}/download', [CurrentIssueController::class, 'download'])->name('download');
+
+    // File Download Routes
+    Route::get('/files/{submission}/download', [FileDownloadController::class, 'download'])
+        ->name('files.download');
+    Route::get('/files/{submission}/view', [FileDownloadController::class, 'show'])
+        ->name('files.show');
+    Route::get('/files/{submission}/preview', [FileDownloadController::class, 'preview'])
+        ->name('files.preview');
 });
 
 // Guest Routes (Only for non-authenticated users)
@@ -58,7 +66,6 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/register', [RegisterController::class, 'register']);
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login']);
-
 });
 
 // Authenticated Routes
@@ -103,6 +110,8 @@ Route::middleware(['auth'])->group(function () {
         // About Management
         Route::post('/upload-cover', [DashboardController::class, 'uploadCover'])->name('uploadCover');
         Route::get('/', [AboutController::class, 'index'])->name('about');
+        Route::get('/files/{id}/download', [AboutController::class, 'download'])->name('download');
+        Route::get('/cv/{id}/download', [AboutController::class, 'downloadCV'])->name('download.cv');
         Route::post('/about/store', [AboutController::class, 'store'])->name('about.store');
         Route::put('/about/{id}', [AboutController::class, 'update'])->name('about.update');
         Route::delete('/about/{id}', [AboutController::class, 'destroy'])->name('about.destroy');
@@ -114,6 +123,7 @@ Route::middleware(['auth'])->group(function () {
         // Submissions Management
         // Route::get('/', [AboutController::class, 'index'])->name('submissions');
         Route::post('/submissions/{submission}/approve', [SubmissionController::class, 'approve'])->name('submissions.approve');
+        Route::post('/admin/public-submissions', [SubmissionController::class, 'publicSubmission'])->name('publicSubmission');
         Route::post('/submissions/{submission}/reject', [SubmissionController::class, 'reject'])->name('submissions.reject');
 
         // Reviewer Management
@@ -150,7 +160,7 @@ Route::get('/files/{submission}/view', [FileDownloadController::class, 'show'])
 Route::get('/files/{submission}/preview', [FileDownloadController::class, 'preview'])
     ->name('files.preview');
 
-    Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgot-password');
-    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('send-otp');
-    Route::get('/reset-password', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset-password');
-    Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('reset-password');
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgot-password');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('send-otp');
+Route::get('/reset-password', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset-password');
+Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('reset-password');

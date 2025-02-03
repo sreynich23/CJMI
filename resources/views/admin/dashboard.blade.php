@@ -29,8 +29,7 @@
     <div class="flex h-full bg-white">
         <!-- Admin Navigation -->
         <div class="w-full text-gray-700 bg-green-500">
-            <div
-                class="flex flex-col max-w-screen-xl text-white mx-auto md:items-center  md:flex-row md:px-2 lg:px-4">
+            <div class="flex flex-col max-w-screen-xl text-white mx-auto md:items-center  md:flex-row md:px-2 lg:px-4">
                 <div class="">
                     <img src="{{ asset('storage/' . $navbar->logo_path) }}" alt="Logo" height="100"
                         width="100">
@@ -63,8 +62,8 @@
                     <button onclick="showNavbarModal()"
                         class="rounded-md px-1 flex gap-2 border bg-green-500 text-white ">
                         Edit
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9" />
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z" />
@@ -183,35 +182,36 @@
     </div>
 
     <div id="navbar-modal"
-    class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white rounded-lg p-6 w-96">
-        <h3 class="text-lg font-semibold mb-4">Update Navbar Information</h3>
-        <form id="navbar-form" action="{{ route('admin.navbar.update') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="mb-4">
-                <label for="logo" class="block text-sm font-medium text-gray-700">Logo</label>
-                <input type="file" name="logo" id="logo"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-            </div>
-            <div class="mb-4">
-                <label for="background_image" class="block text-sm font-medium text-gray-700">Background Image</label>
-                <input type="file" name="background_image" id="background_image"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-            </div>
-            <div class="mb-4">
-                <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                <input type="text" name="title" id="title"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-                    value="{{ $navbar->title ?? '' }}">
-            </div>
-            <div class="flex justify-end space-x-4">
-                <button type="button" class="text-gray-700"
-                    onclick="closeModal('navbar-modal')">Cancel</button>
-                <button type="submit" class="text-white bg-green-600 px-4 py-2 rounded-md">Update</button>
-            </div>
-        </form>
+        class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-6 w-96">
+            <h3 class="text-lg font-semibold mb-4">Update Navbar Information</h3>
+            <form id="navbar-form" action="{{ route('admin.navbar.update') }}" method="POST"
+                enctype="multipart/form-data">
+                @csrf
+                <div class="mb-4">
+                    <label for="logo" class="block text-sm font-medium text-gray-700">Logo</label>
+                    <input type="file" name="logo" id="logo"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                </div>
+                <div class="mb-4">
+                    <label for="background_image" class="block text-sm font-medium text-gray-700">Background
+                        Image</label>
+                    <input type="file" name="background_image" id="background_image"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                </div>
+                <div class="mb-4">
+                    <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                    <input type="text" name="title" id="title"
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                        value="{{ $navbar->title ?? '' }}">
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button type="button" class="text-gray-700" onclick="closeModal('navbar-modal')">Cancel</button>
+                    <button type="submit" class="text-white bg-green-600 px-4 py-2 rounded-md">Update</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
     <script>
         function showjournalInfoModal() {
@@ -227,13 +227,14 @@
         }
 
         function showNavbarModal() {
-        const navbarModal = document.getElementById('navbar-modal');
-        navbarModal.classList.remove('hidden');
-    }
-    function closeModal(modalId) {
-        const modal = document.getElementById(modalId);
-        modal.classList.add('hidden');
-    }
+            const navbarModal = document.getElementById('navbar-modal');
+            navbarModal.classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('hidden');
+        }
     </script>
 </body>
 
