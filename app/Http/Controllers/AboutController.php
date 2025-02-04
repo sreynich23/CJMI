@@ -14,6 +14,7 @@ use App\Models\Navbar;
 use App\Models\Submit;
 use App\Models\VolumeIssueImage;
 use App\Models\Editor;
+use App\Models\EditorialTeam;
 use App\Models\Review;
 use App\Models\Reviewer;
 use App\Models\Reviewers;
@@ -29,6 +30,7 @@ class AboutController extends Controller
 {
     public function index()
     {
+        $editors=EditorialTeam::all();
         $abouts = About::all();
         $image = VolumeIssueImage::latest()->first();
         $navbar = Navbar::latest()->first();
@@ -83,7 +85,7 @@ class AboutController extends Controller
             });
         }
         $latestYear = VolumeIssue::query()->max('year');
-        return view('admin.dashboard', compact('abouts', 'submissions', 'formattedVolumes', 'image', 'latestYear', 'navbar', 'journalInfo', 'announcements', 'reviewers', 'reviewersEditorial', 'reviewing', 'submissionsUpdate', 'submissionsApproved'));
+        return view('admin.dashboard', compact('abouts', 'submissions', 'formattedVolumes', 'image', 'latestYear', 'navbar', 'journalInfo', 'announcements', 'reviewers', 'reviewersEditorial', 'reviewing', 'submissionsUpdate', 'submissionsApproved','editors'));
     }
 
     public function indexuser()
@@ -280,7 +282,7 @@ class AboutController extends Controller
             ->where('id_volume_issue', $id)
             ->get();
         // Return the view with the filtered data
-        return view('admin.volume_issue_details', compact('data', 'id','volumeImages','volumeIssue', 'latestYear', 'navbar'));
+        return view('admin.volume_issue_details', compact('data', 'id', 'volumeImages', 'volumeIssue', 'latestYear', 'navbar'));
     }
     public function download($id)
     {
@@ -311,5 +313,65 @@ class AboutController extends Controller
         }
 
         return Storage::download($filePath, $reviewer->name . '.pdf');
+    }
+
+    /**
+     * Show the form for creating a new editor.
+     */
+    public function createEditorial()
+    {
+        return redirect()->back()->with('success', 'Editor created successfully.');
+    }
+
+    /**
+     * Store a newly created editor in storage.
+     */
+    public function storeEditorial(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'position' => 'required',
+            'description' => 'required',
+        ]);
+
+        EditorialTeam::create($request->all());
+
+        return redirect()->back()->with('success', 'Editor created successfully.');
+    }
+
+    /**
+     * Show the form for editing the specified editor.
+     */
+    public function editEditorial(Editor $editor)
+    {
+        return view('admin.pages.edit_editorial', compact('editor'));
+    }
+
+    /**
+     * Update the specified editor in storage.
+     */
+    public function updateEditorial(Request $request, Editor $editor)
+    {
+        $request->validate([
+            'name' => 'required',
+            'position' => 'required',
+            'description' => 'required',
+        ]);
+
+        $editor->update($request->all());
+
+        return redirect()->route('admin.editorials.index')
+            ->with('success', 'Editor updated successfully.');
+    }
+
+    /**
+     * Remove the specified editor from storage.
+     */
+    public function destroyEditorial(Editor $editor)
+    {
+        $editor->delete();
+
+        return redirect()->route('admin.editorials.index')
+            ->with('success', 'Editor deleted successfully.');
     }
 }

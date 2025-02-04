@@ -140,6 +140,13 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/contact', [SubmitController::class, 'updateContact'])->name('contact.update');
             Route::put('/policy', [SubmitController::class, 'updatePolicy'])->name('policy.update');
         });
+
+        // Editorial Management
+        Route::post('editorials/store', [AboutController::class, 'storeEditorial'])->name('editorials.store');
+        Route::get('editorials/{editor}/edit', [AboutController::class, 'editEditorial'])->name('editorials.edit');
+        Route::put('editorials/{editor}', [AboutController::class, 'updateEditorial'])->name('editorials.update');
+        Route::delete('editorials/{editor}', [AboutController::class, 'destroyEditorial'])->name('editorials.destroy');
+
         //mails
         Route::get('/reviewer/approve/{id}', [ReviewerController::class, 'approveReviewer'])->name('reviewer.approve');
         Route::post('/feedback/send/{authorId}/{submissionId}', [AboutController::class, 'sendReviewFeedback'])->name('feedback.send');
@@ -149,8 +156,6 @@ Route::middleware(['auth'])->group(function () {
 });
 // Resource Route for Pages
 Route::resource('pages', PageController::class);
-
-
 
 // File Download Routes
 Route::get('/files/{submission}/download', [FileDownloadController::class, 'download'])
