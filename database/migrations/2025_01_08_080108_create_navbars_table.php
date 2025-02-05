@@ -1,10 +1,11 @@
+-- Active: 1735089345231@@127.0.0.1@3306@db_cjmri
 <?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNavbarTable extends Migration
+class CreateNavbarsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +14,12 @@ class CreateNavbarTable extends Migration
      */
     public function up()
     {
-        Schema::create('navbar', function (Blueprint $table) {
+        Schema::create('navbars', function (Blueprint $table) {
             $table->id();
-            $table->string('logo_path'); // Path to the logo image
-            $table->string('title'); // Navbar title
-            $table->string('background_color')->nullable(); // Background color (optional)
-            $table->timestamps(); // Created at and updated at
+            $table->string('logo_path');
+            $table->string('title');
+            $table->string('background_color')->nullable();
+            $table->timestamps();
         });
     }
 

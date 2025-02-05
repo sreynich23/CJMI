@@ -9,7 +9,7 @@ class Navbar extends Model
 {
     use HasFactory;
 
-    protected $table = 'navbar';
+    protected $table = 'navbars';
 
     protected $fillable = [
         'logo_path',
