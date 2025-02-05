@@ -9,9 +9,7 @@ class JournalIssue extends Model
     protected $fillable = [
         'title',
         'description',
-        'year',
-        'volume',
-        'issue',
+        'id_volume_issue',
         'publication_date',
         'year',
     ];

@@ -17,17 +17,17 @@ class InstantUserSeeder extends Seeder
             'password' => Hash::make('humchan123'),
             'role' => 'admin',
             'notifications_enabled' => true,
-            'reviewer_available' => true
+            'reviewer_available' => true,
         ]);
 
         // Create regular user
-        // User::create([
-        //     'name' => 'User',
-        //     'email' => 'user@example.com',
-        //     'password' => Hash::make('password123'),
-        //     'role' => 'user',
-        //     'notifications_enabled' => true,
-        //     'reviewer_available' => false
-        // ]);
+        User::create([
+            'name' => 'Da Vuthea',
+            'email' => 'da.vuthea@nubb.edu.kh',
+            'password' => Hash::make('password123'),
+            'role' => 'admin',
+            'notifications_enabled' => true,
+            'reviewer_available' => true,
+        ]);
     }
 }
