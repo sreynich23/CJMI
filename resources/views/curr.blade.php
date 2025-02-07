@@ -10,7 +10,9 @@
 
         </div>
         <div class="items-center justify-center flex">
-            <h2 class="text-3xl font-semibold text-gray-900 mb-4">Current: {{$latestYear->volume}} Issue: {{$latestYear->issue}} ({{$latestYear->year}})</h2>
+            @if ($latestYear)
+            {{-- <h2 class="text-3xl font-semibold text-gray-900 mb-4">Current: {{$latestYear->volume}} Issue: {{$latestYear->issue}} ({{$latestYear->year}})</h2> --}}
+            @endif
         </div>
         <!-- Articles List -->
         <div class="bg-white p-6 rounded-lg shadow-sm">

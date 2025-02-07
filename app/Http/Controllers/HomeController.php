@@ -8,7 +8,7 @@ use App\Models\EditorialTeam;
 use App\Models\JournalInformation;
 use App\Models\JournalIssue;
 use App\Models\Navbar;
-use App\Models\Reviewer;
+use App\Models\reviewer;
 use App\Models\User;
 use App\Models\VolumeIssue;
 use App\Models\VolumeIssueImage;

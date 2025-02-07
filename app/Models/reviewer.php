@@ -23,7 +23,9 @@ class Reviewer extends Model
      */
     protected $fillable = [
         'name',
+        'position',
         'email',
+        'country',
         'cv',
         'expertise',
         'active',
