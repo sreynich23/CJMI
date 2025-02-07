@@ -58,7 +58,7 @@
         </table>
     </div>
 </div>
-<div id="updateForm-{{ $editor->id }}"
+{{-- <div id="updateForm-{{ $editor->id }}"
     class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
     onclick="closeModalUpdate(event, {{ $editor->id }})">
 
@@ -86,7 +86,7 @@
             </div>
         </form>
     </div>
-</div>
+</div> --}}
 
 <!-- JavaScript to Toggle Form -->
 <script>
