@@ -14,16 +14,16 @@ class navbarSeeder extends Seeder
      */
     public function run(): void
     {
-        // DB::table('navbars')->insert([
-        //     [
-        //         'id' => 1,
-        //         'logo_path' => 'images/logo.png',
-        //         'title' => 'Cambodian Journal of Multidisciplinary Research and Innovation (CJMRI)',
-        //         'background_color' => 'images/navbar-bg.jpg',
-        //         'created_at' => Carbon::now(),
-        //         'updated_at' => Carbon::now(),
-        //     ],
-        // ]);
+        DB::table('navbars')->insert([
+            [
+                'id' => 1,
+                'logo_path' => 'images/logo.png',
+                'title' => 'Cambodian Journal of Multidisciplinary Research and Innovation (CJMRI)',
+                'background_color' => 'images/navbar-bg.jpg',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ]);
         DB::table('announcements')->insert([
             [
                 'id' => 1,
