@@ -123,7 +123,7 @@
 
                         <!-- Example of how an image can be included -->
                         <div class="mt-4 flex justify-center">
-                            <img src="https://jiem.ftu.edu.vn/public/site/images/admin/qtta3.jpg"
+                            <img src="https://CJMRI.ftu.edu.vn/public/site/images/admin/qtta3.jpg"
                                 alt="Peer Review Process Diagram" class="w-full max-w-xl">
                         </div>
                     </div>
@@ -132,21 +132,21 @@
                     <div class="max-w-4xl mx-auto bg-white p-6 shadow-md rounded-md">
                         <h1 class="text-3xl font-semibold mb-4">Archiving Policy</h1>
                         <p class="mt-2 text-gray-700">
-                            The Journal of International Economics and Management utilizes the LOCKSS (Lots of Copies Keep
+                            The Cambodia Journal of Multidisciplinary Research and Innovation utilizes the LOCKSS (Lots of Copies Keep
                             Stuff Safe) system to create a distributed archiving system among participating libraries, and
                             it permits those libraries to create permanent archives of the journal for purposes of
                             preservation and restoration. The full text of all articles published in the Journal of
                             International Economics and Management is deposited in the Public Knowledge Project’s Private
                             LOCKSS Network (PKP-PLN) to guarantee long-term digital preservation.
 
-                            Papers submitted to JIEM should not have been published before in their current or substantially
+                            Papers submitted to CJMRI should not have been published before in their current or substantially
                             similar content, or be under consideration for publication.
 
                             All submitted papers must be original work. Authors submitting articles for publication warrant
                             that the work is not an infringement of any existing copyright and will indemnify the publisher
                             against any breach of such warran.
 
-                            This is an open-access journal. All the content of JIEM's articles from 11/2019 onward is
+                            This is an open-access journal. All the content of CJMRI's articles from 11/2019 onward is
                             subject to be published under the Creative Commons Attribution-NonCommercial 4.0 International
                             License (CC BY-NC 4.0). This license permits unrestricted non-commercial use, distribution, and
                             reproduction in any medium, provided the original work is properly cited. Authors agree to make
@@ -155,11 +155,11 @@
 
                         <h3 class="italic font-semibold mt-4">Third-party Copyright Permissions</h3>
                         <p class="mt-2 text-gray-700">
-                            Before submitting a paper to JIEM, authors are responsible to get permission to use any content
+                            Before submitting a paper to CJMRI, authors are responsible to get permission to use any content
                             that has not been created by them.
 
-                            Failure to do so may lead to lengthy delay in publication. JIEM is unable to publish an article
-                            that has permission pending. The rights that JIEM requires are:
+                            Failure to do so may lead to lengthy delay in publication. CJMRI is unable to publish an article
+                            that has permission pending. The rights that CJMRI requires are:
 
                             Non-exclusive rights to reproduce the material in the articles;
 
