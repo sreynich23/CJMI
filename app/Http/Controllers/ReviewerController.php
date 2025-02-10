@@ -6,7 +6,7 @@ use App\Mail\ReviewerApprovedMail;
 use App\Mail\ReviewerAssignedMail;
 use App\Models\Navbar;
 use App\Models\reviewer;
-use App\Models\Reviewers;
+use App\Models\reviewers;
 use App\Models\Submit;
 use App\Models\User;
 use App\Models\VolumeIssue;

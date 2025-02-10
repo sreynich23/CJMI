@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\JournalIssue; // or the model you want to search
