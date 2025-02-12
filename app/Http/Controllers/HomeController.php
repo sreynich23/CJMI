@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Conference;
 use App\Models\Editor;
 use App\Models\EditorialTeam;
+use App\Models\Indexing;
 use App\Models\JournalInformation;
 use App\Models\JournalIssue;
 use App\Models\Navbar;
+use App\Models\Recognition;
 use App\Models\Reviewer;
 use App\Models\User;
 use App\Models\VolumeIssue;
@@ -21,6 +24,9 @@ class HomeController extends Controller
     {
         $query = $request->input('query');
         $navbar = Navbar::latest()->first();
+        $recognitions = Recognition::all();
+        $indexings = Indexing::all();
+        $conferences = Conference::all();
 
         // If there is a query, search for articles that match the title or content
         if ($query) {
@@ -36,7 +42,7 @@ class HomeController extends Controller
         $latestYear = VolumeIssue::all();
 
         if (is_array($articles) || is_object($articles)) {
-            return view('home', compact('journalInfo', 'articles', 'latestYear', 'image', 'navbar'));
+            return view('home', compact('journalInfo', 'articles', 'latestYear', 'image', 'navbar','recognitions', 'indexings', 'conferences'));
         } else {
             // Handle the case where $articles is not an array or object
         }

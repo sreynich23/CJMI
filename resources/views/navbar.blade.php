@@ -8,7 +8,7 @@
 
 <body>
     <header class="text-white">
-        <div class="flex justify-end items-center lg:px-9 px-1 py-3 lg:space-x-4 bg-green-600">
+        <div class="flex justify-end items-center lg:px-9 px-1 py-3 lg:space-x-4 bg-blue-950">
             @guest
                 <a href="{{ route('login') }}" class="nav-link">Login</a>
                 <a href="{{ route('register') }}" class="nav-link">Register</a>
@@ -45,72 +45,51 @@
                 @endguest
             </div>
         </div>
-        <div class="relative px-9 flex justify-between py-5">
-            <!-- Blurred Background Image -->
-            <div class="absolute inset-0 -z-10"
-                style="
-                    background-image: url('{{ asset('storage/' . $navbar->background_color) }}');
-                    background-size: cover;
-                    background-position: center;
-                    filter: blur(1px);
-                    -webkit-filter: blur(1px);">
-            </div>
-
-            <!-- Content (Logo and Title) -->
-            @if (isset($navbar))
-                <div class="flex items-center">
-                    <img src="{{ asset('storage/' . $navbar->logo_path) }}" alt="Logo"
-                        class="w-full max-w-xs lg:max-w-sm h-auto object-contain">
-                </div>
-            @endif
-
-            <div class="px-12">
-                <h1 class="lg:text-5xl text-sm font-bold">{{ $navbar->title ?? 'CJMRI' }}</h1>
-            </div>
+        <div class="flex justify-between">
+            <img src="{{ asset('storage/' . $navbar->background_color) }}" alt="">
         </div>
-
     </header>
-    <nav class="text-white flex py-2 bg-green-600 sticky top-0 justify-between px-1 z-50">
+    <nav class="text-white flex py-2 bg-blue-950 sticky top-0 justify-between px-1 z-50">
         <ul class="flex flex-wrap justify-center space-x-2 items-center">
             <li>
                 <a href="{{ route('home') }}"
-                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded hover:bg-green-700">
+                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
                     HOME
                 </a>
             </li>
             <li>
                 <a href="{{ route('curr') }}"
-                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded hover:bg-green-700">
+                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
                     CURRENT ISSUE
                 </a>
             </li>
             <li>
                 <a href="{{ route('all_volumes') }}"
-                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded hover:bg-green-700">
+                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
                     ALL VOLUME ISSUES
                 </a>
             </li>
             <li>
                 <a href="{{ route('all-editorials') }}"
-                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded hover:bg-green-700">
+                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
                     EDITORIAL POLICIES
                 </a>
             </li>
             <li>
                 <a href="{{ route('announcements') }}"
-                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded hover:bg-green-700">
+                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
                     ANNOUNCEMENTS
                 </a>
             </li>
             <li>
                 <a href="{{ route('submit.index') }}"
-                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded hover:bg-green-700">
+                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
                     SUBMISSION
                 </a>
             </li>
             <li>
                 <a href="{{ route('about') }}"
-                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded hover:bg-green-700">
+                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
                     ABOUT
                 </a>
             </li>
@@ -119,23 +98,13 @@
                 @if (auth()->user()->role === 'reviewer')
                     <li>
                         <a href="{{ route('reviewer') }}"
-                            class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded hover:bg-green-700">
+                            class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
                             REVIEWER
                         </a>
                     </li>
                 @endif
             @endguest
         </ul>
-        <!-- Search Form Section -->
-        <form action="{{ route('home') }}" method="GET" class="flex flex-1 gap-2 items-center px-1">
-            <input type="text" name="query"
-                class="text-black w-16 lg:w-40 h-8 px-2 lg:text-sm text-xs rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
-                placeholder="Search..." value="{{ request()->query('query') }}">
-            <button type="submit"
-                class="px-3 py-1 rounded-md text-xs bg-blue-500 hover:bg-blue-600 transition-colors w-16 lg:w-20">
-                Search
-            </button>
-        </form>
 
     </nav>
 

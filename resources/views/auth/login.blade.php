@@ -13,11 +13,11 @@
             <!-- Tab Navigation -->
             <div class="flex border-b">
                 <button onclick="switchTab('login')" id="loginTab"
-                    class="w-1/2 px-6 py-3 text-center font-semibold text-green-700 bg-white border-b-2 border-green-700">
+                    class="w-1/2 px-6 py-3 text-center font-semibold text-blue-700 bg-white border-b-2 border-blue-700">
                     Login
                 </button>
                 <button onclick="switchTab('register')" id="registerTab"
-                    class="w-1/2 px-6 py-3 text-center font-semibold text-gray-500 hover:text-green-700">
+                    class="w-1/2 px-6 py-3 text-center font-semibold text-gray-500 hover:text-blue-700">
                     Register
                 </button>
             </div>
@@ -29,7 +29,7 @@
                     <div>
                         <label for="login-email" class="block text-sm font-medium text-gray-700">Email</label>
                         <input type="email" name="email" id="login-email" required
-                            class="mt-1 block w-full rounded-md border px-3 border-gray-300 shadow-sm focus:border-green-700 focus:ring-green-700">
+                            class="mt-1 block w-full rounded-md border px-3 border-gray-300 shadow-sm focus:border-blue-700 focus:ring-blue-700">
                         @error('email')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -38,22 +38,22 @@
                     <div>
                         <label for="login-password" class="block text-sm font-medium text-gray-700">Password</label>
                         <input type="password" name="password" id="login-password" required
-                            class="mt-1 block w-full rounded-md border px-3 border-gray-300 shadow-sm focus:border-green-700 focus:ring-green-700">
+                            class="mt-1 block w-full rounded-md border px-3 border-gray-300 shadow-sm focus:border-blue-700 focus:ring-blue-700">
                     </div>
 
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
                             <input type="checkbox" name="remember" id="remember"
-                                class="rounded border-gray-300 text-green-700 focus:ring-green-700">
+                                class="rounded border-gray-300 text-blue-700 focus:ring-blue-700">
                             <label for="remember" class="ml-2 text-sm text-gray-600">Remember me</label>
                         </div>
                         <div>
-                            <a href="{{ route('forgot-password') }}" class="text-sm text-green-700 hover:underline">Forgot Password?</a>
+                            <a href="{{ route('forgot-password') }}" class="text-sm text-blue-700 hover:underline">Forgot Password?</a>
                         </div>
                     </div>
 
                     <button type="submit"
-                        class="w-full py-2 px-4 bg-green-700 text-white rounded-md hover:bg-green-800">
+                        class="w-full py-2 px-4 bg-blue-700 text-white rounded-md hover:bg-blue-800">
                         Login
                     </button>
                 </form>
@@ -66,7 +66,7 @@
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                         <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                            class="mt-1 block w-full rounded-md border px-3 border-gray-800 focus:border-green-700 focus:ring-green-700">
+                            class="mt-1 block w-full rounded-md border px-3 border-gray-800 focus:border-blue-700 focus:ring-blue-700">
                         @error('name')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -75,7 +75,7 @@
                     <div>
                         <label for="register-email" class="block text-sm font-medium text-gray-700">Email</label>
                         <input type="email" name="email" id="register-email" value="{{ old('email') }}" required
-                            class="mt-1 block w-full rounded-md border px-3 border-gray-800 focus:border-green-700 focus:ring-green-700">
+                            class="mt-1 block w-full rounded-md border px-3 border-gray-800 focus:border-blue-700 focus:ring-blue-700">
                         @error('email')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -84,7 +84,7 @@
                     <div>
                         <label for="register-password" class="block text-sm font-medium text-gray-700">Password</label>
                         <input type="password" name="password" id="register-password" required
-                            class="mt-1 block w-full rounded-md border px-3 border-gray-800 focus:border-green-700 focus:ring-green-700">
+                            class="mt-1 block w-full rounded-md border px-3 border-gray-800 focus:border-blue-700 focus:ring-blue-700">
                         @error('password')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -93,7 +93,7 @@
                     <div>
                         <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
                         <input type="password" name="password_confirmation" id="password_confirmation" required
-                            class="mt-1 block w-full rounded-md border px-3 border-gray-800 focus:border-green-700 focus:ring-green-700">
+                            class="mt-1 block w-full rounded-md border px-3 border-gray-800 focus:border-blue-700 focus:ring-blue-700">
                     </div>
 
                     <div class="form-group">
@@ -108,7 +108,7 @@
 
                     <div class="flex items-center">
                         <input type="checkbox" name="notifications" id="notifications"
-                            class="rounded border-gray-300 text-green-700 focus:ring-green-700">
+                            class="rounded border-gray-300 text-blue-700 focus:ring-blue-700">
                         <label for="notifications" class="ml-2 text-sm text-gray-600">
                             Receive notifications about new publications
                         </label>
@@ -116,14 +116,14 @@
 
                     <div class="flex items-center">
                         <input type="checkbox" name="reviewer" id="reviewer"
-                            class="rounded border-gray-300 text-green-700 focus:ring-green-700">
+                            class="rounded border-gray-300 text-blue-700 focus:ring-blue-700">
                         <label for="reviewer" class="ml-2 text-sm text-gray-600">
                             Available as reviewer
                         </label>
                     </div>
 
                     <button type="submit"
-                        class="w-full py-2 px-4 bg-green-700 text-white rounded-md hover:bg-green-800">
+                        class="w-full py-2 px-4 bg-blue-700 text-white rounded-md hover:bg-blue-800">
                         Register
                     </button>
                 </form>
@@ -139,17 +139,17 @@
             const registerForm = document.getElementById('registerForm');
 
             if (tab === 'login') {
-                loginTab.classList.add('text-green-700', 'border-b-2', 'border-green-700', 'bg-white');
+                loginTab.classList.add('text-blue-700', 'border-b-2', 'border-blue-700', 'bg-white');
                 loginTab.classList.remove('text-gray-500');
-                registerTab.classList.remove('text-green-700', 'border-b-2', 'border-green-700', 'bg-white');
+                registerTab.classList.remove('text-blue-700', 'border-b-2', 'border-blue-700', 'bg-white');
                 registerTab.classList.add('text-gray-500');
                 loginForm.classList.remove('hidden');
                 registerForm.classList.add('hidden');
                 window.location.hash = 'login';
             } else {
-                registerTab.classList.add('text-green-700', 'border-b-2', 'border-green-700', 'bg-white');
+                registerTab.classList.add('text-blue-700', 'border-b-2', 'border-blue-700', 'bg-white');
                 registerTab.classList.remove('text-gray-500');
-                loginTab.classList.remove('text-green-700', 'border-b-2', 'border-green-700', 'bg-white');
+                loginTab.classList.remove('text-blue-700', 'border-b-2', 'border-blue-700', 'bg-white');
                 loginTab.classList.add('text-gray-500');
                 registerForm.classList.remove('hidden');
                 loginForm.classList.add('hidden');

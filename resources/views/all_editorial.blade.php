@@ -7,15 +7,15 @@
             <div class="w-1/5 p-4 text-white rounded-md">
                 <div class="sticky top-24">
                     <button onclick="switchScreen('allEditorials')"
-                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-green-500 hover:bg-green-500 hover:text-green-800 transition">
+                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-500 hover:bg-blue-500 hover:text-blue-800 transition">
                         📖 All Editorials
                     </button>
                     <button onclick="switchScreen('reviewing-policy')"
-                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-green-500 hover:bg-green-500 hover:text-green-800 transition">
+                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-500 hover:bg-blue-500 hover:text-blue-800 transition">
                         📝 Reviewing Policy
                     </button>
                     <button onclick="switchScreen('archiving-policy')"
-                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-green-500 hover:bg-green-500 hover:text-green-800 transition">
+                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-500 hover:bg-blue-500 hover:text-blue-800 transition">
                         📂 Archiving-Policy
                     </button>
                 </div>
@@ -30,7 +30,7 @@
                             <div class="bg-white shadow-md rounded-lg overflow-hidden transform transition hover:scale-105">
                                 <div class="p-4 text-center">
                                     <h5 class="text-xl font-semibold">{{ $member->name }}</h5>
-                                    <p class="text-green-600 font-bold">{{ $member->position }}</p>
+                                    <p class="text-blue-600 font-bold">{{ $member->position }}</p>
                                     <p class="text-gray-600 mt-2">{{ $member->description }}</p>
                                 </div>
                             </div>
@@ -42,7 +42,7 @@
                             <div class="bg-white shadow-md rounded-lg overflow-hidden transform transition ">
                                 <div class="p-4 ">
                                     <h5 class="text-xl font-semibold">{{ $reviewer->name }}</h5>
-                                    <p class="text-green-600 font-bold">{{ $reviewer->position }}</p>
+                                    <p class="text-blue-600 font-bold">{{ $reviewer->position }}</p>
                                     <p class="text-gray-600 mt-2">{{ $reviewer->country }}</p>
                                     <p class="text-gray-600 mt-2">{{ $reviewer->expertise }}</p>
                                 </div>
@@ -59,7 +59,7 @@
                                 @if (auth()->user()->role === 'user')
                                     <div class="mt-6">
                                         <button data-toggle="reviewer-form"
-                                            class="flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition">
+                                            class="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition">
                                             ✨ Become a Reviewer
                                         </button>
                                     </div>

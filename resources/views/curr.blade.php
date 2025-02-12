@@ -11,7 +11,13 @@
         </div>
         <div class="items-center justify-center flex">
             @if ($latestYear)
-            {{-- <h2 class="text-3xl font-semibold text-gray-900 mb-4">Current: {{$latestYear->volume}} Issue: {{$latestYear->issue}} ({{$latestYear->year}})</h2> --}}
+                <h2 class="text-3xl font-semibold text-gray-900 mb-4">
+                    Current: {{$latestYear->volume}} Issue: {{$latestYear->issue}} ({{$latestYear->year}})
+                </h2>
+            @else
+                <h2 class="text-3xl font-semibold text-gray-900 mb-4">
+                    No data available.
+                </h2>
             @endif
         </div>
         <!-- Articles List -->

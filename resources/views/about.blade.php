@@ -9,7 +9,7 @@
                 @forelse ($abouts as $about)
                     <li>
                         <a href="#{{ Str::slug($about->title) }}"
-                            class="block border border-green-700 rounded-md px-4 py-2 text-black hover:bg-green-600 hover:text-white">
+                            class="block border border-blue-700 rounded-md px-4 py-2 text-black hover:bg-blue-600 hover:text-white">
                             {{ $about->title }}
                         </a>
                     </li>

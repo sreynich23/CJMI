@@ -17,7 +17,7 @@
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                 <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                    class="mt-1 block w-full rounded-md border px-3 border-gray-800  focus:border-green-700 focus:ring-green-700">
+                    class="mt-1 block w-full rounded-md border px-3 border-gray-800  focus:border-blue-700 focus:ring-blue-700">
                 @error('name')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -26,7 +26,7 @@
             <div>
                 <label for="register-email" class="block text-sm font-medium text-gray-700">Email</label>
                 <input type="email" name="email" id="register-email" value="{{ old('email') }}" required
-                    class="mt-1 block w-full rounded-md border px-3 border-gray-800  focus:border-green-700 focus:ring-green-700">
+                    class="mt-1 block w-full rounded-md border px-3 border-gray-800  focus:border-blue-700 focus:ring-blue-700">
                 @error('email')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -35,7 +35,7 @@
             <div>
                 <label for="register-password" class="block text-sm font-medium text-gray-700">Password</label>
                 <input type="password" name="password" id="register-password" required
-                    class="mt-1 block w-full rounded-md border px-3 border-gray-800  focus:border-green-700 focus:ring-green-700">
+                    class="mt-1 block w-full rounded-md border px-3 border-gray-800  focus:border-blue-700 focus:ring-blue-700">
                 @error('password')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -45,7 +45,7 @@
                 <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm
                     Password</label>
                 <input type="password" name="password_confirmation" id="password_confirmation" required
-                    class="mt-1 block w-full rounded-md border px-3 border-gray-800  focus:border-green-700 focus:ring-green-700">
+                    class="mt-1 block w-full rounded-md border px-3 border-gray-800  focus:border-blue-700 focus:ring-blue-700">
             </div>
 
             <div class="form-group">
@@ -60,7 +60,7 @@
 
             <div class="flex items-center">
                 <input type="checkbox" name="notifications" id="notifications"
-                    class="rounded border-gray-300 text-green-700 focus:ring-green-700">
+                    class="rounded border-gray-300 text-blue-700 focus:ring-blue-700">
                 <label for="notifications" class="ml-2 text-sm text-gray-600">
                     Receive notifications about new publications
                 </label>
@@ -68,13 +68,13 @@
 
             <div class="flex items-center">
                 <input type="checkbox" name="reviewer" id="reviewer"
-                    class="rounded border-gray-300 text-green-700 focus:ring-green-700">
+                    class="rounded border-gray-300 text-blue-700 focus:ring-blue-700">
                 <label for="reviewer" class="ml-2 text-sm text-gray-600">
                     Available as reviewer
                 </label>
             </div>
 
-            <button type="submit" class="w-full py-2 px-4 bg-green-700 text-white rounded-md hover:bg-green-800">
+            <button type="submit" class="w-full py-2 px-4 bg-blue-700 text-white rounded-md hover:bg-blue-800">
                 Register
             </button>
         </form>
