@@ -6,7 +6,7 @@
             <!-- Sidebar -->
             <div class="w-1/5 p-4 text-white rounded-md">
                 <div class="sticky top-24">
-                    <button onclick="switchScreen('allEditorials')"
+                    <button onclick="switchScreen('all-editorials')"
                         class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
                         📖 All Editorials
                     </button>
@@ -31,7 +31,7 @@
             <!-- Main Content -->
             <div class="flex-1 py-5 px-6">
                 <!-- All Editorials Section -->
-                <div id="allEditorials" class="page">
+                <div id="all-editorials" class="page">
                     <h2 class="text-lg font-semibold text-gray-700 mb-4">📚 All Editorials</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($teamMembers as $member)
@@ -208,10 +208,10 @@
                     <div class="max-w-4xl mx-auto bg-white p-6 shadow-md rounded-md">
                         <h1 class="text-3xl font-semibold mb-4">Plagiarism Policy</h1>
                         <p class="mt-2 text-gray-700">
-                            By submitting a manuscript to JIEM, the authors commit that the work is original, free of
+                            By submitting a manuscript to CJMRI, the authors commit that the work is original, free of
                             fabrication or falsification, and does not contain any duplication of the authors' own work.
 
-                            Referencing all related work is required. To ensure writing and research integrity, JIEM employs
+                            Referencing all related work is required. To ensure writing and research integrity, CJMRI employs
                             the iThenticate plagiarism detection system to check all manuscripts for duplicate and
                             unattributed content.
 
@@ -225,9 +225,9 @@
                     <div class="max-w-4xl mx-auto bg-white p-6 shadow-md rounded-md">
                         <h1 class="text-3xl font-semibold mb-4">Open Access Policy</h1>
                         <p class="mt-2 text-gray-700">
-                            All articles published by JIEM are open-access. This means there are no financial, legal, or
+                            All articles published by CJMRI are open-access. This means there are no financial, legal, or
                             technical barriers to accessing them, making research information available to readers at no
-                            cost. Readers are allowed to use the articles published in JIEM for any other lawful and
+                            cost. Readers are allowed to use the articles published in CJMRI for any other lawful and
                             non-commercial purpose, in accordance with a Creative Commons Attribution-NonCommercial 4.0
                             International License (CC BY-NC 4.0).
                         </p>
@@ -288,11 +288,14 @@
 
     <script>
         function switchScreen(screenId) {
-            document.querySelectorAll('.page').forEach((page) => {
-                page.classList.add('hidden');
-            });
-            document.getElementById(screenId).classList.remove('hidden');
+            window.location.hash = screenId;
+            document.querySelectorAll('.page').forEach(page => page.classList.add('hidden'));
+            document.getElementById(screenId)?.classList.remove('hidden');
         }
+
+        window.addEventListener('load', () => switchScreen(location.hash.substring(1) || 'allEditorials'));
+        window.addEventListener('hashchange', () => switchScreen(location.hash.substring(1)));
+
 
         document.addEventListener('DOMContentLoaded', function() {
             const toggleButton = document.querySelector('[data-toggle="reviewer-form"]');
