@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/png" href="{{ asset('storage/images/logo.png') }}">
     <title>Admin Dashboard - CJMRI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
@@ -120,13 +121,15 @@
                                     </svg>
                                     {{ $journalInfo->editorial_office ?? 'Battabang, Cambodia' }}
                                 </p>
-                                {{-- <p class="flex items-center">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <p class="flex items-center space-x-2">
+                                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                                     </svg>
-                                    Designed & Developed by: {{ $journalInfo->developer ?? 'LONG SREYNICH' }}
-                                </p> --}}
+                                    <span>Designed by: <strong>Rous Sinin</strong></span>
+                                    <span>Developed by: <strong>{{ $journalInfo->developer ?? 'LONG SREYNICH' }}</strong></span>
+                                </p>
                             </div>
                         </div>
                         <div class="flex items-start justify-end">

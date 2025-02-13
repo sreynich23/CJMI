@@ -58,6 +58,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('about') }}"
+                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
+                    ABOUT
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('curr') }}"
                     class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
                     CURRENT ISSUE
@@ -76,21 +82,15 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('announcements') }}"
-                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
-                    ANNOUNCEMENTS
-                </a>
-            </li>
-            <li>
                 <a href="{{ route('submit.index') }}"
                     class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
                     SUBMISSION
                 </a>
             </li>
             <li>
-                <a href="{{ route('about') }}"
+                <a href="{{ route('announcements') }}"
                     class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
-                    ABOUT
+                    ANNOUNCEMENTS
                 </a>
             </li>
             @guest
@@ -99,7 +99,7 @@
                     <li>
                         <a href="{{ route('reviewer') }}"
                             class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
-                            REVIEWER
+                            FOR REVIEWER
                         </a>
                     </li>
                 @endif

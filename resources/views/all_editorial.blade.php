@@ -7,16 +7,24 @@
             <div class="w-1/5 p-4 text-white rounded-md">
                 <div class="sticky top-24">
                     <button onclick="switchScreen('allEditorials')"
-                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-500 hover:bg-blue-500 hover:text-blue-800 transition">
+                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
                         📖 All Editorials
                     </button>
                     <button onclick="switchScreen('reviewing-policy')"
-                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-500 hover:bg-blue-500 hover:text-blue-800 transition">
+                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
                         📝 Reviewing Policy
                     </button>
                     <button onclick="switchScreen('archiving-policy')"
-                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-500 hover:bg-blue-500 hover:text-blue-800 transition">
+                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
                         📂 Archiving-Policy
+                    </button>
+                    <button onclick="switchScreen('plagiarism-policy')"
+                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
+                        📑 Plagiarism Policy
+                    </button>
+                    <button onclick="switchScreen('open-access-policy')"
+                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
+                        🔓 Open Access Policy
                     </button>
                 </div>
             </div>
@@ -128,18 +136,21 @@
                         </div>
                     </div>
                 </div>
+                <!-- Archiving Policy -->
                 <div id="archiving-policy" class="page hidden">
                     <div class="max-w-4xl mx-auto bg-white p-6 shadow-md rounded-md">
                         <h1 class="text-3xl font-semibold mb-4">Archiving Policy</h1>
                         <p class="mt-2 text-gray-700">
-                            The Cambodia Journal of Multidisciplinary Research and Innovation utilizes the LOCKSS (Lots of Copies Keep
+                            The Cambodia Journal of Multidisciplinary Research and Innovation utilizes the LOCKSS (Lots of
+                            Copies Keep
                             Stuff Safe) system to create a distributed archiving system among participating libraries, and
                             it permits those libraries to create permanent archives of the journal for purposes of
                             preservation and restoration. The full text of all articles published in the Journal of
                             International Economics and Management is deposited in the Public Knowledge Project’s Private
                             LOCKSS Network (PKP-PLN) to guarantee long-term digital preservation.
 
-                            Papers submitted to CJMRI should not have been published before in their current or substantially
+                            Papers submitted to CJMRI should not have been published before in their current or
+                            substantially
                             similar content, or be under consideration for publication.
 
                             All submitted papers must be original work. Authors submitting articles for publication warrant
@@ -190,8 +201,36 @@
                             Authors should check the websites for details of the copyright holders to seek permission for
                             re-use.
                         </p>
+                    </div>
+                </div>
+                <!-- Plagiarism Policy -->
+                <div id="plagiarism-policy" class="page hidden">
+                    <div class="max-w-4xl mx-auto bg-white p-6 shadow-md rounded-md">
+                        <h1 class="text-3xl font-semibold mb-4">Plagiarism Policy</h1>
+                        <p class="mt-2 text-gray-700">
+                            By submitting a manuscript to JIEM, the authors commit that the work is original, free of
+                            fabrication or falsification, and does not contain any duplication of the authors' own work.
 
+                            Referencing all related work is required. To ensure writing and research integrity, JIEM employs
+                            the iThenticate plagiarism detection system to check all manuscripts for duplicate and
+                            unattributed content.
 
+                            In preventing plagiarism from occurring, we request the reviewers notify the editors when
+                            suspecting plagiarism, fraud, or other ethical concerns. Details are found in the Review Form.
+                        </p>
+                    </div>
+                </div>
+                <!-- Open access Policy -->
+                <div id="open-access-policy" class="page hidden">
+                    <div class="max-w-4xl mx-auto bg-white p-6 shadow-md rounded-md">
+                        <h1 class="text-3xl font-semibold mb-4">Open Access Policy</h1>
+                        <p class="mt-2 text-gray-700">
+                            All articles published by JIEM are open-access. This means there are no financial, legal, or
+                            technical barriers to accessing them, making research information available to readers at no
+                            cost. Readers are allowed to use the articles published in JIEM for any other lawful and
+                            non-commercial purpose, in accordance with a Creative Commons Attribution-NonCommercial 4.0
+                            International License (CC BY-NC 4.0).
+                        </p>
                     </div>
                 </div>
             </div>

@@ -108,7 +108,9 @@ Route::middleware(['auth'])->group(function () {
         })->name('dashboard');
 
         // About Management
-        Route::post('/upload-cover', [DashboardController::class, 'uploadCover'])->name('uploadCover');
+        Route::post('/upload-recognitions', [DashboardController::class, 'uploadRecognitions'])->name('uploadRecognitions');
+        Route::post('/upload-indexings', [DashboardController::class, 'uploadIndexings'])->name('uploadIndexings');
+        Route::post('/upload-conferences', [DashboardController::class, 'uploadConferences'])->name('uploadConferences');
         Route::get('/', [AboutController::class, 'index'])->name('about');
         Route::get('/files/{id}/download', [AboutController::class, 'download'])->name('download');
         Route::get('/cv/{id}/download', [AboutController::class, 'downloadCV'])->name('download.cv');

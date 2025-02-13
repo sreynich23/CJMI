@@ -7,6 +7,7 @@ use App\Mail\FeedbackAuthor;
 use App\Mail\reject_review;
 use App\Models\About;
 use App\Models\Announcement;
+use App\Models\Conference;
 use App\Models\FileSubmission;
 use App\Models\JournalInformation;
 use App\Models\JournalIssue;
@@ -15,6 +16,8 @@ use App\Models\Submit;
 use App\Models\VolumeIssueImage;
 use App\Models\Editor;
 use App\Models\EditorialTeam;
+use App\Models\Indexing;
+use App\Models\Recognition;
 use App\Models\Review;
 use App\Models\reviewer;
 use App\Models\reviewers;
@@ -30,6 +33,9 @@ class AboutController extends Controller
 {
     public function index()
     {
+        $recognitions = Recognition::all();
+        $indexings = Indexing::all();
+        $conferences = Conference::all();
         $editors=EditorialTeam::all();
         $abouts = About::all();
         $image = VolumeIssueImage::latest()->first();
@@ -85,7 +91,7 @@ class AboutController extends Controller
             });
         }
         $latestYear = VolumeIssue::query()->max('year');
-        return view('admin.dashboard', compact('abouts', 'submissions', 'formattedVolumes', 'image', 'latestYear', 'navbar', 'journalInfo', 'announcements', 'reviewers', 'reviewersEditorial', 'reviewing', 'submissionsUpdate', 'submissionsApproved','editors'));
+        return view('admin.dashboard', compact('abouts', 'submissions', 'formattedVolumes', 'image', 'latestYear', 'navbar', 'journalInfo', 'announcements', 'reviewers', 'reviewersEditorial', 'reviewing', 'submissionsUpdate', 'submissionsApproved','editors','recognitions', 'indexings', 'conferences'));
     }
 
     public function indexuser()

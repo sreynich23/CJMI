@@ -26,7 +26,7 @@
                                 </td>
                                 <td class="px-6 py-4">{{ $submissionsUpdates->user->name ?? 'N/A' }}</td>
                                 <td class="px-6 py-4">
-                                    <a href="{{ route('admin.download', $submissionsUpdates->id )}}"
+                                    <a href="{{ route('admin.download', $submissionsUpdates->id) }}"
                                         class="text-blue-600 hover:text-blue-900">
                                         Download
                                     </a>
@@ -73,28 +73,78 @@
 
         <!-- Row 2: 1/4 of the screen -->
         <div class="w-1/5 py-10 px-4 bg-gray-100">
-            <!-- Form for uploading cover image -->
-            <form action="{{ route('admin.uploadCover') }}" method="POST" enctype="multipart/form-data">
+            @if ($image)
+                <img src="{{ asset('storage/' . $image->image_path) }}" alt="Cover Image">
+            @else
+                <p>No image available</p>
+            @endif
+            <!-- Form for uploading Recognitions -->
+            <button type="button" id="uploadRecognitionBtn"
+                class="flex rounded-md px-1 gap-2 border border-gray-500 hover:border-gray-700 mb-4">
+                Add Recognitions
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+            </button>
+            <form action="{{ route('admin.uploadRecognitions') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <!-- Button to trigger the file input -->
-                <button type="button" id="uploadCoverBtn"
-                    class="flex rounded-md px-1 gap-2 border border-gray-500 hover:border-gray-700 mb-4">
-                    Add cover
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                        stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                    </svg>
-                </button>
-
                 <!-- Hidden file input -->
-                <div id="fileInputDiv" class="hidden mb-4">
-                    <input type="file" name="cover_image" accept="image/*" class="border border-gray-300 p-2 w-full">
+                <div id="uploadRecognitions" class="hidden mb-4 space-y-2">
+                    <input type="file" name="logo" accept="image/*" class="border border-gray-300 p-2 w-full">
+                    <input type="text" name="name" placeholder="name" class="border border-gray-300 p-2 w-full">
+                    <input type="text" name="url" placeholder="link" class="border border-gray-300 p-2 w-full">
+                    <button type="submit"
+                        class="flex rounded-md px-1 gap-2 border border-gray-500 hover:border-gray-700 mb-4">
+                        Upload
+                    </button>
                 </div>
-
-                <button type="submit"
-                    class="flex rounded-md px-1 gap-2 border border-gray-500 hover:border-gray-700 mb-4">
-                    Upload Cover
-                </button>
+            </form>
+            <!-- Form for uploading Indexing -->
+            <button type="button" id="uploadIndexingsBtn"
+                class="flex rounded-md px-1 gap-2 border border-gray-500 hover:border-gray-700 mb-4">
+                Add Indexings
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+            </button>
+            <form action="{{ route('admin.uploadIndexings') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <!-- Hidden file input -->
+                <div id="uploadIndexings" class="hidden mb-4 space-y-2">
+                    <input type="file" name="logo" accept="image/*" class="border border-gray-300 p-2 w-full">
+                    <input type="text" name="name" placeholder="name" class="border border-gray-300 p-2 w-full">
+                    <input type="text" name="url" placeholder="link" class="border border-gray-300 p-2 w-full">
+                    <button type="submit"
+                        class="flex rounded-md px-1 gap-2 border border-gray-500 hover:border-gray-700 mb-4">
+                        Upload
+                    </button>
+                </div>
+            </form>
+            <!-- Form for uploading Conferences -->
+            <button type="button" id="uploadConferencesBtn"
+                class="flex rounded-md px-1 gap-2 border border-gray-500 hover:border-gray-700 mb-4">
+                Add Conferences
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+            </button>
+            <form action="{{ route('admin.uploadConferences') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <!-- Hidden file input -->
+                <div id="uploadConferences" class="hidden mb-4 space-y-2">
+                    <input type="file" name="logo" accept="image/*" class="border border-gray-300 p-2 w-full">
+                    <input type="text" name="name" placeholder="name"
+                        class="border border-gray-300 p-2 w-full">
+                    <input type="text" name="url" placeholder="link"
+                        class="border border-gray-300 p-2 w-full">
+                    <button type="submit"
+                        class="flex rounded-md px-1 gap-2 border border-gray-500 hover:border-gray-700 mb-4">
+                        Upload
+                    </button>
+                </div>
             </form>
 
             <!-- Success message -->
@@ -105,11 +155,37 @@
             @endif
 
             <!-- Display uploaded cover image if available -->
-            <div class="sticky top-4">
-                @if ($image)
-                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="Cover Image">
-                @else
-                    <p>No image available</p>
+            <div class="sticky top-4 flex flex-col space-y-4">
+                <div class="bg-blue-950 h-10 px-3 justify-start items-center flex">
+                    <h1 class="text-white text-xs font-semibold">Government, Ministry, and Institution Recognition
+                    </h1>
+                </div>
+                @if ($recognitions)
+                    @foreach ($recognitions as $recognition)
+                        <div class="flex items-center space-x-2">
+                            <img class="h-8 w-auto" src="{{ asset('storage/' . $recognition->logo) }}"
+                                alt="{{ $recognition->url }}">
+                            <h1 class="text-xs text-white">{{ $recognition->name }}</h1>
+                        </div>
+                    @endforeach
+                @endif
+                <div class="bg-blue-950 h-10 px-3 justify-start items-center flex">
+                    <h1 class="text-white text-xs font-semibold">Indexing</h1>
+                </div>
+                @if ($indexings)
+                    @foreach ($indexings as $indexing)
+                        <img class="h-8 w-auto" src="{{ asset('storage/' . $indexing->logo) }}"
+                            alt="{{ $indexing->url }}">
+                    @endforeach
+                @endif
+                <div class="bg-blue-950 h-10 px-3 justify-start items-center flex">
+                    <h1 class="text-white text-xs font-semibold">International Conference</h1>
+                </div>
+                @if ($conferences)
+                    @foreach ($conferences as $conference)
+                        <img class="h-8 w-auto" src="{{ asset('storage/' . $conference->logo) }}"
+                            alt="{{ $conference->url }}">
+                    @endforeach
                 @endif
             </div>
         </div>
@@ -133,7 +209,8 @@
 
             <div class="flex justify-end space-x-4">
                 <!-- Close Button -->
-                <button type="button" id="closeModalButtons" class="text-gray-600 hover:text-gray-900">Cancel</button>
+                <button type="button" id="closeModalButtons"
+                    class="text-gray-600 hover:text-gray-900">Cancel</button>
                 <!-- Submit Button -->
                 <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md">Send
                     Feedback</button>
@@ -143,7 +220,8 @@
 </div>
 
 <!-- Modals -->
-<div id="modal-containers" class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+<div id="modal-containers"
+    class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
     <div class="bg-white rounded-lg p-6 w-96">
         <h3 class="text-lg font-semibold mb-4" id="modal-title">Modal Title</h3>
         <form id="modal-forms" method="POST">
@@ -185,8 +263,16 @@
         });
     }
 
-    document.getElementById('uploadCoverBtn').addEventListener('click', function() {
-        var fileInputDiv = document.getElementById('fileInputDiv');
+    document.getElementById('uploadRecognitionBtn').addEventListener('click', function() {
+        var fileInputDiv = document.getElementById('uploadRecognitions');
+        fileInputDiv.classList.toggle('hidden');
+    });
+    document.getElementById('uploadIndexingsBtn').addEventListener('click', function() {
+        var fileInputDiv = document.getElementById('uploadIndexings');
+        fileInputDiv.classList.toggle('hidden');
+    });
+    document.getElementById('uploadConferencesBtn').addEventListener('click', function() {
+        var fileInputDiv = document.getElementById('uploadConferences');
         fileInputDiv.classList.toggle('hidden');
     });
 
