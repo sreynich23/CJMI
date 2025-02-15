@@ -1,59 +1,61 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto px-4 bg-white py-3 flex min-h-screen">
+    <div class="container mx-auto lg:px-4 bg-white py-3 flex min-h-screen">
         <!-- Main Content Grid -->
-        <div class="bg-gray-100 px-2 rounded-lg shadow-sm mb-6 w-3/4 h-full">
+        <div class="bg-gray-100 px-3 lg:px-2 rounded-lg shadow-sm mb-6 w-3/4 h-full">
 
-            <div class="bg-white h-72 flex justify-between space-x-2">
+            <div class="bg-white h-24 sm:h-48 lg:h-72 flex justify-between lg:space-x-2">
                 <div class="bg-gray-500 w-1/5 h-full">
                     @if ($image)
                         <img src="{{ asset('storage/' . $image->image_path) }}" alt="Cover Image">
                     @else
-                        <p>No image available</p>
+                        <p class="font-thin lg:font-semibold text-sm text-center" >No image available</p>
                     @endif
                 </div>
-                <div class="w-4/5 border-8 border-blue-950 py-2">
+                <div class="w-4/5 border-2 lg:border-8 border-blue-950 lg:py-2">
                     <!-- Search Form Section -->
                     <form action="{{ route('home') }}" method="GET" class="flex flex-1 gap-2 items-center px-1">
                         <input type="text" name="query"
-                            class="text-black w-3/4 lg:w-3/4 h-8 px-2 lg:text-sm text-xs rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            class="text-black w-3/4 h-3 lg:w-3/4 lg:h-8 px-2 lg:text-sm text-xs font-thin lg:font-semibold lg:rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Search..." value="{{ request()->query('query') }}">
                         <button type="submit"
-                            class="px-3 py-1 rounded-md text-xs bg-blue-500 hover:bg-blue-600 transition-colors ww-1/4 lg:w-1/4 text-white">
+                            class="lg:px-3 lg:py-1 lg:rounded-md text-xs bg-blue-500 hover:bg-blue-600 transition-colors lg:w-1/4 text-white">
                             Search
                         </button>
                     </form>
-                    <div class="justify-between flex h-full px-3">
-                        <div class="space-y-2">
-                            <p class="text-xs font-semibold text-gray-700">Journal name:</p>
-                            <p class="text-xs font-semibold text-gray-700">Initials:</p>
-                            <p class="text-xs font-semibold text-gray-700">DOI:</p>
-                            <p class="text-xs font-semibold text-gray-700">Print ISSN:</p>
-                            <p class="text-xs font-semibold text-gray-700">Editor-in-Chief:</p>
-                            <p class="text-xs font-semibold text-gray-700">Publisher:</p>
-                            <p class="text-xs font-semibold text-gray-700">Citation analysis:</p>
+                    <div class="justify-between flex px-3">
+                        {{-- <div class="space-y-2">
+                            <p class="text-xs font-thin lg:font-semibold text-gray-700">Journal name:</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-700">Initials:</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-700">DOI:</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-700">Print ISSN:</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-700">Editor-in-Chief:</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-700">Publisher:</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-700">Citation analysis:</p>
                         </div>
                         <div class="space-y-2">
-                            <p class="text-xs font-semibold text-gray-900">Cambodian Journal of Multidisciplinary Research
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Cambodian Journal of Multidisciplinary Research
                                 and Innovation</p>
-                            <p class="text-xs font-semibold text-gray-900">CJMRI</p>
-                            <p class="text-xs font-semibold text-gray-900">Ministry of Education Youth and Sports</p>
-                            <p class="text-xs font-semibold text-gray-900">and 1 special issue (if required)</p>
-                            <p class="text-xs font-semibold text-gray-900">Prefix. XXXXX.xxxxxxx by Crossref</p>
-                            <p class="text-xs font-semibold text-gray-900">Dr. Sam Rany</p>
-                            <p class="text-xs font-semibold text-gray-900">Google Scholar, DoAJ</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">CJMRI</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Ministry of Education Youth and Sports</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">and 1 special issue (if required)</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Prefix. XXXXX.xxxxxxx by Crossref</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Dr. Sam Rany</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Google Scholar, DoAJ</p>
                         </div>
                         <div class="py-6">
                             <img src="{{ asset('storage/images/qrcode.png') }}" alt="QR Code"
                                 class="w-20 h-20 rounded-md shadow-md">
-                        </div>
+                        </div> --}}
+                        <img src="{{ asset('storage/images/cover.jpg') }}" alt="QR Code"
+                                class="h-4/5 sm:h-3/5 lg:h-4/5">
                     </div>
                 </div>
             </div>
             <!-- Latest Articles Highlight Section -->
             <div class="mb-12">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Latest Articles</h2>
+                <h2 class="text-sm lg:text-2xl font-bold text-gray-800 mb-4">Latest Articles</h2>
                 <div id="highlight-section" class="bg-white rounded-lg shadow-md p-4 h-5/6 overflow-hidden">
                     <!-- Carousel Container -->
                     <div id="carousel" class="flex transition-transform duration-500">
@@ -113,7 +115,7 @@
         </div>
         <div class="w-1/4 flex flex-col space-y-4">
             <div class="bg-blue-950 h-10 px-3 justify-start items-center flex">
-                <h1 class="text-white text-xs font-semibold">Government, Ministry, and Institution Recognition</h1>
+                <h1 class="text-white text-xs font-thin lg:font-semibold">Government, Ministry, and Institution Recognition</h1>
             </div>
             @if ($recognitions)
                 @foreach ($recognitions as $recognition)
@@ -124,7 +126,7 @@
                 @endforeach
             @endif
             <div class="bg-blue-950 h-10 px-3 justify-start items-center flex">
-                <h1 class="text-white text-xs font-semibold">Indexing</h1>
+                <h1 class="text-white text-xs font-thin lg:font-semibold">Indexing</h1>
             </div>
             @if ($indexings)
                 @foreach ($indexings as $indexing)
@@ -132,7 +134,7 @@
                 @endforeach
             @endif
             <div class="bg-blue-950 h-10 px-3 justify-start items-center flex">
-                <h1 class="text-white text-xs font-semibold">International Conference</h1>
+                <h1 class="text-white text-xs font-thin lg:font-semibold">International Conference</h1>
             </div>
             @if ($conferences)
                 @foreach ($conferences as $conference)

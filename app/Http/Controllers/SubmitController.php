@@ -153,7 +153,7 @@ class SubmitController extends Controller
         try {
             $submission = Submit::create([
                 'user_id' => Auth::id(),
-                'prefix' => session('submission.metadata.prefix'),
+                'prefix' => 'NULL',
                 'author_name' => session('submission.metadata.author_name'),
                 'title' => session('submission.metadata.title'),
                 'subtitle' => session('submission.metadata.subtitle'),
@@ -267,11 +267,12 @@ class SubmitController extends Controller
     }
     public function edit($id)
 {
+    $navbar = Navbar::latest()->first();
     // Fetch the submission by its ID
     $submission = Submit::findOrFail($id);
 
     // Return the edit view with the submission data
-    return view('submit.update', compact('submission'));
+    return view('submit.update', compact('submission','navbar'));
 }
 
 

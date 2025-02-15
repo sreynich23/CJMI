@@ -111,6 +111,6 @@ class ReviewerController extends Controller
         // Send approval email
         Mail::to($reviewer->email)->send(new ReviewerApprovedMail($reviewer));
 
-        return response()->json(['message' => 'Reviewer approved and email sent successfully.']);
+        return redirect()->back()->with('success', 'Reviewer approved and email sent successfully.');
     }
 }

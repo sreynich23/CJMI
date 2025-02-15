@@ -23,7 +23,7 @@
     </style>
 </head>
 
-<body class="bg-gray-100 flex flex-col min-h-screen w-3/4 justify-center mx-auto ">
+<body class="bg-gray-100 flex flex-col min-h-screen lg:w-3/4 justify-center mx-auto ">
     @include('navbar')
 
     @if (session('success'))
