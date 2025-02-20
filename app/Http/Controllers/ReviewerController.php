@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Mail\ReviewerApprovedMail;
 use App\Mail\ReviewerAssignedMail;
 use App\Models\Navbar;
-use App\Models\reviewer;
-use App\Models\reviewers;
+use App\Models\Reviewer;
+use App\Models\Reviewers;
 use App\Models\Submit;
 use App\Models\User;
 use App\Models\VolumeIssue;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -21,6 +22,7 @@ class ReviewerController extends Controller
     {
         $navbar = Navbar::latest()->first();
         $latestYear = VolumeIssue::all();
+        
         $reviewers = DB::table('reviewers')
             ->join('submits', 'reviewers.submission_id', '=', 'submits.id')
             ->join('reviewer', 'reviewers.reviewer_id', '=', 'reviewer.id')

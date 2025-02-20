@@ -9,11 +9,13 @@ class ReviewerFeedback extends Model
 {
     use HasFactory;
 
+    protected $table = 'reviewer_feedback';
     protected $fillable = [
         'submission_id',
         'reviewer_id',
         'comments',
         'recommendation',
+        'file_path',
     ];
 
     public function submission()

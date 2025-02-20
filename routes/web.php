@@ -52,8 +52,7 @@ Route::middleware(['web'])->group(function () {
     Route::get('/files/{id}/download', [CurrentIssueController::class, 'download'])->name('download');
 
     // File Download Routes
-    Route::get('/files/{submission}/download', [FileDownloadController::class, 'download'])
-        ->name('files.download');
+    Route::get('/files/{id}/download', [FileDownloadController::class, 'download'])->name('download');
     Route::get('/files/{submission}/view', [FileDownloadController::class, 'show'])
         ->name('files.show');
     Route::get('/files/{submission}/preview', [FileDownloadController::class, 'preview'])
@@ -112,7 +111,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/upload-indexings', [DashboardController::class, 'uploadIndexings'])->name('uploadIndexings');
         Route::post('/upload-conferences', [DashboardController::class, 'uploadConferences'])->name('uploadConferences');
         Route::get('/', [AboutController::class, 'index'])->name('about');
-        Route::get('/files/{id}/download', [AboutController::class, 'download'])->name('download');
+        Route::get('/files/{id}/download', [FileDownloadController::class, 'download'])->name('download');
         Route::get('/cv/{id}/download', [AboutController::class, 'downloadCV'])->name('download.cv');
         Route::post('/about/store', [AboutController::class, 'store'])->name('about.store');
         Route::put('/about/{id}', [AboutController::class, 'update'])->name('about.update');

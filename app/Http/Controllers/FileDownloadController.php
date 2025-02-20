@@ -3,25 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\FileSubmission;
+use App\Models\Submit;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 class FileDownloadController extends Controller
 {
-    public function download(FileSubmission $submission)
+    public function download($id)
     {
-        dd($submission);
-        // Check if file exists
-        if (!Storage::exists($submission->file_path)) {
-            abort(404, 'File not found');
+        $submit = Submit::findOrFail($id);
+
+        if (!$submit->file_path) {
+            return redirect()->back()->with('error', 'File not found.');
         }
 
-        // Return file download response with original filename
-        return Storage::download(
-            $submission->file_path,
-            $submission->original_filename,
-            ['Content-Type' => $submission->file_type]
-        );
+        $filePath = 'public/' . $submit->file_path;
+        if (!Storage::exists($filePath)) {
+            return redirect()->back()->with('error', 'File not found.');
+        }
+
+        return Storage::download($filePath, $submit->title . '.docx');
     }
 
     public function show(FileSubmission $submission)

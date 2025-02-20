@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\FileSubmission;
 use App\Models\Navbar;
+use App\Models\Reviewer;
 use Illuminate\Http\Request;
 use App\Models\ReviewerFeedback;
+use App\Models\Reviewers;
 use App\Models\Submission;
 use App\Models\User;
 use App\Models\VolumeIssue;
@@ -32,55 +34,25 @@ class ReviewerFeedbackController extends Controller
 
     public function storeFeedback(Request $request, $id)
     {
-        // Validate the request inputs
-        $request->validate([
-            'recommendation' => 'required|in:accepted,major revisions,minor revisions,rejected',
-            'comments' => 'nullable|string|max:1000',
-            'feedback_file' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
-        ]);
-        $filePath = null;
-        if ($request->hasFile('feedback_file')) {
-            $filePath = $request->file('feedback_file')->store('reviewer_feedback_files', 'public');
-        }
-
-        // Check if feedback already exists for this submission
-        $feedback = DB::table('reviewer_feedback')->where('submission_id', $id)->first();
-
-        // Determine the status for the reviewers table based on the recommendation
+        $filePath =$request->file('feedback_file')->store('reviewer_feedback_files', 'public');
         $status = match ($request->recommendation) {
-            'accepted' => 'approved',
-            'major revisions' => 'major_revisions',
-            'minor revisions' => 'minor_revisions',
-            'rejected' => 'rejected',
+            'Accepted' => 'approved',
+            'Major Revisions' => 'major_revisions',
+            'Minor Revisions' => 'minor_revisions',
+            'Rejected' => 'rejected',
         };
-
-        if (!$feedback) {
-            // Insert feedback into reviewer_feedback table
-            DB::table('reviewer_feedback')->insert([
-                'submission_id' => $id,
-                'reviewer_id' => Auth::user()->id,
+        $reviewerId = Reviewer::where('user_id', Auth::id())->value('id');
+        ReviewerFeedback::updateOrCreate(
+            ['submission_id' => $id, 'reviewer_id' => $reviewerId],
+            [
                 'recommendation' => $request->recommendation,
                 'comments' => $request->recommendation !== 'accepted' ? $request->comments : null,
                 'file_path' => $filePath,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        } else {
-            // Update existing feedback in reviewer_feedback table
-            DB::table('reviewer_feedback')->where('submission_id', $id)->update([
-                'recommendation' => $request->recommendation,
-                'comments' => $request->recommendation !== 'accepted' ? $request->comments : null,
-                'updated_at' => now(),
-            ]);
-        }
+            ]
+        );
 
-        // Update the status in the reviewers table
-        DB::table('reviewers')->where('submission_id', $id)->update([
-            'status' => $status,
-            'updated_at' => now(),
-        ]);
+        Reviewers::where('submission_id', $id)->update(['status' => $status]);
 
-        // Redirect back with a success message
         return redirect()->back()->with('success', 'Feedback submitted and status updated successfully.');
     }
 
