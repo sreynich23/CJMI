@@ -92,7 +92,7 @@
         class="modal-background hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div class="modal-container bg-white rounded-lg shadow-lg p-6">
             <h2 id="modalTitle" class="text-xl font-semibold mb-4"></h2>
-            <form id="feedbackForm" method="POST" action="">
+            <form id="feedbackForm" method="POST" action="" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" id="submissionIdInput" name="submission_id">
                 <input type="hidden" id="recommendationInput" name="recommendation">
@@ -114,15 +114,11 @@
 
     <script>
         function showFeedbackModal(submissionId, recommendation) {
-        // Update modal title dynamically
         document.getElementById('modalTitle').textContent = `Feedback for ${recommendation}`;
         document.getElementById('submissionIdInput').value = submissionId;
         document.getElementById('recommendationInput').value = recommendation;
-        // Dynamically set the form action using route
         const route = `{{ route('reviewer.feedback', ':id') }}`.replace(':id', submissionId);
         document.getElementById('feedbackForm').action = route;
-
-        // Show the modal
         document.getElementById('feedbackModal').classList.remove('hidden');
     }
 

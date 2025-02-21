@@ -34,7 +34,7 @@ class ReviewerFeedbackController extends Controller
 
     public function storeFeedback(Request $request, $id)
     {
-        $filePath =$request->file('feedback_file')->store('reviewer_feedback_files', 'public');
+        $filePath = $request->file('feedback_file')->storeAs('reviewer_feedback_files', 'submission_' . $request->submission_id . '_reviewer_' . $request->reviewer_id . '.' . $request->file('feedback_file')->getClientOriginalExtension(), 'public');
         $status = match ($request->recommendation) {
             'Accepted' => 'approved',
             'Major Revisions' => 'major_revisions',
@@ -42,9 +42,10 @@ class ReviewerFeedbackController extends Controller
             'Rejected' => 'rejected',
         };
         $reviewerId = Reviewer::where('user_id', Auth::id())->value('id');
-        ReviewerFeedback::updateOrCreate(
-            ['submission_id' => $id, 'reviewer_id' => $reviewerId],
+        ReviewerFeedback::create(
             [
+                'submission_id' => $id,
+                'reviewer_id' => $reviewerId,
                 'recommendation' => $request->recommendation,
                 'comments' => $request->recommendation !== 'accepted' ? $request->comments : null,
                 'file_path' => $filePath,
@@ -55,8 +56,6 @@ class ReviewerFeedbackController extends Controller
 
         return redirect()->back()->with('success', 'Feedback submitted and status updated successfully.');
     }
-
-
 
     public function show($id)
     {

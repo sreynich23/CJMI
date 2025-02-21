@@ -59,7 +59,7 @@ class AboutController extends Controller
         $reviewing = DB::table('reviewers')
             ->join('submits', 'reviewers.submission_id', '=', 'submits.id')
             ->join('reviewer', 'reviewers.reviewer_id', '=', 'reviewer.id')
-            ->select('submits.title as title', 'submits.file_path as file_path', 'reviewers.status', 'reviewers.submission_id', 'reviewer.name as reviewer_name', 'reviewer.user_id as user_id')
+            ->select('submits.title as title', 'submits.file_path as file_path', 'reviewers.status', 'reviewers.submission_id','reviewers.reviewer_id', 'reviewer.name as reviewer_name', 'reviewer.user_id as user_id')
             ->get()
             ->groupBy('submission_id');
         // Fetch all volumes with their issues, ordered by year, volume, and issue

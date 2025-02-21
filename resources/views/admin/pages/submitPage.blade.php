@@ -70,8 +70,21 @@
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
                         @foreach ($reviews as $review)
-                            <span class="block">{{ $review->status }}</span>
-                        @endforeach
+                        <div class="block">
+                            @php
+                                $feedback = \App\Models\ReviewerFeedback::where('submission_id', $review->submission_id)
+                                ->where('reviewer_id', $review->reviewer_id)
+                                ->first();
+                            @endphp
+                            @if ($feedback && $feedback->file_path)
+                            <a href="{{ asset('storage/' . $feedback->file_path) }}" target="_blank" class="text-blue-500 underline">
+                                <span>{{ $review->status }}</span>
+                                </a>
+                            @else
+                            <span>{{ $review->status }}</span>
+                            @endif
+                        </div>
+                    @endforeach
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-500">
                         @foreach ($reviews as $review)

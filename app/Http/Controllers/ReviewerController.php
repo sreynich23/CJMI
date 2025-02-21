@@ -22,7 +22,7 @@ class ReviewerController extends Controller
     {
         $navbar = Navbar::latest()->first();
         $latestYear = VolumeIssue::all();
-        
+
         $reviewers = DB::table('reviewers')
             ->join('submits', 'reviewers.submission_id', '=', 'submits.id')
             ->join('reviewer', 'reviewers.reviewer_id', '=', 'reviewer.id')
@@ -34,7 +34,6 @@ class ReviewerController extends Controller
     }
     public function requestRoleChange(Request $request)
     {
-        Log::info('Request received', $request->all());
 
         // Validate the incoming request
         $request->validate([
