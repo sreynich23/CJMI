@@ -49,6 +49,49 @@
                     </tbody>
                 </table>
             </div>
+            <div class="overflow-x-auto">
+                <h1>Update</h1>
+                <table class="min-w-full divide-y divide-gray-200 border">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">File</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach ($reviewers as $reviewer)
+                            @foreach ($reviewer as $submission)
+                                @if (auth()->user()->id === $submission->user_id && $submission->status === 'updated')
+                                    <tr>
+                                        <td class="px-6 py-4">{{ $submission->title }}</td>
+                                        <td class="px-6 py-4">
+                                            <a href="{{ route('download', $submission->submission_id) }}"
+                                                class="text-blue-600 hover:text-blue-900" target="_blank">Download</a>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm font-medium">
+                                            <div class="flex space-x-3">
+                                                <button
+                                                    onclick="showFeedbackModal({{ $submission->submission_id }}, 'Accepted')"
+                                                    class="text-green-600 hover:text-green-900">Accepted</button>
+                                                <button
+                                                    onclick="showFeedbackModal({{ $submission->submission_id }}, 'Major Revisions')"
+                                                    class="text-gray-500 hover:text-green-900">Major Revisions</button>
+                                                <button
+                                                    onclick="showFeedbackModal({{ $submission->submission_id }}, 'Minor Revisions')"
+                                                    class="text-gray-400 hover:text-green-900">Minor Revisions</button>
+                                                <button
+                                                    onclick="showFeedbackModal({{ $submission->submission_id }}, 'Rejected')"
+                                                    class="text-red-600 hover:text-red-900">Rejected</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         @endif
     </div>
 

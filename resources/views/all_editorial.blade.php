@@ -131,7 +131,7 @@
 
                         <!-- Example of how an image can be included -->
                         <div class="mt-4 flex justify-center">
-                            <img src="https://CJMRI.ftu.edu.vn/public/site/images/admin/qtta3.jpg"
+                            <img src="storage/images/peer-review-process.png"
                                 alt="Peer Review Process Diagram" class="w-full max-w-xl">
                         </div>
                     </div>

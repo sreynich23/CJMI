@@ -25,6 +25,7 @@ use App\Models\User;
 use App\Models\VolumeIssue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -36,7 +37,7 @@ class AboutController extends Controller
         $recognitions = Recognition::all();
         $indexings = Indexing::all();
         $conferences = Conference::all();
-        $editors=EditorialTeam::all();
+        $editors = EditorialTeam::all();
         $abouts = About::all();
         $image = VolumeIssueImage::latest()->first();
         $navbar = Navbar::latest()->first();
@@ -59,7 +60,7 @@ class AboutController extends Controller
         $reviewing = DB::table('reviewers')
             ->join('submits', 'reviewers.submission_id', '=', 'submits.id')
             ->join('reviewer', 'reviewers.reviewer_id', '=', 'reviewer.id')
-            ->select('submits.title as title', 'submits.file_path as file_path', 'reviewers.status', 'reviewers.submission_id','reviewers.reviewer_id', 'reviewer.name as reviewer_name', 'reviewer.user_id as user_id')
+            ->select('submits.title as title', 'submits.file_path as file_path', 'reviewers.status', 'reviewers.submission_id', 'reviewers.reviewer_id', 'reviewer.name as reviewer_name', 'reviewer.user_id as user_id')
             ->get()
             ->groupBy('submission_id');
         // Fetch all volumes with their issues, ordered by year, volume, and issue
@@ -91,7 +92,7 @@ class AboutController extends Controller
             });
         }
         $latestYear = VolumeIssue::query()->max('year');
-        return view('admin.dashboard', compact('abouts', 'submissions', 'formattedVolumes', 'image', 'latestYear', 'navbar', 'journalInfo', 'announcements', 'reviewers', 'reviewersEditorial', 'reviewing', 'submissionsUpdate', 'submissionsApproved','editors','recognitions', 'indexings', 'conferences'));
+        return view('admin.dashboard', compact('abouts', 'submissions', 'formattedVolumes', 'image', 'latestYear', 'navbar', 'journalInfo', 'announcements', 'reviewers', 'reviewersEditorial', 'reviewing', 'submissionsUpdate', 'submissionsApproved', 'editors', 'recognitions', 'indexings', 'conferences'));
     }
 
     public function indexuser()
@@ -327,6 +328,32 @@ class AboutController extends Controller
     public function createEditorial()
     {
         return redirect()->back()->with('success', 'Editor created successfully.');
+    }
+    public function createAccEditorial(Request $request)
+    {
+        // $request->validate([
+        //     'name' => 'required',
+        //     'email' => 'required',
+        //     'country' => 'required',
+        //     'password' => [
+        //         'required',
+        //         'string',
+        //         'min:8',
+        //         'confirmed',
+        //         'regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/'
+        //     ]
+        // ],);
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'country' => $request->country,
+            'password' => Hash::make($request->password),
+            'role' => 'admin',
+            'notifications_enabled' => 1,
+            'reviewer_available' => 1,
+            'isAdmin' => 1,
+        ]);
+        return redirect()->back()->with('success', 'Account Editor created successfully.');
     }
 
     /**

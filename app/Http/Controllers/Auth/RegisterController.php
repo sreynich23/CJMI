@@ -31,7 +31,7 @@ class RegisterController extends Controller
                     'regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/'
                 ],
                 'country' => 'nullable|string|min:2|max:2',
-            ], [
+            ], params: [
                 'password.regex' => 'Password must contain at least one letter and one number',
                 'email.unique' => 'This email address is already registered',
             ]);
