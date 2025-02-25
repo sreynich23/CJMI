@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -60,5 +61,24 @@ class ForgotPasswordController extends Controller
         Cache::forget('otp_' . $request->email);
 
         return redirect()->route('login')->with('success', 'Password reset successfully.');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        // Check if the old password matches
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json(['error' => 'Old password is incorrect'], 422);
+        }
+        User::find(Auth::id())->update(['password'=> Hash::make($request->new_password)]);
+
+        return redirect()->back()->with(['message' => 'Password changed successfully']);
+
     }
 }

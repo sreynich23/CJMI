@@ -188,6 +188,26 @@
                     @endforeach
                 @endif
             </div>
+            <button type="button" id="changePassBtn"
+                class="flex rounded-md px-1 gap-2 border border-gray-500 hover:border-gray-700 mt-4">
+                Change Password
+            </button>
+            <form method="POST" action="{{ route('admin.change.password') }}" id="changePass" class="hidden space-y-2 border px-10 py-5 rounded-sm mt-5">
+                @csrf
+                <div class="form-group">
+                    <label for="old_password">Old Password:</label>
+                    <input type="password" id="old_password" name="old_password" required>
+                </div>
+                <div class="form-group">
+                    <label for="new_password">New Password:</label>
+                    <input type="password" id="new_password" name="new_password" required>
+                </div>
+                <div class="form-group">
+                    <label for="new_password_confirmation">Confirm New Password:</label>
+                    <input type="password" id="new_password_confirmation" name="new_password_confirmation" required>
+                </div>
+                <button type="submit" class="flex rounded-md px-1 gap-2 border border-gray-500 hover:border-gray-700 mb-4">Change Password</button>
+            </form>
         </div>
     </div>
 </aside>
@@ -263,6 +283,10 @@
         });
     }
 
+    document.getElementById('changePassBtn').addEventListener('click', function() {
+        var fileInputDiv = document.getElementById('changePass');
+        fileInputDiv.classList.toggle('hidden');
+    });
     document.getElementById('uploadRecognitionBtn').addEventListener('click', function() {
         var fileInputDiv = document.getElementById('uploadRecognitions');
         fileInputDiv.classList.toggle('hidden');

@@ -105,6 +105,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', function () {
             return view('admin.dashboard');
         })->name('dashboard');
+        Route::post('/change-password', [ForgotPasswordController::class, 'changePassword'])->name('change.password');
 
         // About Management
         Route::post('/upload-recognitions', [DashboardController::class, 'uploadRecognitions'])->name('uploadRecognitions');

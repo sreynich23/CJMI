@@ -49,7 +49,7 @@
             <img src="{{ asset('storage/' . $navbar->background_color) }}" alt="">
         </div>
     </header>
-    <nav class="text-white flex py-2 bg-blue-950 sticky top-0 justify-between px-1 z-50">
+    <nav class="text-white flex py-2 bg-blue-950 sticky top-0 justify-between px-1">
         <ul class="flex flex-wrap justify-center space-x-2 items-center">
             <li>
                 <a href="{{ route('home') }}"
@@ -86,7 +86,7 @@
                         </svg>
                     </button>
                     <div x-show="open" @click.away="open = false"
-                        class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                        class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
                         <a href="{{ route('all-editorials') }}#all-editorials"
                             class="block px-2 py-2 lg:text-sm text-xs text-gray-700 hover:text-white hover:bg-blue-950">
                             📖 All Editorials

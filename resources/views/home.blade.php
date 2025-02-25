@@ -6,11 +6,11 @@
         <div class="bg-gray-100 px-3 lg:px-2 rounded-lg shadow-sm mb-6 w-3/4 h-full">
 
             <div class="bg-white h-24 sm:h-48 lg:h-72 flex justify-between lg:space-x-2">
-                <div class="bg-gray-500 w-1/5 h-full">
+                <div class="bg-white w-1/5 h-full">
                     @if ($image)
                         <img src="{{ asset('storage/' . $image->image_path) }}" alt="Cover Image">
                     @else
-                        <p class="font-thin lg:font-semibold text-sm text-center" >No image available</p>
+                        <p class="font-thin lg:font-semibold text-sm text-center" ></p>
                     @endif
                 </div>
                 <div class="w-4/5 border-2 lg:border-8 border-blue-950 lg:py-2">
