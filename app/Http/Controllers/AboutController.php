@@ -361,28 +361,37 @@ class AboutController extends Controller
      */
     public function storeEditorial(Request $request)
     {
+        // Validate the request data, including the image file
         $request->validate([
             'name' => 'required',
             'position' => 'required',
             'description' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate image file
         ]);
+
+        // Handle image upload if present
+        if ($request->hasFile('image')) {
+            // Get the uploaded file
+            $image = $request->file('image');
+
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+
+            $path = $image->storeAs('editorial_images', $imageName, 'public');
+
+            $request->merge(['path_image' => $path]);
+        }
 
         EditorialTeam::create($request->all());
 
         return redirect()->back()->with('success', 'Editor created successfully.');
     }
 
-    /**
-     * Show the form for editing the specified editor.
-     */
     public function editEditorial(Editor $editor)
     {
-        return view('admin.pages.edit_editorial', compact('editor'));
+        dd($editor);
+        return redirect()->back()->with('success', 'Editor updated successfully.');
     }
 
-    /**
-     * Update the specified editor in storage.
-     */
     public function updateEditorial(Request $request, Editor $editor)
     {
         $request->validate([
@@ -393,18 +402,13 @@ class AboutController extends Controller
 
         $editor->update($request->all());
 
-        return redirect()->route('admin.editorials.index')
-            ->with('success', 'Editor updated successfully.');
+        return redirect()->back()->with('success', 'Editor updated successfully.');
     }
 
-    /**
-     * Remove the specified editor from storage.
-     */
     public function destroyEditorial(Editor $editor)
     {
         $editor->delete();
 
-        return redirect()->route('admin.editorials.index')
-            ->with('success', 'Editor deleted successfully.');
+        return redirect()->back()->with('success', 'Editor deleted successfully.');
     }
 }

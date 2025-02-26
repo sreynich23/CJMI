@@ -35,11 +35,16 @@
                     <h2 class="text-lg font-semibold text-gray-700 mb-4">📚 All Editorials</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($teamMembers as $member)
-                            <div class="bg-white shadow-md rounded-lg overflow-hidden transform transition hover:scale-105">
+                            <div class="bg-white shadow-md rounded-lg overflow-hidden transform transition hover:scale-105 w-full">
                                 <div class="p-4 text-center">
                                     <h5 class="text-xl font-semibold">{{ $member->name }}</h5>
                                     <p class="text-blue-600 font-bold">{{ $member->position }}</p>
-                                    <p class="text-gray-600 mt-2">{{ $member->description }}</p>
+                                    <p class="text-gray-600 mt-2">
+                                        {!! Str::of($member->description)
+                                            ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
+                                            ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
+                                        !!}
+                                    </p>
                                 </div>
                             </div>
                         @endforeach

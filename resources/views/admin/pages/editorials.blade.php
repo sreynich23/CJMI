@@ -1,4 +1,5 @@
-<div class="container h-screen bg-white border border-gray-300 rounded-lg p-6">    <h1 class="text-2xl font-semibold mb-4">Editorials</h1>
+<div class="container h-full bg-white border border-gray-300 rounded-lg p-6">
+    <h1 class="text-2xl font-semibold mb-4">Editorials</h1>
 
     <!-- Button to Show Add Editor Form -->
     <button onclick="toggleForm()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
@@ -59,7 +60,7 @@
                     <tr class="border border-gray-300 hover:bg-gray-50">
                         <td class="border border-gray-300 px-4 py-2">{{ $editor->name }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ $editor->position }}</td>
-                        <td class="border border-gray-300 px-4 py-2 text-center">{{ $editor->description }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $editor->description }}</td>
                         <td class="px-4 py-2 text-center flex space-x-5">
                             <!-- Button to Show Update Form -->
                             <button onclick="toggleUpdateForm({{ $editor->id }})"
@@ -67,10 +68,12 @@
                                 Edit
                             </button>
                             <!-- Delete Form -->
-                            <form action="{{ route('admin.editorials.destroy', $editor->id) }}" method="POST" class="inline-block">
+                            <form action="{{ route('admin.editorials.destroy', $editor->id) }}" method="POST"
+                                class="inline-block">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Delete</button>
+                                <button type="submit"
+                                    class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -79,13 +82,13 @@
         </table>
     </div>
 </div>
-{{-- <div id="updateForm-{{ $editor->id }}"
+<div id="updateForm-{{ $editor->id }}"
     class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
     onclick="closeModalUpdate(event, {{ $editor->id }})">
 
     <div class="bg-white rounded-lg p-6 w-96" onclick="event.stopPropagation();">
         <h2 class="text-xl font-semibold mb-4">Edit Editor</h2>
-        <form action="{{ route('admin.editorials.update', $editor->id) }}" method="POST">
+        <form action="{{ route('admin.editorials.edit', $editor->id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -93,21 +96,21 @@
             <input type="text" name="name" value="{{ $editor->name }}" class="w-full p-2 border rounded mb-2">
 
             <label class="block mb-2">Position:</label>
-            <input type="text" name="position" value="{{ $editor->position }}" class="w-full p-2 border rounded mb-2">
+            <input type="text" name="position" value="{{ $editor->position }}"
+                class="w-full p-2 border rounded mb-2">
 
             <label class="block mb-2">Description:</label>
-            <input type="text" name="description" value="{{ $editor->description }}" class="w-full p-2 border rounded mb-2">
+            <input type="text" name="description" value="{{ $editor->description }}"
+                class="w-full p-2 border rounded mb-2">
 
             <div class="flex justify-end space-x-2 mt-4">
-                <!-- Update Button -->
-                <button type="submit"
-                    class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                <button type="submit" class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
                     Update
                 </button>
             </div>
         </form>
     </div>
-</div> --}}
+</div>
 
 <!-- JavaScript to Toggle Form -->
 <script>
@@ -115,14 +118,17 @@
         let form = document.getElementById("addEdAccForm");
         form.classList.toggle("hidden");
     }
+
     function toggleUpdateForm(editorId) {
         let form = document.getElementById("updateForm-" + editorId);
         form.classList.toggle("hidden");
     }
+
     function toggleForm() {
         let form = document.getElementById("addEditorForm");
         form.classList.toggle("hidden");
     }
+
     function closeModalUpdate(event, editorId) {
         let modal = document.getElementById("updateForm-" + editorId);
         // Close only if the background overlay is clicked (not the form)
