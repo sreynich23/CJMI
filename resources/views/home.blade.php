@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto lg:px-4 bg-white py-3 flex min-h-screen">
+    <div class="flex flex-col max-w-screen-xl text-white mx-auto md:flex-row md:px-2 lg:px-4 py-4">
         <!-- Main Content Grid -->
-        <div class="bg-gray-100 px-3 lg:px-2 rounded-lg shadow-sm mb-6 w-3/4 h-full">
+        <div class="bg-gray-100 px-3 lg:px-2 rounded-lg shadow-sm mb-6 lg:w-3/4 h-full">
 
-            <div class="bg-white h-24 sm:h-48 lg:h-72 flex justify-between lg:space-x-2">
+            <div class="bg-white h-full flex justify-between lg:space-x-2">
                 <div class="bg-white w-1/5 h-full">
                     @if ($image)
                         <img src="{{ asset('storage/' . $image->image_path) }}" alt="Cover Image">
@@ -13,7 +13,7 @@
                         <p class="font-thin lg:font-semibold text-sm text-center" ></p>
                     @endif
                 </div>
-                <div class="w-4/5 border-2 lg:border-8 border-blue-950 lg:py-2">
+                <div class="lg:w-4/5 border-2 lg:border-8 border-blue-950 lg:py-2">
                     <!-- Search Form Section -->
                     <form action="{{ route('home') }}" method="GET" class="flex flex-1 gap-2 items-center px-1">
                         <input type="text" name="query"
@@ -113,7 +113,7 @@
                 @endforeach
             </div>
         </div>
-        <div class="w-1/4 flex flex-col space-y-4">
+        <div class="lg:w-1/4 flex flex-col space-y-4">
             <div class="bg-blue-950 h-10 px-3 justify-start items-center flex">
                 <h1 class="text-white text-xs font-thin lg:font-semibold">Government, Ministry, and Institution Recognition</h1>
             </div>

@@ -55,9 +55,6 @@ class LoginController extends Controller
                     'confirmed',
                     'regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/'
                 ],
-            ], [
-                'password.regex' => 'Password must contain at least one letter and one number',
-                'email.unique' => 'This email address is already registered',
             ]);
 
             $user = User::create([

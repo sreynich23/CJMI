@@ -8,10 +8,10 @@
 
 <body>
     <header class="text-white">
-        <div class="flex justify-end items-center lg:px-9 px-1 py-3 lg:space-x-4 bg-blue-950">
+        <div class="flex justify-end items-center lg:px-9 px-1 py-3 space-x-4 lg:space-x-5 bg-blue-950">
             @guest
-                <a href="{{ route('login') }}" class="nav-link">Login</a>
-                <a href="{{ route('register') }}" class="nav-link">Register</a>
+                <a href="{{ route('login') }}" class="nav-link text-xs md:text-sm lg:text-base">Login</a>
+                <a href="{{ route('register') }}" class="nav-link text-xs md:text-sm lg:text-base">Register</a>
             @else
                 <div class="flex items-center space-x-4">
                     @if (auth()->user()->role === 'admin')
@@ -53,31 +53,31 @@
         <ul class="flex flex-wrap justify-center space-x-2 items-center">
             <li>
                 <a href="{{ route('home') }}"
-                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
+                    class="px-3 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
                     HOME
                 </a>
             </li>
             <li>
                 <a href="{{ route('about') }}"
-                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
+                    class="px-3 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
                     ABOUT
                 </a>
             </li>
             <li>
                 <a href="{{ route('curr') }}"
-                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
+                    class="px-3 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
                     CURRENT ISSUE
                 </a>
             </li>
             <li>
                 <a href="{{ route('all_volumes') }}"
-                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
+                    class="px-3 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
                     ALL VOLUME ISSUES
                 </a>
             </li>
             <li>
                 <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" class="nav-link flex items-center lg:text-sm text-xs">
+                    <button @click="open = !open" class="nav-link flex items-center text-xs md:text-sm lg:text-base">
                         EDITORIAL POLICIES
                         <svg class="ml-1 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
@@ -86,25 +86,25 @@
                         </svg>
                     </button>
                     <div x-show="open" @click.away="open = false"
-                        class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                        class="absolute right-0 lg:mt-2 lg:w-48 bg-white rounded-md shadow-lg py-1 z-10">
                         <a href="{{ route('all-editorials') }}#all-editorials"
-                            class="block px-2 py-2 lg:text-sm text-xs text-gray-700 hover:text-white hover:bg-blue-950">
+                            class="block px-2 py-2 text-xs md:text-sm lg:text-base text-gray-700 hover:text-white hover:bg-blue-950">
                             📖 All Editorials
                         </a>
                         <a href="{{ route('all-editorials') }}#reviewing-policy"
-                            class="block px-2 py-2 lg:text-sm text-xs text-gray-700 hover:text-white hover:bg-blue-950">
+                            class="block px-2 py-2 text-xs md:text-sm lg:text-base text-gray-700 hover:text-white hover:bg-blue-950">
                             📝 Reviewing Policy
                         </a>
                         <a href="{{ route('all-editorials') }}#archiving-policy"
-                            class="block px-2 py-2 lg:text-sm text-xs text-gray-700 hover:text-white hover:bg-blue-950">
+                            class="block px-2 py-2 text-xs md:text-sm lg:text-base text-gray-700 hover:text-white hover:bg-blue-950">
                             📂 Archiving Policy
                         </a>
                         <a href="{{ route('all-editorials') }}#plagiarism-policy"
-                            class="block px-2 py-2 lg:text-sm text-xs text-gray-700 hover:text-white hover:bg-blue-950">
+                            class="block px-2 py-2 text-xs md:text-sm lg:text-base text-gray-700 hover:text-white hover:bg-blue-950">
                             📑 Plagiarism Policy
                         </a>
                         <a href="{{ route('all-editorials') }}#open-access-policy"
-                            class="block px-2 py-2 lg:text-sm text-xs text-gray-700 hover:text-white hover:bg-blue-950">
+                            class="block px-2 py-2 text-xs md:text-sm lg:text-base text-gray-700 hover:text-white hover:bg-blue-950">
                             🔓 Open Access Policy
                         </a>
                     </div>

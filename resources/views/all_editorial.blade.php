@@ -4,26 +4,26 @@
     <div class="mt-5 bg-white shadow-lg rounded-xl">
         <div class="flex">
             <!-- Sidebar -->
-            <div class="w-1/5 p-4 text-white rounded-md">
+            <div class="w-1/5 lg:p-4 text-white rounded-md">
                 <div class="sticky top-24">
                     <button onclick="switchScreen('all-editorials')"
-                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
+                        class="block text-xs md:text-sm lg:text-base w-full text-left border border-white rounded-md lg:px-4 px-2 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
                         📖 All Editorials
                     </button>
                     <button onclick="switchScreen('reviewing-policy')"
-                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
+                        class="block text-xs md:text-sm lg:text-base w-full text-left border border-white rounded-md lg:px-4 px-2 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
                         📝 Reviewing Policy
                     </button>
                     <button onclick="switchScreen('archiving-policy')"
-                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
+                        class="block text-xs md:text-sm lg:text-base w-full text-left border border-white rounded-md lg:px-4 px-2 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
                         📂 Archiving-Policy
                     </button>
                     <button onclick="switchScreen('plagiarism-policy')"
-                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
+                        class="block text-xs md:text-sm lg:text-base w-full text-left border border-white rounded-md lg:px-4 px-2 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
                         📑 Plagiarism Policy
                     </button>
                     <button onclick="switchScreen('open-access-policy')"
-                        class="block w-full text-left border border-white rounded-md px-4 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
+                        class="block text-xs md:text-sm lg:text-base w-full text-left border border-white rounded-md lg:px-4 px-2 py-2 bg-blue-900 hover:bg-blue-900 hover:text-black transition">
                         🔓 Open Access Policy
                     </button>
                 </div>
@@ -60,14 +60,14 @@
                 </div>
                 <!-- Reviewing Policy Section -->
                 <div id="reviewing-policy" class="page hidden">
-                    <div class="max-w-4xl mx-auto bg-white p-6 shadow-md rounded-md">
+                    <div class="max-w-4xl mx-auto bg-white lg:p-6 shadow-md rounded-md">
                         <h1 class="text-3xl font-semibold mb-4">Reviewing Policy
                             @guest
                             @else
                                 @if (auth()->user()->role === 'user')
                                     <div class="mt-6">
                                         <button data-toggle="reviewer-form"
-                                            class="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition">
+                                            class="flex text-xs md:text-sm lg:text-base items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition">
                                             ✨ Become a Reviewer
                                         </button>
                                     </div>

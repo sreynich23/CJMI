@@ -9,12 +9,12 @@
                 @forelse ($abouts as $about)
                     <li>
                         <a href="#{{ Str::slug($about->title) }}"
-                            class="block border border-blue-700 rounded-md px-4 py-2 text-black hover:bg-blue-600 hover:text-white">
+                            class="block text-xs md:text-sm lg:text-base border border-blue-700 rounded-md px-4 py-2 text-black hover:bg-blue-600 hover:text-white">
                             {{ $about->title }}
                         </a>
                     </li>
                 @empty
-                    <li class="text-gray-500">No sections available</li>
+                    <li class="text-gray-500 text-xs md:text-sm lg:text-base">No sections available</li>
                 @endforelse
             </ul>
         </div>
@@ -22,18 +22,18 @@
         <!-- Main Content -->
         <div class="bg-gray-100 w-full p-5 rounded gap-5">
             <div class="bg-white rounded p-6 space-y-6">
-                <div class="text-2xl font-semibold mb-6">About This Journal</div>
+                <div class="text-lg md:text-lg lg:text-2xl font-semibold mb-6">About This Journal</div>
 
                 <!-- Content Sections -->
                 @forelse ($abouts as $about)
                     <div id="{{ Str::slug($about->title) }}" class="mb-8">
-                        <h2 class="text-xl font-bold mb-4">{{ $about->title }}</h2>
-                        <div class="prose max-w-none text-gray-700">
+                        <h2 class="text-sm md:text-base lg:text-lg font-bold mb-4">{{ $about->title }}</h2>
+                        <div class="prose max-w-none text-gray-700 text-xs md:text-sm lg:text-base">
                             {!! $about->description !!}
                         </div>
                     </div>
                 @empty
-                    <p class="text-gray-500">No content available</p>
+                    <p class="text-gray-500 text-xs md:text-sm lg:text-base">No content available</p>
                 @endforelse
             </div>
         </div>
