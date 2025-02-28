@@ -53,7 +53,7 @@ class HomeController extends Controller
     {
         $navbar = Navbar::latest()->first();
         $journalInfo = JournalInformation::first();
-        $teamMembers = EditorialTeam::all();
+        $teamMembers = EditorialTeam::all()->groupBy('position');
         $reviewers = Reviewer::all();
         return view('all_editorial', compact('journalInfo', 'navbar','teamMembers', 'reviewers'));
     }

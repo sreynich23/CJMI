@@ -33,26 +33,32 @@
                 <!-- All Editorials Section -->
                 <div id="all-editorials" class="page">
                     <h2 class="text-lg font-semibold text-gray-700 mb-4">📚 All Editorials</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        @foreach ($teamMembers as $member)
-                            <div class="bg-white shadow-md rounded-lg overflow-hidden transform transition hover:scale-105 w-full">
-                                <div class="p-4 text-center">
-                                    <h5 class="text-xl font-semibold">{{ $member->name }}</h5>
-                                    <p class="text-blue-600 font-bold">{{ $member->position }}</p>
-                                    <p class="text-gray-600 mt-2">
-                                        {!! Str::of($member->description)
-                                            ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
-                                            ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
-                                        !!}
-                                    </p>
-                                </div>
+                    <div class="space-y-2">
+                        @foreach ($teamMembers as $position => $members)
+                            <!-- Grouped Position Title -->
+                            <p class="text-blue-600 font-bold text-lg">{{ $position }}</p>
+                            <!-- Members in the Position -->
+                            <div class="space-y-4">
+                                @foreach ($members as $member)
+                                    <div class="bg-white shadow-md rounded-lg overflow-hidden w-full">
+                                        <div class="p-4">
+                                            <h5 class="text-xl font-semibold">{{ $member->name }}</h5>
+                                            <p class="text-gray-600 mt-2">
+                                                {!! Str::of($member->description)
+                                                    ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
+                                                    ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
+                                                !!}
+                                            </p>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
                         @endforeach
                     </div>
                     <h2 class="text-lg font-semibold text-gray-700 mb-4">🔍 All Reviewers</h2>
                     <ul class="list-disc list-inside text-gray-800 space-y-10">
                         @foreach ($reviewers as $reviewer)
-                            <div class="bg-white shadow-md rounded-lg overflow-hidden transform transition ">
+                            <div class="bg-white shadow-md rounded-lg overflow-hidden">
                                 <div class="p-4 ">
                                     <h5 class="text-xl font-semibold">{{ $reviewer->name }}</h5>
                                     <p class="text-blue-600 font-bold">{{ $reviewer->position }}</p>

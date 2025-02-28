@@ -80,7 +80,7 @@
             @endif
             <!-- Form for uploading Recognitions -->
             <button type="button" id="uploadRecognitionBtn"
-                class="flex rounded-md px-1 gap-2 border border-gray-500 hover:border-gray-700 mb-4">
+                class="bg-blue-950 h-10 px-3 justify-start items-center flex text-white mt-2">
                 Add Recognitions
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                     stroke="currentColor" class="w-5 h-5">
@@ -102,7 +102,7 @@
             </form>
             <!-- Form for uploading Indexing -->
             <button type="button" id="uploadIndexingsBtn"
-                class="flex rounded-md px-1 gap-2 border border-gray-500 hover:border-gray-700 mb-4">
+                class="bg-blue-950 h-10 px-3 justify-start items-center flex text-white mt-2">
                 Add Indexings
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                     stroke="currentColor" class="w-5 h-5">
@@ -117,14 +117,14 @@
                     <input type="text" name="name" placeholder="name" class="border border-gray-300 p-2 w-full">
                     <input type="text" name="url" placeholder="link" class="border border-gray-300 p-2 w-full">
                     <button type="submit"
-                        class="flex rounded-md px-1 gap-2 border border-gray-500 hover:border-gray-700 mb-4">
+                        class="bg-blue-950 h-10 px-3 justify-start items-center flex">
                         Upload
                     </button>
                 </div>
             </form>
             <!-- Form for uploading Conferences -->
             <button type="button" id="uploadConferencesBtn"
-                class="flex rounded-md px-1 gap-2 border border-gray-500 hover:border-gray-700 mb-4">
+                class="bg-blue-950 h-10 px-3 justify-start items-center flex text-white my-2">
                 Add Conferences
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                     stroke="currentColor" class="w-5 h-5">

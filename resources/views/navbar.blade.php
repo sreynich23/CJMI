@@ -116,13 +116,13 @@
             </li>
             <li>
                 <a href="{{ route('submit.index') }}"
-                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
+                    class="px-3 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
                     SUBMISSION
                 </a>
             </li>
             <li>
                 <a href="{{ route('announcements') }}"
-                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
+                    class="px-3 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
                     ANNOUNCEMENTS
                 </a>
             </li>

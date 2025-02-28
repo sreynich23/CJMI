@@ -168,7 +168,7 @@ class Cache
                             }
                         }
                     },
-                    null
+                    false
                 );
         
                 if (($fp = fopen($resolved_url, "r")) !== false) {

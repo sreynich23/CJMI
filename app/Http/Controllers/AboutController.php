@@ -388,11 +388,10 @@ class AboutController extends Controller
 
     public function editEditorial(Editor $editor)
     {
-        dd($editor);
         return redirect()->back()->with('success', 'Editor updated successfully.');
     }
 
-    public function updateEditorial(Request $request, Editor $editor)
+    public function updateEditorial(Request $request, EditorialTeam $editor)
     {
         $request->validate([
             'name' => 'required',

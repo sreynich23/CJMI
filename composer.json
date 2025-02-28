@@ -9,9 +9,11 @@
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.0",
         "dompdf/dompdf": "^3.0",
+        "google/apiclient": "*",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.6",
+        "league/oauth2-google": "*",
         "mpdf/mpdf": "^6.1",
         "phpoffice/phpword": "^1.3"
     },

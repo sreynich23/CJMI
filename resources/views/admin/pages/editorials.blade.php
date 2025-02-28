@@ -1,4 +1,4 @@
-<div class="container h-full bg-white border border-gray-300 rounded-lg p-6">
+<div class="container w-screen  flex-1 min-h-screen bg-white border border-gray-300 rounded-lg p-6">
     <h1 class="text-2xl font-semibold mb-4">Editorials</h1>
 
     <!-- Button to Show Add Editor Form -->
@@ -20,7 +20,8 @@
             <label class="block mb-2">Position:</label>
             <input type="position" name="position" class="w-full p-2 border rounded mb-4" required>
             <label class="block mb-2">Description:</label>
-            <input type="description" name="description" class="w-full p-2 border rounded mb-4" required>
+            <textarea name="description" class="w-full p-2 border rounded mb-4" rows="4" required></textarea>
+
 
             <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Save</button>
         </form>
@@ -88,7 +89,7 @@
 
     <div class="bg-white rounded-lg p-6 w-96" onclick="event.stopPropagation();">
         <h2 class="text-xl font-semibold mb-4">Edit Editor</h2>
-        <form action="{{ route('admin.editorials.edit', $editor->id) }}" method="POST">
+        <form action="{{ route('admin.editorials.update', $editor->id) }}" method="POST">
             @csrf
             @method('PUT')
 

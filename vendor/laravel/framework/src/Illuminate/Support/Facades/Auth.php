@@ -2,7 +2,6 @@
 
 namespace Illuminate\Support\Facades;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Ui\UiServiceProvider;
 use RuntimeException;
 
@@ -70,7 +69,6 @@ use RuntimeException;
  */
 class Auth extends Facade
 {
-    use HasFactory;
     /**
      * Get the registered name of the component.
      *

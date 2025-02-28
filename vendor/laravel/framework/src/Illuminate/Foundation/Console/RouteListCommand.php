@@ -222,11 +222,9 @@ class RouteListCommand extends Command
     {
         if ($route->action['uses'] instanceof Closure) {
             $path = (new ReflectionFunction($route->action['uses']))
-                ->getFileName();
-        } elseif (
-            is_string($route->action['uses']) &&
-            str_contains($route->action['uses'], 'SerializableClosure')
-        ) {
+                                ->getFileName();
+        } elseif (is_string($route->action['uses']) &&
+                  str_contains($route->action['uses'], 'SerializableClosure')) {
             return false;
         } elseif (is_string($route->action['uses'])) {
             if ($this->isFrameworkController($route)) {
@@ -234,7 +232,7 @@ class RouteListCommand extends Command
             }
 
             $path = (new ReflectionClass($route->getControllerClass()))
-                ->getFileName();
+                                ->getFileName();
         } else {
             return false;
         }
@@ -269,8 +267,7 @@ class RouteListCommand extends Command
             ($this->option('method') && ! Str::contains($route['method'], strtoupper($this->option('method')))) ||
             ($this->option('domain') && ! Str::contains((string) $route['domain'], $this->option('domain'))) ||
             ($this->option('except-vendor') && $route['vendor']) ||
-            ($this->option('only-vendor') && ! $route['vendor'])
-        ) {
+            ($this->option('only-vendor') && ! $route['vendor'])) {
             return;
         }
 
@@ -353,10 +350,10 @@ class RouteListCommand extends Command
     protected function forCli($routes)
     {
         $routes = $routes->map(
-            fn($route) => array_merge($route, [
+            fn ($route) => array_merge($route, [
                 'action' => $this->formatActionForCli($route),
                 'method' => $route['method'] == 'GET|HEAD|POST|PUT|PATCH|DELETE|OPTIONS' ? 'ANY' : $route['method'],
-                'uri' => $route['domain'] ? ($route['domain'] . '/' . ltrim($route['uri'], '/')) : $route['uri'],
+                'uri' => $route['domain'] ? ($route['domain'].'/'.ltrim($route['uri'], '/')) : $route['uri'],
             ]),
         );
 
@@ -376,26 +373,25 @@ class RouteListCommand extends Command
             ] = $route;
 
             $middleware = Str::of($middleware)->explode("\n")->filter()->whenNotEmpty(
-                fn($collection) => $collection->map(
-                    fn($middleware) => sprintf('         %s⇂ %s', str_repeat(' ', $maxMethod), $middleware)
+                fn ($collection) => $collection->map(
+                    fn ($middleware) => sprintf('         %s⇂ %s', str_repeat(' ', $maxMethod), $middleware)
                 )
             )->implode("\n");
 
             $spaces = str_repeat(' ', max($maxMethod + 6 - mb_strlen($method), 0));
 
             $dots = str_repeat('.', max(
-                $terminalWidth - mb_strlen($method . $spaces . $uri . $action) - 6 - ($action ? 1 : 0),
-                0
+                $terminalWidth - mb_strlen($method.$spaces.$uri.$action) - 6 - ($action ? 1 : 0), 0
             ));
 
             $dots = empty($dots) ? $dots : " $dots";
 
-            if ($action && ! $this->output->isVerbose() && mb_strlen($method . $spaces . $uri . $action . $dots) > ($terminalWidth - 6)) {
-                $action = substr($action, 0, $terminalWidth - 7 - mb_strlen($method . $spaces . $uri . $dots)) . '…';
+            if ($action && ! $this->output->isVerbose() && mb_strlen($method.$spaces.$uri.$action.$dots) > ($terminalWidth - 6)) {
+                $action = substr($action, 0, $terminalWidth - 7 - mb_strlen($method.$spaces.$uri.$dots)).'…';
             }
 
             $method = Str::of($method)->explode('|')->map(
-                fn($method) => sprintf('<fg=%s>%s</>', $this->verbColors[$method] ?? 'default', $method),
+                fn ($method) => sprintf('<fg=%s>%s</>', $this->verbColors[$method] ?? 'default', $method),
             )->implode('<fg=#6C7280>|</>');
 
             return [sprintf(
@@ -431,10 +427,10 @@ class RouteListCommand extends Command
         $name = $name ? "$name   " : null;
 
         $rootControllerNamespace = $this->laravel[UrlGenerator::class]->getRootControllerNamespace()
-            ?? ($this->laravel->getNamespace() . 'Http\\Controllers');
+            ?? ($this->laravel->getNamespace().'Http\\Controllers');
 
         if (str_starts_with($action, $rootControllerNamespace)) {
-            return $name . substr($action, mb_strlen($rootControllerNamespace) + 1);
+            return $name.substr($action, mb_strlen($rootControllerNamespace) + 1);
         }
 
         $actionClass = explode('@', $action)[0];
@@ -442,10 +438,10 @@ class RouteListCommand extends Command
         if (class_exists($actionClass) && str_starts_with((new ReflectionClass($actionClass))->getFilename(), base_path('vendor'))) {
             $actionCollection = new Collection(explode('\\', $action));
 
-            return $name . $actionCollection->take(2)->implode('\\') . '   ' . $actionCollection->last();
+            return $name.$actionCollection->take(2)->implode('\\').'   '.$actionCollection->last();
         }
 
-        return $name . $action;
+        return $name.$action;
     }
 
     /**
@@ -457,13 +453,13 @@ class RouteListCommand extends Command
      */
     protected function determineRouteCountOutput($routes, $terminalWidth)
     {
-        $routeCountText = 'Showing [' . $routes->count() . '] routes';
+        $routeCountText = 'Showing ['.$routes->count().'] routes';
 
         $offset = $terminalWidth - mb_strlen($routeCountText) - 2;
 
         $spaces = str_repeat(' ', $offset);
 
-        return $spaces . '<fg=blue;options=bold>Showing [' . $routes->count() . '] routes</>';
+        return $spaces.'<fg=blue;options=bold>Showing ['.$routes->count().'] routes</>';
     }
 
     /**
