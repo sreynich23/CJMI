@@ -5,8 +5,6 @@ node_modules
 /public/hot
 /storage/*.key
 /public/storage/manuscripts/
-/vendor/
-/vendor
 .env
 .env.backup
 .env.production
