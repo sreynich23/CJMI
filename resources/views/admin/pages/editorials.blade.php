@@ -12,8 +12,10 @@
     <!-- Add Editor Form (Initially Hidden) -->
     <div id="addEditorForm" class="mt-4 p-4 border border-gray-300 rounded-lg bg-gray-50 hidden">
         <h2 class="text-xl font-semibold mb-2">Add New Editor</h2>
-        <form action="{{ route('admin.editorials.store') }}" method="POST">
+        <form action="{{ route('admin.editorials.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
+            <label class="block mb-2">Profile:</label>
+            <input type="file" name="image" class="w-full p-2 border rounded mb-4" required>
             <label class="block mb-2">Name:</label>
             <input type="text" name="name" class="w-full p-2 border rounded mb-4" required>
 
@@ -50,6 +52,7 @@
         <table class="w-full border-collapse border border-gray-300 mt-4">
             <thead>
                 <tr class="bg-gray-100">
+                    <th class="border border-gray-300 px-4 py-2 text-left">Profile</th>
                     <th class="border border-gray-300 px-4 py-2 text-left">Name</th>
                     <th class="border border-gray-300 px-4 py-2 text-left">Position</th>
                     <th class="border border-gray-300 px-4 py-2 text-center">Description</th>
@@ -59,6 +62,9 @@
             <tbody>
                 @foreach ($editors as $editor)
                     <tr class="border border-gray-300 hover:bg-gray-50">
+                        <td class="border border-gray-300 px-4 py-2"><img
+                                src="{{ asset('storage/' . $editor->path_image) }}" alt="Profile" height="100"
+                                width="100"></td>
                         <td class="border border-gray-300 px-4 py-2">{{ $editor->name }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ $editor->position }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ $editor->description }}</td>
@@ -78,38 +84,45 @@
                             </form>
                         </td>
                     </tr>
+
+                    <!-- Update Form for Each Editor -->
+                    <div id="updateForm-{{ $editor->id }}"
+                        class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+                        onclick="closeModalUpdate(event, {{ $editor->id }})">
+
+                        <div class="bg-white rounded-lg p-6 w-96" onclick="event.stopPropagation();">
+                            <h2 class="text-xl font-semibold mb-4">Edit Editor</h2>
+                            <form action="{{ route('admin.editorials.update', $editor->id) }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                                <label class="block mb-2">Profile Image:</label>
+                                <input type="file" name="path_image" class="w-full p-2 border rounded mb-2">
+
+                                <label class="block mb-2">Name:</label>
+                                <input type="text" name="name" value="{{ $editor->name }}"
+                                    class="w-full p-2 border rounded mb-2">
+
+                                <label class="block mb-2">Position:</label>
+                                <input type="text" name="position" value="{{ $editor->position }}"
+                                    class="w-full p-2 border rounded mb-2">
+
+                                <label class="block mb-2">Description:</label>
+                                <input type="text" name="description" value="{{ $editor->description }}"
+                                    class="w-full p-2 border rounded mb-2">
+
+                                <div class="flex justify-end space-x-2 mt-4">
+                                    <button type="submit"
+                                        class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                                        Update
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 @endforeach
             </tbody>
         </table>
-    </div>
-</div>
-<div id="updateForm-{{ $editor->id }}"
-    class="hidden fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
-    onclick="closeModalUpdate(event, {{ $editor->id }})">
-
-    <div class="bg-white rounded-lg p-6 w-96" onclick="event.stopPropagation();">
-        <h2 class="text-xl font-semibold mb-4">Edit Editor</h2>
-        <form action="{{ route('admin.editorials.update', $editor->id) }}" method="POST">
-            @csrf
-            @method('PUT')
-
-            <label class="block mb-2">Name:</label>
-            <input type="text" name="name" value="{{ $editor->name }}" class="w-full p-2 border rounded mb-2">
-
-            <label class="block mb-2">Position:</label>
-            <input type="text" name="position" value="{{ $editor->position }}"
-                class="w-full p-2 border rounded mb-2">
-
-            <label class="block mb-2">Description:</label>
-            <input type="text" name="description" value="{{ $editor->description }}"
-                class="w-full p-2 border rounded mb-2">
-
-            <div class="flex justify-end space-x-2 mt-4">
-                <button type="submit" class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
-                    Update
-                </button>
-            </div>
-        </form>
     </div>
 </div>
 

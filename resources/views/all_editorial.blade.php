@@ -41,7 +41,12 @@
                             <div class="space-y-4">
                                 @foreach ($members as $member)
                                     <div class="bg-white shadow-md rounded-lg overflow-hidden w-full">
-                                        <div class="p-4">
+                                        <div class="p-4 lg:flex lg:items-center lg:space-x-4">
+                                            @if ($member->path_image)
+                                                <img src="{{ asset('storage/' . $member->path_image) }}" height="100"
+                                                    width="100">
+                                            @endif
+                                            <div>
                                             <h5 class="text-xl font-semibold">{{ $member->name }}</h5>
                                             <p class="text-gray-600 mt-2">
                                                 {!! Str::of($member->description)
@@ -49,6 +54,7 @@
                                                     ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
                                                 !!}
                                             </p>
+                                        </div>
                                         </div>
                                     </div>
                                 @endforeach
@@ -142,8 +148,8 @@
 
                         <!-- Example of how an image can be included -->
                         <div class="mt-4 flex justify-center">
-                            <img src="storage/images/peer-review-process.png"
-                                alt="Peer Review Process Diagram" class="w-full max-w-xl">
+                            <img src="storage/images/peer-review-process.png" alt="Peer Review Process Diagram"
+                                class="w-full max-w-xl">
                         </div>
                     </div>
                 </div>
@@ -222,7 +228,8 @@
                             By submitting a manuscript to CJMRI, the authors commit that the work is original, free of
                             fabrication or falsification, and does not contain any duplication of the authors' own work.
 
-                            Referencing all related work is required. To ensure writing and research integrity, CJMRI employs
+                            Referencing all related work is required. To ensure writing and research integrity, CJMRI
+                            employs
                             the iThenticate plagiarism detection system to check all manuscripts for duplicate and
                             unattributed content.
 

@@ -392,17 +392,36 @@ class AboutController extends Controller
     }
 
     public function updateEditorial(Request $request, EditorialTeam $editor)
-    {
-        $request->validate([
-            'name' => 'required',
-            'position' => 'required',
-            'description' => 'required',
-        ]);
+{
+    $request->validate([
+        'path_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'name' => 'required',
+        'position' => 'required',
+        'description' => 'required',
+    ]);
 
-        $editor->update($request->all());
+    $data = $request->only(['name', 'position', 'description']); // Store only necessary fields
 
-        return redirect()->back()->with('success', 'Editor updated successfully.');
+    // Handle image upload if present
+    if ($request->hasFile('path_image')) {
+        // Delete the old image if it exists
+        if ($editor->path_image) {
+            Storage::disk('public')->delete($editor->path_image);
+        }
+
+        // Store the new image
+        $image = $request->file('path_image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $path = $image->storeAs('editorial_images', $imageName, 'public');
+
+        $data['path_image'] = $path; // Add new image path to update data
     }
+
+    // Update the editor record
+    $editor->update($data);
+
+    return redirect()->back()->with('success', 'Editor updated successfully.');
+}
 
     public function destroyEditorial(Editor $editor)
     {
