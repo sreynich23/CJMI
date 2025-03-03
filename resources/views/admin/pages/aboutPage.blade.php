@@ -18,7 +18,7 @@
             @forelse ($abouts as $about)
                 <li>
                     <a href="#{{ Str::slug($about->title) }}"
-                        onclick="editAbout('{{ $about->id }}', '{{ $about->title }}', '{{ $about->description }}')"
+                        onclick="editAbout('{{ $about->id }}')"
                         class="block border border-green-700 rounded-md px-4 py-2 text-black hover:bg-green-600 hover:text-white">
                         {{ $about->title }}
                     </a>
@@ -54,6 +54,7 @@
         class="bg-white p-10 rounded shadow-lg w-1/2">
         @csrf
         <input type="hidden" id="about_id" name="about_id">
+        <h2 class="text-2xl font-semibold mb-6 hidden" id="form">Update</h2>
         <div class="mb-6">
             <label for="title" class="block text-gray-700 font-semibold text-lg mb-2">Title</label>
             <input type="text" id="title" name="title"
@@ -80,6 +81,7 @@
 <script>
     // Elements
     const addForm = document.getElementById("addForm");
+    const Form = document.getElementById("form");
     const aboutForm = document.getElementById("aboutForm");
     const aboutIdInput = document.getElementById("about_id");
     const titleInput = document.getElementById("title");
@@ -104,7 +106,8 @@
     }
 
     // Function to edit existing about
-    function editAbout(id, title, description) {
+    function editAbout(id) {
+        Form.classList.remove("hidden");
         addForm.classList.remove("hidden");
         aboutForm.action = `/admin/about/${id}`;
 
@@ -114,10 +117,6 @@
         methodField.value = 'PUT';
         methodField.id = 'method_field';
         aboutForm.appendChild(methodField);
-
-        aboutIdInput.value = id;
-        titleInput.value = title;
-        descriptionInput.value = description;
     }
 
     // Function to hide the form
