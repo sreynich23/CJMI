@@ -822,9 +822,9 @@ class Connection implements ConnectionInterface
                 );
             }
 
-            throw new QueryException(
-                $this->getName(), $query, $this->prepareBindings($bindings), $e
-            );
+            // throw new QueryException(
+            //     $this->getName(), $query, $this->prepareBindings($bindings), $e
+            // );
         }
     }
 
