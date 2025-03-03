@@ -67,7 +67,7 @@
                                 width="100"></td>
                         <td class="border border-gray-300 px-4 py-2">{{ $editor->name }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ $editor->position }}</td>
-                        <td class="border border-gray-300 px-4 py-2">{{ $editor->description }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{!! nl2br(e($editor->description)) !!}</td>
                         <td class="px-4 py-2 text-center flex space-x-5">
                             <!-- Button to Show Update Form -->
                             <button onclick="toggleUpdateForm({{ $editor->id }})"

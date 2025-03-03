@@ -49,7 +49,7 @@
                                             <div>
                                             <h5 class="text-xl font-semibold">{{ $member->name }}</h5>
                                             <p class="text-gray-600 mt-2">
-                                                {!! Str::of($member->description)
+                                                {!! Str::of(nl2br(e($member->description)))
                                                     ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
                                                     ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
                                                 !!}

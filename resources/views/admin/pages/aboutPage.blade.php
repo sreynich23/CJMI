@@ -38,7 +38,7 @@
             @forelse ($abouts as $about)
                 <div id="contentSection">
                     <h1 id="dynamicTitle" class="text-xl font-bold">{{ $about->title }}</h1>
-                    <p id="dynamicDescription" class="text-gray-700">{{ $about->description }}</p>
+                    <p id="dynamicDescription" class="text-gray-700">{!! nl2br(e($about->description)) !!}</p>
                 </div>
             @empty
                 <li class="text-gray-500"></li>
