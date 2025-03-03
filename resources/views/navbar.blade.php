@@ -16,7 +16,7 @@
                 <div class="flex items-center space-x-4">
                     @if (auth()->user()->role === 'admin')
                         <a href="{{ url('/admin') }}"
-                            class="block px-2 py-2 lg:text-sm text-xs text-gray-700 hover:bg-gray-100 rounded-lg bg-white">Admin
+                            class="block px-2 py-2 lg:text-sm text-xs text-gray-700 hover:bg-gray-100 rounded-lg bg-white">Editorial
                             Dashboard</a>
                     @endif
                     <div class="relative" x-data="{ open: false }">
