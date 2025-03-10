@@ -28,7 +28,10 @@
                         <div id="{{ Str::slug($about->title) }}" class="mb-8">
                             <h2 class="text-sm md:text-base lg:text-lg font-bold mb-4">{{ $about->title }}</h2>
                             <div class="prose max-w-none text-gray-700 text-xs md:text-sm lg:text-base">
-                                {!! nl2br(e($about->description)) !!}
+                                {!! Str::of(nl2br(e($about->description)))
+                                    ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
+                                    ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
+                                !!}
                             </div>
                         </div>
                     @empty

@@ -386,11 +386,6 @@ class AboutController extends Controller
         return redirect()->back()->with('success', 'Editor created successfully.');
     }
 
-    public function editEditorial(Editor $editor)
-    {
-        return redirect()->back()->with('success', 'Editor updated successfully.');
-    }
-
     public function updateEditorial(Request $request, EditorialTeam $editor)
 {
     $request->validate([
@@ -423,7 +418,7 @@ class AboutController extends Controller
     return redirect()->back()->with('success', 'Editor updated successfully.');
 }
 
-    public function destroyEditorial(Editor $editor)
+    public function destroyEditorial(EditorialTeam $editor)
     {
         $editor->delete();
 

@@ -146,9 +146,8 @@ Route::middleware(['auth'])->group(function () {
         // Editorial Management
         Route::post('editorials/store', [AboutController::class, 'storeEditorial'])->name('editorials.store');
         Route::post('editorials/addEd', [AboutController::class, 'createAccEditorial'])->name('editorials.add');
-        Route::put('editorials/{editor}/edit', [AboutController::class, 'editEditorial'])->name('editorials.edit');
         Route::put('editorials/{editor}', [AboutController::class, 'updateEditorial'])->name('editorials.update');
-        Route::delete('editorials/{editor}', [AboutController::class, 'destroyEditorial'])->name('editorials.destroy');
+        Route::delete('editorials/delete/{editor}', [AboutController::class, 'destroyEditorial'])->name('editorials.destroy');
 
         //mails
         Route::get('/reviewer/approve/{id}', [ReviewerController::class, 'approveReviewer'])->name('reviewer.approve');
