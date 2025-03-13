@@ -7,6 +7,7 @@ use App\Models\Article;
 use App\Models\FileSubmission;
 use App\Models\JournalInformation;
 use App\Models\JournalIssue;
+use App\Models\Reviewers;
 use App\Models\Submit;
 use App\Models\VolumeIssue;
 use App\Models\VolumeIssueImage;
@@ -55,9 +56,13 @@ class SubmissionController extends Controller
     }
     public function approve($id)
     {
-        $submission = Submit::findOrFail($id); // Fetch the submission by ID
+        $submission = Submit::findOrFail($id);
 
-        $submission->update(['status' => 'approved']); // Update the status to approved
+        $submission->update(['status' => 'approved']);
+        $reviewers = Reviewers::where('submission_id', $id)->get();
+        foreach ($reviewers as $reviewer) {
+            $reviewer->delete();
+        }
 
         // Send email notification to the user
         try {
@@ -71,48 +76,42 @@ class SubmissionController extends Controller
 
     public function publicSubmission(Request $request)
     {
-        // Validate the input for volume, issue, year, and cover image
         $request->validate([
             'year' => 'required|numeric|min:1900|max:' . date('Y'),
             'volume' => 'required|string|max:255',
             'issue' => 'required|string|max:255',
-            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate the cover image
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Create VolumeIssue first
         $volumeIssue = VolumeIssue::create([
             'volume' => $request->input('volume'),
             'issue' => $request->input('issue'),
             'year' => $request->input('year'),
         ]);
 
-        // Handle the cover image upload if it exists
         if ($request->hasFile('cover_image')) {
             $coverImage = $request->file('cover_image');
-            $coverImagePath = $coverImage->store('covers'); // Store the image
+            $coverImagePath = $request->file('cover_image')->store('covers', 'public');
 
-            // Create a record in the volume_issue_images table
             VolumeIssueImage::create([
-                'id_volume_issue' => $volumeIssue->id,
+                'volume_issue_id' => $volumeIssue->id,
                 'image_path' => $coverImagePath,
             ]);
         }
 
-        // Fetch all the approved submissions
         $submissions = Submit::where('status', 'approved')->get();
 
         foreach ($submissions as $submission) {
-            // Update the submission status to "publiced"
             $submission->update(['status' => 'publiced']);
 
-            // Create JournalIssue for each submission
             $journalIssue = JournalIssue::create([
-                'publication_date' => now(),
                 'title' => $submission->title ?? 'Untitled',
                 'description' => $submission->author_name ?? 'No description provided',
+                'publication_date' => now(),
                 'created_at' => now(),
                 'updated_at' => now(),
-                'id_volume_issue' => $volumeIssue->id, // Use the id of the latest VolumeIssue
+                'id_volume_issue' => $volumeIssue->id,
+                'year' => $request->input('year'),
             ]);
 
             // Ensure the PDF directory exists
@@ -137,7 +136,6 @@ class SubmissionController extends Controller
             } else {
                 return redirect()->back()->with('error', 'Unsupported file format for conversion.');
             }
-
             // Create the Article for each JournalIssue
             Article::create([
                 'journal_issue_id' => $journalIssue->id,
@@ -152,7 +150,6 @@ class SubmissionController extends Controller
             ]);
         }
 
-        // Redirect back with success message
         return redirect()->back()->with('success', 'All submissions approved, converted to PDF, and added to Journal Issues successfully!');
     }
 

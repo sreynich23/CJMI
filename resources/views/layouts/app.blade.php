@@ -23,7 +23,7 @@
     </style>
 </head>
 
-<body class="bg-gray-100 flex flex-col min-h-screen lg:w-3/4 justify-center mx-auto ">
+<body class="bg-gray-200 flex flex-col min-h-screen lg:w-3/4 justify-center mx-auto ">
     @include('navbar')
 
     @if (session('success'))
@@ -48,7 +48,7 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-2">
-                    <h3 class="font-bold">{{ $journalInfo->journal_name ?? 'CJMI' }}</h3>
+                    <h3 class="font-bold">{{ $journalInfo->journal_name ?? 'Cambodian Journal of Multidisciplinary Research and Innovation (CJMRI)' }}</h3>
                     <div class="text-sm text-gray-400 space-y-1">
                         <p class="flex items-center">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,16 +59,13 @@
                                     ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
                                     ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
                                 !!}
-                            {{-- <a href="mailto:{{ $journalInfo->email ?? 'cjmi.journal@gmail.com' }}" class="text-blue-500 hover:underline">
-                                {{ $journalInfo->email ?? 'cjmi.journal@gmail.com' }}
-                            </a> --}}
                         </p>
                         <p class="flex items-center">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
                             </svg>
-                            {!! nl2br(e($journalInfo->telegram ?? '+855 85593115')) !!}
+                            {!! nl2br(e($journalInfo->telegram ?? '+855 31 222 8888')) !!}
                         </p>
                         <p class="flex items-center">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

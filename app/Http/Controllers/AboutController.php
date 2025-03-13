@@ -150,9 +150,9 @@ class AboutController extends Controller
 
     public function approve($id)
     {
-        $submission = Submit::findOrFail($id); // Fetch the submission by ID
+        $submission = Submit::findOrFail($id);
 
-        $submission->update(['status' => 'approved']); // Update the status to approved
+        $submission->update(['status' => 'approved']);
 
         // Send email notification to the user
         try {

@@ -108,9 +108,8 @@
                                     class="w-full p-2 border rounded mb-2">
 
                                 <label class="block mb-2">Description:</label>
-                                <input type="text" name="description" value="{{ $editor->description }}"
-                                    class="w-full p-2 border rounded mb-2">
-
+                                <textarea type="text" name="description" value="{{ $editor->description }}"
+                                    class="w-full h-60 p-2 border rounded mb-2 focus:outline-none focus:ring-2"></textarea>
                                 <div class="flex justify-end space-x-2 mt-4">
                                     <button type="submit"
                                         class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">

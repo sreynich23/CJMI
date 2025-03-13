@@ -4,7 +4,7 @@ node_modules
 /public/build
 /public/hot
 /storage/*.key
-/public/storage/manuscripts/
+/public/storage/
 .env
 .env.backup
 .env.production

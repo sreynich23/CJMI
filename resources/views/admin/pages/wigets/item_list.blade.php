@@ -10,8 +10,11 @@
                         <li>
                             <a href="{{ route('admin.volume.issue.details', ['id' => $volume['id_volume_issue']]) }}">
                                 {{ $volume['volume'] }}
-                                @if ($volume['image'])
-                                    <img src="{{ asset('storage/' . $volume['image']) }}" alt="Volume Image"
+                                @php
+                                    $image = \App\Models\VolumeIssueImage::where('volume_issue_id', $volume['id_volume_issue'])->first();
+                                @endphp
+                                @if ($image && $image->image_path)
+                                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="Volume Image"
                                         class="w-9/12 h-auto mt-2">
                                 @else
                                     <p>No image available</p>

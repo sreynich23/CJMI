@@ -6,50 +6,49 @@
         <div class="bg-gray-100 px-3 lg:px-2 rounded-lg shadow-sm mb-6 lg:w-3/4 h-full">
 
             <div class="bg-white h-full flex justify-between lg:space-x-2">
-                <div class="bg-white w-1/5 h-full">
-                    @if ($image)
-                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Cover Image">
-                    @else
-                        <p class="font-thin lg:font-semibold text-sm text-center" ></p>
-                    @endif
+                <div class="w-1/5 h-full">
+                    <img src="{{ asset('storage/images/book.jpg') }}" alt="Cover Image">
                 </div>
                 <div class="lg:w-4/5 border-2 lg:border-8 border-blue-950 lg:py-2">
                     <!-- Search Form Section -->
-                    <form action="{{ route('home') }}" method="GET" class="flex flex-1 gap-2 items-center px-1">
+                    <form action="{{ route('home') }}" method="GET" class="flex items-center px-2">
                         <input type="text" name="query"
-                            class="text-black w-3/4 h-3 lg:w-3/4 lg:h-8 px-2 lg:text-sm text-xs font-thin lg:font-semibold lg:rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            class="text-black flex-1 px-3 py-2 text-sm border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Search..." value="{{ request()->query('query') }}">
                         <button type="submit"
-                            class="lg:px-3 lg:py-1 lg:rounded-md text-xs bg-blue-500 hover:bg-blue-600 transition-colors lg:w-1/4 text-white">
-                            Search
+                            class="p-2 bg-blue-500 text-white hover:bg-blue-600 transition-colors  justify-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M8.5 2a6.5 6.5 0 014.71 11.11l4.09 4.09a1 1 0 01-1.42 1.42l-4.09-4.09A6.5 6.5 0 118.5 2zm0 2a4.5 4.5 0 100 9 4.5 4.5 0 000-9z" />
+                            </svg>
                         </button>
                     </form>
                     <div class="justify-between flex px-3">
-                        {{-- <div class="space-y-2">
+                        <div class="space-y-2">
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">Journal name:</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">Initials:</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">DOI:</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">Print ISSN:</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-700">Editor-in-Chief:</p>
+                            {{-- <p class="text-xs font-thin lg:font-semibold text-gray-700">Editor-in-Chief:</p> --}}
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">Publisher:</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">Citation analysis:</p>
                         </div>
                         <div class="space-y-2">
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Cambodian Journal of Multidisciplinary Research
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Cambodian Journal of
+                                Multidisciplinary Research
                                 and Innovation</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-900">CJMRI</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Ministry of Education Youth and Sports</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">and 1 special issue (if required)</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Prefix. XXXXX.xxxxxxx by Crossref</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">...</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">...</p>
+                            {{-- <p class="text-xs font-thin lg:font-semibold text-gray-900">Prefix. XXXXX.xxxxxxx by Crossref</p> --}}
                             <p class="text-xs font-thin lg:font-semibold text-gray-900">Dr. Sam Rany</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Google Scholar, DoAJ</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">...</p>
                         </div>
                         <div class="py-6">
                             <img src="{{ asset('storage/images/qrcode.png') }}" alt="QR Code"
                                 class="w-20 h-20 rounded-md shadow-md">
-                        </div> --}}
-                        <img src="{{ asset('storage/images/cover.jpg') }}" alt="QR Code"
-                                class="h-4/5 sm:h-3/5 lg:h-4/5">
+                        </div>
+                        {{-- <img src="{{ asset('storage/images/cover.jpg') }}" alt="QR Code"
+                                class="h-4/5 sm:h-3/5 lg:h-4/5"> --}}
                     </div>
                 </div>
             </div>
@@ -115,12 +114,14 @@
         </div>
         <div class="lg:w-1/4 flex flex-col space-y-4">
             <div class="bg-blue-950 h-10 px-3 justify-start items-center flex">
-                <h1 class="text-white text-xs font-thin lg:font-semibold">Government, Ministry, and Institution Recognition</h1>
+                <h1 class="text-white text-xs font-thin lg:font-semibold">Government, Ministry, and Institution Recognition
+                </h1>
             </div>
             @if ($recognitions)
                 @foreach ($recognitions as $recognition)
                     <div class="flex items-center space-x-2">
-                        <img class="h-8 w-auto" src="{{ asset('storage/' . $recognition->logo) }}" alt="{{ $recognition->url }}">
+                        <img class="h-8 w-auto" src="{{ asset('storage/' . $recognition->logo) }}"
+                            alt="{{ $recognition->url }}">
                         <h1 class="text-xs text-white">{{ $recognition->name }}</h1>
                     </div>
                 @endforeach
@@ -138,7 +139,8 @@
             </div>
             @if ($conferences)
                 @foreach ($conferences as $conference)
-                    <img class="h-8 w-auto" src="{{ asset('storage/' . $conference->logo) }}" alt="{{ $conference->url }}">
+                    <img class="h-8 w-auto" src="{{ asset('storage/' . $conference->logo) }}"
+                        alt="{{ $conference->url }}">
                 @endforeach
             @endif
         </div>
