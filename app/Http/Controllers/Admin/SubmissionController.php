@@ -119,12 +119,21 @@ class SubmissionController extends Controller
             if (!file_exists($pdfDirectory)) {
                 mkdir($pdfDirectory, 0777, true);
             }
-
-            // Get the file path of the submitted file
+            function getNumberOfPages($filePath)
+            {
+                $phpWord = IOFactory::load($filePath);
+                $properties = $phpWord->getDocInfo();
+                $sections = $phpWord->getSections();
+                $pageCount = 0;
+                foreach ($sections as $section) {
+                    $pageCount += count($section->getElements());
+                }
+                return $pageCount;
+            }
             $filePath = storage_path('app/public/' . $submission->file_path);
+            $numberOfPages = getNumberOfPages($filePath);
             $convertedPdfPath = $pdfDirectory . '/' . $submission->id . '.pdf';
 
-            // Convert DOCX to PDF (if the file format is DOCX)
             if (strtolower(pathinfo($filePath, PATHINFO_EXTENSION)) === 'docx') {
                 $domPdfPath = base_path('vendor/dompdf/dompdf');
                 Settings::setPdfRendererPath($domPdfPath);
@@ -136,18 +145,24 @@ class SubmissionController extends Controller
             } else {
                 return redirect()->back()->with('error', 'Unsupported file format for conversion.');
             }
-            // Create the Article for each JournalIssue
-            Article::create([
-                'journal_issue_id' => $journalIssue->id,
-                'title' => $submission->title,
-                'subtitle' => $submission->subtitle, // Add subtitle
-                'abstract' => $submission->abstract,
-                'keywords' => $submission->keywords, // Add keywords
-                'pdf_url' => 'pdf_articles/' . $submission->id . '.pdf', // Save the URL of the PDF
-                'page' => 'Page ' . $submission->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            try {
+                // Create the Article for each JournalIssue
+                Article::create([
+                    'journal_issue_id' => $journalIssue->id,
+                    'title' => $submission->title,
+                    'subtitle' => $submission->subtitle,
+                    'abstract' => $submission->abstract,
+                    'keywords' => $submission->keywords,
+                    'pdf_url' => 'pdf_articles/' . $submission->id . '.pdf',
+                    'page' => $numberOfPages,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Failed to create article: ' . $e->getMessage());
+                return response()->json(['error' => 'Unable to create article'], 500);
+            }
+
         }
 
         return redirect()->back()->with('success', 'All submissions approved, converted to PDF, and added to Journal Issues successfully!');

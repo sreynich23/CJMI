@@ -15,12 +15,12 @@ class Article extends Model
     protected $fillable = [
         'journal_issue_id',
         'title',
-        'subtitle', // Add the subtitle attribute
+        'subtitle',
         'abstract',
-        'keywords', // Add the keywords attribute
+        'keywords',
         'pdf_url',
-        'cover_image',
-        'user_id',
+        'page',
+        'doi',
     ];
 
     public function journalIssue(): BelongsTo

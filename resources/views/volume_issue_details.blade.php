@@ -6,8 +6,11 @@
             Volume {{ $volumeIssue->volume }} Issue {{ $volumeIssue->issue }} ({{ $volumeIssue->year }})
         </h1>
         <div class="">
-            <img src="{{ asset('storage/' . $volumeImages->first()->image_path) }}" alt="Volume Image"
-                                    class="w-1/4 m-6">
+             <?php
+                $volumeImages = App\Models\VolumeIssueImage::where('volume_issue_id', $volumeIssue->id)->get();
+                ?>
+                <img src="{{ asset('storage/' . $volumeImages->first()->image_path) }}" alt="Volume Image"
+                    class="w-1/2 md:w-1/4 ">
         </div>
         <div class="bg-white p-6 rounded-lg shadow-sm">
             @forelse ($data as $item)
@@ -23,7 +26,7 @@
                     <p class="text-gray-600">
                         Abstract: {{ $item->abstract }}
                     </p>
-                    <a href="{{ route('files.download', $item->id) }}" class="text-green-700 hover:text-green-900">
+                    <a href="{{ route('download.article', $item->id) }}" class="text-green-700 hover:text-green-900">
                         Download PDF
                     </a>
                 </div>

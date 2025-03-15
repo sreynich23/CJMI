@@ -44,6 +44,9 @@
             </h1>
             <!-- Image Section -->
             <div class="mb-8">
+                <?php
+                $volumeImages = App\Models\VolumeIssueImage::where('volume_issue_id', $volumeIssue->id)->get();
+                ?>
                 <img src="{{ asset('storage/' . $volumeImages->first()->image_path) }}" alt="Volume Image"
                     class="w-1/2 md:w-1/4 ">
             </div>
@@ -60,7 +63,7 @@
                     <p class="text-gray-700 mt-2 mb-4">
                         Abstract: {{ Str::limit($item->abstract, 150) }}
                     </p>
-                    <a href="{{ route('files.download', $item->id) }}"
+                    <a href="{{ route('admin.download.article', $item->id) }}"
                         class="inline-block text-white bg-green-600 hover:bg-green-700 py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 ease-in-out">
                         Download PDF
                     </a>

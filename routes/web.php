@@ -49,7 +49,7 @@ Route::middleware(['web'])->group(function () {
     Route::post('/reviewer/feedback/{id}', [ReviewerFeedbackController::class, 'storeFeedback'])->name('reviewer.feedback');
     Route::get('/all-editorials', [HomeController::class, 'allEditorials'])->name('all-editorials');
     Route::post('/all-editorials/create', [ReviewerController::class, 'requestRoleChange'])->name('reviewer.create');
-    Route::get('/files/{id}/download', [CurrentIssueController::class, 'download'])->name('download');
+    Route::get('/files/{id}/download', [CurrentIssueController::class, 'download'])->name('download.article');
 
     // File Download Routes
     Route::get('/files/{id}/download', [FileDownloadController::class, 'download'])->name('download');
@@ -121,6 +121,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/updateAnnouncement', [AboutController::class, 'updateAnnouncements'])->name('about.updateAnnouncements');
         Route::post('/updateNavbar', [AboutController::class, 'updateNavbar'])->name('navbar.update');
         Route::get('/VolumeIssue/{id}', [AboutController::class, 'showVolumeIssueDetails'])->name('volume.issue.details');
+        Route::get('/files/{id}/download', [CurrentIssueController::class, 'download'])->name('download.article');
 
         // Submissions Management
         // Route::get('/', [AboutController::class, 'index'])->name('submissions');

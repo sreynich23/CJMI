@@ -1,5 +1,5 @@
 <aside class="p-2 flex bg-white">
-    <div class="flex w-full h-screen">
+    <div class="flex w-full min-h-screen h-full">
         <!-- Row 1: 3/4 of the screen -->
         <div class="w-4/5 p-6 overflow-y-auto bg-gray-100">
             @if ($submissionsUpdate->isEmpty())
@@ -155,7 +155,7 @@
             @endif
 
             <!-- Display uploaded cover image if available -->
-            <div class="sticky top-4 flex flex-col space-y-4">
+            <div class="sticky top-4 flex flex-col space-y-4 bg-white">
                 <div class="bg-blue-950 h-10 px-3 justify-start items-center flex">
                     <h1 class="text-white text-xs font-semibold">Government, Ministry, and Institution Recognition
                     </h1>
@@ -163,9 +163,11 @@
                 @if ($recognitions)
                     @foreach ($recognitions as $recognition)
                         <div class="flex items-center space-x-2">
+                            <a href="{{ $recognition->url }}" target="_blank">
                             <img class="h-8 w-auto" src="{{ asset('storage/' . $recognition->logo) }}"
-                                alt="{{ $recognition->url }}">
+                                alt="">
                             <h1 class="text-xs text-white">{{ $recognition->name }}</h1>
+                            </a>
                         </div>
                     @endforeach
                 @endif
@@ -174,8 +176,9 @@
                 </div>
                 @if ($indexings)
                     @foreach ($indexings as $indexing)
-                        <img class="h-8 w-auto" src="{{ asset('storage/' . $indexing->logo) }}"
-                            alt="{{ $indexing->url }}">
+                    <a href="{{ $indexing->url }}" target="_blank">
+                        <img class="h-8 w-auto" src="{{ asset('storage/' . $indexing->logo) }}" alt="">
+                    </a>
                     @endforeach
                 @endif
                 <div class="bg-blue-950 h-10 px-3 justify-start items-center flex">
@@ -183,8 +186,10 @@
                 </div>
                 @if ($conferences)
                     @foreach ($conferences as $conference)
+                    <a href="{{ $conference->url }}" target="_blank">
                         <img class="h-8 w-auto" src="{{ asset('storage/' . $conference->logo) }}"
-                            alt="{{ $conference->url }}">
+                            alt="">
+                    </a>
                     @endforeach
                 @endif
             </div>

@@ -2,8 +2,8 @@
 <html>
 
 <head>
-    <!-- ... other head elements ... -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 
 <body>
@@ -20,8 +20,8 @@
                             Dashboard</a>
                     @endif
                     <div class="relative" x-data="{ open: false }">
-
-                        <button @click="open = !open" class="nav-link flex items-center lg:text-sm text-xs">
+                        <button @click="open = !open" @click.away="open = false"
+                            class="nav-link flex items-center lg:text-sm text-xs">
                             My Account
                             <svg class="ml-1 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
@@ -29,10 +29,12 @@
                                     clip-rule="evenodd" />
                             </svg>
                         </button>
-                        <div x-show="open" @click.away="open = false"
+                        <div x-cloak x-show="open" x-transition
                             class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
                             <a href="{{ route('profile.show') }}"
-                                class="block px-2 py-2 lg:text-sm text-xs text-gray-700 hover:bg-gray-100">Profile</a>
+                                class="block px-2 py-2 lg:text-sm text-xs text-gray-700 hover:bg-gray-100">
+                                Profile
+                            </a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit"
@@ -77,7 +79,8 @@
             </li>
             <li>
                 <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" class="nav-link flex items-center text-xs md:text-sm lg:text-base">
+                    <button @click="open = !open" @click.away="open = false"
+                        class="nav-link flex items-center text-xs md:text-sm lg:text-base">
                         EDITORIAL POLICIES
                         <svg class="ml-1 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
@@ -85,7 +88,7 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </button>
-                    <div x-show="open" @click.away="open = false"
+                    <div x-cloak x-show="open" x-transition
                         class="absolute right-0 lg:mt-2 lg:w-48 bg-white rounded-md shadow-lg py-1 z-10">
                         <a href="{{ route('all-editorials') }}#all-editorials"
                             class="block px-2 py-2 text-xs md:text-sm lg:text-base text-gray-700 hover:text-white hover:bg-blue-950">
@@ -109,10 +112,6 @@
                         </a>
                     </div>
                 </div>
-                {{-- <a href="{{ route('all-editorials') }}"
-                    class="px-3 py-2 lg:text-sm text-xs hover:border hover:rounded ">
-                    EDITORIAL POLICIES
-                </a> --}}
             </li>
             <li>
                 <a href="{{ route('submit.index') }}"

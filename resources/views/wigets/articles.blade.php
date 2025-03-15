@@ -14,7 +14,7 @@
             Read full article
         </a>
         <span class="text-gray-400">|</span>
-        <a href="{{ route('files.download', $articles->id) }}"
+        <a href="{{ route('download.article', $articles->id) }}"
            class="text-green-700 hover:text-green-900">
             Download PDF
         </a>

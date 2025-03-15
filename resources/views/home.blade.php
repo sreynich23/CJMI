@@ -6,8 +6,12 @@
         <div class="bg-gray-100 px-3 lg:px-2 rounded-lg shadow-sm mb-6 lg:w-3/4 h-full">
 
             <div class="bg-white h-full flex justify-between lg:space-x-2">
-                <div class="w-1/5 h-full">
-                    <img src="{{ asset('storage/images/book.jpg') }}" alt="Cover Image">
+                <div class="bg-white w-1/5 h-full">
+                    @if ($image)
+                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Cover Image">
+                    @else
+                        <img src="{{ asset('storage/images/book.jpg') }}" alt="Cover Image">
+                    @endif
                 </div>
                 <div class="lg:w-4/5 border-2 lg:border-8 border-blue-950 lg:py-2">
                     <!-- Search Form Section -->
@@ -18,7 +22,8 @@
                         <button type="submit"
                             class="p-2 bg-blue-500 text-white hover:bg-blue-600 transition-colors  justify-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M8.5 2a6.5 6.5 0 014.71 11.11l4.09 4.09a1 1 0 01-1.42 1.42l-4.09-4.09A6.5 6.5 0 118.5 2zm0 2a4.5 4.5 0 100 9 4.5 4.5 0 000-9z" />
+                                <path
+                                    d="M8.5 2a6.5 6.5 0 014.71 11.11l4.09 4.09a1 1 0 01-1.42 1.42l-4.09-4.09A6.5 6.5 0 118.5 2zm0 2a4.5 4.5 0 100 9 4.5 4.5 0 000-9z" />
                             </svg>
                         </button>
                     </form>
@@ -120,9 +125,10 @@
             @if ($recognitions)
                 @foreach ($recognitions as $recognition)
                     <div class="flex items-center space-x-2">
-                        <img class="h-8 w-auto" src="{{ asset('storage/' . $recognition->logo) }}"
-                            alt="{{ $recognition->url }}">
-                        <h1 class="text-xs text-white">{{ $recognition->name }}</h1>
+                        <a href="{{ $recognition->url }}" target="_blank">
+                            <img class="h-8 w-auto" src="{{ asset('storage/' . $recognition->logo) }}">
+                            <h1 class="text-xs text-white">{{ $recognition->name }}</h1>
+                        </a>
                     </div>
                 @endforeach
             @endif
@@ -131,7 +137,10 @@
             </div>
             @if ($indexings)
                 @foreach ($indexings as $indexing)
-                    <img class="h-8 w-auto" src="{{ asset('storage/' . $indexing->logo) }}" alt="{{ $indexing->url }}">
+                    <a href="{{ $indexing->url }}" target="_blank">
+                        <img class="h-8 w-auto" src="{{ asset('storage/' . $indexing->logo) }}"
+                            alt="{{ $indexing->url }}">
+                    </a>
                 @endforeach
             @endif
             <div class="bg-blue-950 h-10 px-3 justify-start items-center flex">
@@ -139,8 +148,10 @@
             </div>
             @if ($conferences)
                 @foreach ($conferences as $conference)
-                    <img class="h-8 w-auto" src="{{ asset('storage/' . $conference->logo) }}"
-                        alt="{{ $conference->url }}">
+                    <a href="{{ $conference->url }}" target="_blank">
+                        <img class="h-8 w-auto" src="{{ asset('storage/' . $conference->logo) }}"
+                            alt="{{ $conference->url }}">
+                    </a>
                 @endforeach
             @endif
         </div>

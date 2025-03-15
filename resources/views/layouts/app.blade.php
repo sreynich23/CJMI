@@ -23,7 +23,16 @@
     </style>
 </head>
 
-<body class="bg-gray-200 flex flex-col min-h-screen lg:w-3/4 justify-center mx-auto ">
+<body x-data="{ loading: true }" x-init="loading = false"
+    :class="{ 'bg-gray-200': loading }"
+    class="flex flex-col min-h-screen lg:w-3/4 justify-center mx-auto transition-all duration-300"
+    :style="loading ? '' : 'background-image: url(\'storage/images/bg.jpg\'); background-size: cover; background-attachment: fixed; background-position: center;'">
+
+    <template x-if="loading">
+        <div class="absolute inset-0 flex items-center justify-center bg-gray-200">
+            <div class="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+        </div>
+    </template>
     @include('navbar')
 
     @if (session('success'))

@@ -4,7 +4,10 @@ node_modules
 /public/build
 /public/hot
 /storage/*.key
-/public/storage/
+/public/storage/covers/
+/public/storage/editorial_images/
+/public/storage/manuscripts/
+/public/storage/pdf_articles/
 .env
 .env.backup
 .env.production
