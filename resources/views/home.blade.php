@@ -126,7 +126,7 @@
                 @foreach ($recognitions as $recognition)
                     <div class="flex items-center space-x-2">
                         <a href="{{ $recognition->url }}" target="_blank">
-                            <img class="h-8 w-auto" src="{{ asset('storage/' . $recognition->logo) }}">
+                            <img class="lg:h-12 md:8 h-8 w-auto" src="{{ asset('storage/' . $recognition->logo) }}">
                             <h1 class="text-xs text-white">{{ $recognition->name }}</h1>
                         </a>
                     </div>
@@ -138,7 +138,7 @@
             @if ($indexings)
                 @foreach ($indexings as $indexing)
                     <a href="{{ $indexing->url }}" target="_blank">
-                        <img class="h-8 w-auto" src="{{ asset('storage/' . $indexing->logo) }}"
+                        <img class="lg:h-12 md:8 h-8 w-auto" src="{{ asset('storage/' . $indexing->logo) }}"
                             alt="{{ $indexing->url }}">
                     </a>
                 @endforeach
@@ -149,7 +149,7 @@
             @if ($conferences)
                 @foreach ($conferences as $conference)
                     <a href="{{ $conference->url }}" target="_blank">
-                        <img class="h-8 w-auto" src="{{ asset('storage/' . $conference->logo) }}"
+                        <img class="lg:h-12 md:8 h-8 w-auto" src="{{ asset('storage/' . $conference->logo) }}"
                             alt="{{ $conference->url }}">
                     </a>
                 @endforeach

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\SubmissionController;
 use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\PoliciesGuidelineController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\SubmitController;
@@ -48,6 +49,7 @@ Route::middleware(['web'])->group(function () {
     Route::get('/reviewer', [ReviewerController::class, 'index'])->name('reviewer');
     Route::post('/reviewer/feedback/{id}', [ReviewerFeedbackController::class, 'storeFeedback'])->name('reviewer.feedback');
     Route::get('/all-editorials', [HomeController::class, 'allEditorials'])->name('all-editorials');
+    Route::get('/editorials-team', [HomeController::class, 'editorialTeam'])->name('editorials-team');
     Route::post('/all-editorials/create', [ReviewerController::class, 'requestRoleChange'])->name('reviewer.create');
     Route::get('/files/{id}/download', [CurrentIssueController::class, 'download'])->name('download.article');
 
@@ -74,6 +76,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::post('/request-role-change', [ReviewerController::class, 'requestRoleChange']);
+    Route::get('/files/{id}/download', [CurrentIssueController::class, 'download'])->name('download.article');
 
     // Submission Wizard for Users
     Route::prefix('submit')->name('submit.')->group(function () {
@@ -155,11 +158,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/feedback/send/{authorId}/{submissionId}', [AboutController::class, 'sendReviewFeedback'])->name('feedback.send');
         Route::post('/accept/{authorId}/{submissionId}', [AboutController::class, 'acceptReview'])->name('accept.send');
         Route::post('/reject/{authorId}/{submissionId}', [AboutController::class, 'reject'])->name('reject.send');
+
+        Route::get('policies-guidelines/{policies_guideline}/edit', [PoliciesGuidelineController::class, 'edit'])->name('policies_guidelines.edit');
+        Route::post('policies-guidelines', [PoliciesGuidelineController::class, 'store'])->name('policies_guidelines.store');
     });
 });
 // Resource Route for Pages
 Route::resource('pages', PageController::class);
 
+Route::get('/files/{id}/download', [CurrentIssueController::class, 'download'])->name('download.article');
 // File Download Routes
 Route::get('/files/{submission}/download', [FileDownloadController::class, 'download'])
     ->name('files.download');

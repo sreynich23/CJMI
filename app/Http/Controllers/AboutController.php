@@ -17,6 +17,7 @@ use App\Models\VolumeIssueImage;
 use App\Models\Editor;
 use App\Models\EditorialTeam;
 use App\Models\Indexing;
+use App\Models\PoliciesGuideline;
 use App\Models\Recognition;
 use App\Models\Review;
 use App\Models\Reviewer;
@@ -74,7 +75,7 @@ class AboutController extends Controller
         $volumeImages = VolumeIssueImage::query()
             ->whereIn('id_volume_issue', $volumes->pluck('id')) // Get images for volumes that exist
             ->get();
-
+        $policies = PoliciesGuideline::all();
         // Group volumes by year
         $groupedVolumes = $volumes->groupBy('year');
 
@@ -92,7 +93,7 @@ class AboutController extends Controller
             });
         }
         $latestYear = VolumeIssue::query()->max('year');
-        return view('admin.dashboard', compact('abouts', 'submissions', 'formattedVolumes', 'image', 'latestYear', 'navbar', 'journalInfo', 'announcements', 'reviewers', 'reviewersEditorial', 'reviewing', 'submissionsUpdate', 'submissionsApproved', 'editors', 'recognitions', 'indexings', 'conferences'));
+        return view('admin.dashboard', compact('abouts', 'submissions', 'formattedVolumes', 'image', 'latestYear', 'navbar', 'journalInfo', 'announcements', 'reviewers', 'reviewersEditorial', 'reviewing', 'submissionsUpdate', 'submissionsApproved', 'editors', 'recognitions', 'indexings', 'conferences','policies'));
     }
 
     public function indexuser()
@@ -395,7 +396,7 @@ class AboutController extends Controller
         'description' => 'required',
     ]);
 
-    $data = $request->only(['name', 'position', 'description']); // Store only necessary fields
+    $data = $request->only(['name', 'position', 'description']);
 
     // Handle image upload if present
     if ($request->hasFile('path_image')) {

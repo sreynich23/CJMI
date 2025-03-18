@@ -3,8 +3,11 @@
 @section('content')
     <article class="border-b pb-4 last:border-b-0 p-8 w-full">
         <div class="bg-gray-100 rounded-lg shadow-lg p-6 mb-6">
+            <?php
+            $volumeIssue = App\Models\VolumeIssue::where('id', $article->journal_issue_id)->first();
+            ?>
                 <p class="text-gray-600 mb-2">
-                    Volume: {{ $article->volume }}, Issue: {{ $article->issue }}
+                    Volume: {{ $volumeIssue->volume }}, Issue: {{ $volumeIssue->issue }} ({{ $volumeIssue->year }})
                 </p>
                 <div class="h-120 w-60">
                     @if ($image)

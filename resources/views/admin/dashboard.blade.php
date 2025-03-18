@@ -52,6 +52,8 @@
                         class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Announcements</button>
                     <button onclick="switchScreen('editorialsPage')"
                         class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Editorials Teams</button>
+                    <button onclick="switchScreen('policies-guidelines')"
+                        class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Policies Guidelines</button>
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
                         <button type="submit"
@@ -90,6 +92,9 @@
             </div>
             <div id="editorialsPage" class="page hidden">
                 @include('admin.pages.editorials')
+            </div>
+            <div id="policies-guidelines" class="page hidden">
+                @include('admin.pages.policies_guidelines')
             </div>
             <footer class="bg-gray-900 text-white py-4">
                 <div class="container mx-auto px-4">

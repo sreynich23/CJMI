@@ -10,6 +10,7 @@ use App\Models\Indexing;
 use App\Models\JournalInformation;
 use App\Models\JournalIssue;
 use App\Models\Navbar;
+use App\Models\PoliciesGuideline;
 use App\Models\Recognition;
 use App\Models\Reviewer;
 use App\Models\User;
@@ -51,10 +52,19 @@ class HomeController extends Controller
 
     public function allEditorials()
     {
+        $policies = PoliciesGuideline::all();
         $navbar = Navbar::latest()->first();
         $journalInfo = JournalInformation::first();
         $teamMembers = EditorialTeam::all()->groupBy('position');
         $reviewers = Reviewer::all();
-        return view('all_editorial', compact('journalInfo', 'navbar','teamMembers', 'reviewers'));
+        return view('all_editorial', compact('journalInfo', 'navbar','teamMembers', 'reviewers','policies'));
+    }
+    public function editorialTeam()
+    {
+        $navbar = Navbar::latest()->first();
+        $journalInfo = JournalInformation::first();
+        $teamMembers = EditorialTeam::all()->groupBy('position');
+        $reviewers = Reviewer::all();
+        return view('editorailTeam', compact('journalInfo', 'navbar','teamMembers', 'reviewers'));
     }
 }

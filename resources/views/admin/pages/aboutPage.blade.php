@@ -78,6 +78,7 @@
         </div>
     </form>
 </div>
+
 <script>
     // Elements
     const addForm = document.getElementById("addForm");
@@ -131,4 +132,3 @@
         }
     });
 </script>
-
