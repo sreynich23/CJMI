@@ -35,7 +35,7 @@
 
     <div class="bg-gray-100 w-full p-5 rounded gap-5">
         <div class="bg-white rounded p-6 space-y-6">
-            @if($groupedPolicies && $groupedPolicies->isNotEmpty())
+            @if(isset($groupedPolicies) && $groupedPolicies->isNotEmpty())
                 @foreach ($groupedPolicies->groupBy('category') as $category => $categoryPolicies)
                     <div id="category-{{ Str::slug($category) }}" class="contentSection hidden">
 
