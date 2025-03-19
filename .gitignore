@@ -4,6 +4,8 @@ node_modules
 /public/build
 /public/hot
 /storage/*.key
+/vendor/
+/public/
 /public/storage/covers/
 /public/storage/editorial_images/
 /public/storage/manuscripts/
