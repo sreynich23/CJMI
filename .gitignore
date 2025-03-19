@@ -10,7 +10,6 @@ node_modules
 /public/storage/editorial_images/
 /public/storage/manuscripts/
 /public/storage/pdf_articles/
-.env
 .env.backup
 .env.production
 .phpactor.json
@@ -25,4 +24,6 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+.env
+.env.*  # To ignore all environment files like .env.local, .env.production, etc.
 .env
