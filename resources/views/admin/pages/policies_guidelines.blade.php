@@ -35,35 +35,43 @@
 
     <div class="bg-gray-100 w-full p-5 rounded gap-5">
         <div class="bg-white rounded p-6 space-y-6">
-            @foreach ($groupedPolicies->groupBy('category') as $category => $categoryPolicies)
-                <div id="category-{{ Str::slug($category) }}" class="contentSection hidden">
+            @if($groupedPolicies && $groupedPolicies->isNotEmpty())
+                @foreach ($groupedPolicies->groupBy('category') as $category => $categoryPolicies)
+                    <div id="category-{{ Str::slug($category) }}" class="contentSection hidden">
 
-                    <h4 class="text-xl font-bold">{{ ucfirst($category) }}</h4>
+                        <h4 class="text-xl font-bold">{{ ucfirst($category) }}</h4>
 
-                    @foreach ($categoryPolicies as $policy)
-                        <div class="flex gap-2">
-                            <h1 id="dynamicTitle" class="text-lg font-semibold text-gray-800">{{ $policy->title }}</h1>
-                            <button
-                            onclick="editPolicy({{ $policy->id }}, '{{ addslashes($policy->type) }}', '{{ addslashes($policy->category) }}', '{{ addslashes($policy->title) }}')"
+                        @foreach ($categoryPolicies as $policy)
+                            <div class="flex gap-2">
+                                <h1 id="dynamicTitle" class="text-lg font-semibold text-gray-800">{{ $policy->title }}</h1>
+                                <button onclick="editPolicy(
+                                    {{ $policy->id }},
+                                    '{{ addslashes($policy->type) }}',
+                                    '{{ addslashes($policy->category) }}',
+                                    '{{ addslashes($policy->title) }}'
+                                )"
                                 class="rounded-md px-1 flex gap-2 border">
-                                Edit
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9" />
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z" />
-                                </svg>
-                            </button>
-                        </div>
-                        <p class="text-gray-600 mt-2">
-                            {!! Str::of(nl2br(e($policy->description)))
-                                ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
-                                ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
-                            !!}
-                        </p>
-                    @endforeach
-                </div>
-            @endforeach
+                                    Edit
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <p class="text-gray-600 mt-2">
+                                {!! Str::of(nl2br(e($policy->description)))
+                                    ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
+                                    ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
+                                !!}
+                            </p>
+                        @endforeach
+                    </div>
+                @endforeach
+            @else
+                <p class="text-gray-600">No policies available.</p>
+            @endif
         </div>
     </div>
 </aside>

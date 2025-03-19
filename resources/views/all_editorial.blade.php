@@ -28,22 +28,25 @@
         <div class="bg-gray-100 w-full p-5 rounded gap-5">
             <div class="text-lg lg:text-2xl md:text-xl font-bold">Policies and Guidelines</div>
             <div class="bg-white rounded p-6 space-y-6">
-                @foreach ($groupedPolicies->groupBy('category') as $category => $categoryPolicies)
-                    <div id="category-{{ Str::slug($category) }}" class="contentSection hidden">
+                @if(isset($groupedPolicies) && $groupedPolicies->isNotEmpty())
+                    @foreach ($groupedPolicies->groupBy('category') as $category => $categoryPolicies)
+                        <div id="category-{{ Str::slug($category) }}" class="contentSection hidden">
+                            <h4 class="text-xl font-bold">{{ ucfirst($category) }}</h4>
 
-                        <h4 class="text-xl font-bold">{{ ucfirst($category) }}</h4>
-
-                        @foreach ($categoryPolicies as $policy)
-                            <h1 id="dynamicTitle" class="text-lg font-semibold text-gray-800">{{ $policy->title }}</h1>
-                            <p class="text-gray-600 mt-2">
-                                {!! Str::of(nl2br(e($policy->description)))
-                                    ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
-                                    ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
-                                !!}
-                            </p>
-                        @endforeach
-                    </div>
-                @endforeach
+                            @foreach ($categoryPolicies as $policy)
+                                <h1 id="dynamicTitle" class="text-lg font-semibold text-gray-800">{{ $policy->title }}</h1>
+                                <p class="text-gray-600 mt-2">
+                                    {!! Str::of(nl2br(e($policy->description)))
+                                        ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
+                                        ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
+                                    !!}
+                                </p>
+                            @endforeach
+                        </div>
+                    @endforeach
+                @else
+                    <p class="text-gray-600">No policies available.</p>
+                @endif
             </div>
         </div>
     </aside>
