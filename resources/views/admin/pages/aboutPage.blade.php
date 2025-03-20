@@ -53,6 +53,7 @@
     <form method="POST" action="{{ route('admin.about.store') }}" id="aboutForm"
         class="bg-white p-10 rounded shadow-lg w-1/2">
         @csrf
+        @method('PUT')
         <input type="hidden" id="about_id" name="about_id">
         <h2 class="text-2xl font-semibold mb-6 hidden" id="form">Update</h2>
         <div class="mb-6">
@@ -71,7 +72,7 @@
                 class="px-6 py-3 bg-green-500 text-white font-semibold text-lg rounded-lg hover:bg-green-600">
                 Submit
             </button>
-            <button type="button" onclick="hideForm()"
+            <button type="button" onclick="hideFormAbout()"
                 class="px-6 py-3 bg-gray-500 text-white font-semibold text-lg rounded-lg hover:bg-gray-600">
                 Cancel
             </button>
@@ -121,14 +122,14 @@
     }
 
     // Function to hide the form
-    function hideForm() {
+    function hideFormAbout() {
         addForm.classList.add("hidden");
     }
 
     // Close the form when clicking outside it
     addForm.addEventListener("click", (e) => {
         if (e.target === addForm) {
-            hideForm();
+            hideFormAbout();
         }
     });
 </script>

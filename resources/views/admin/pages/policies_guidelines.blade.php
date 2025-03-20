@@ -1,5 +1,4 @@
-<aside class="p-2 flex bg-white gap-5">
-    <!-- Sidebar -->
+<aside class="p-2 flex bg-white gap-5 min-h-screen">
     <div class="w-1/5 sticky top-4 h-screen overflow-y-auto">
         <div class="flex items-end justify-end mb-4">
             <button onclick="showFormPolicies()"
@@ -12,68 +11,61 @@
             </button>
         </div>
         <div class="text-xl font-semibold">Policies and Guidelines</div>
-        <ul class="space-y-4">
-            @foreach ($policies->groupBy('type') as $type => $groupedPolicies)
-                <li>
-                    <h3 class="text-lg font-semibold text-blue-600">{{ ucfirst($type) }}</h3>
+<ul class="space-y-4">
+    @foreach ($policies->groupBy('type') as $type => $groupedPolicies)
+        <li>
+            <h3 class="text-lg font-semibold text-blue-600">{{ ucfirst($type) }}</h3>
 
-                    @foreach ($groupedPolicies->groupBy('category') as $category => $categoryPolicies)
-                        <ul class="space-y-2 pl-4">
-                            <li>
-                                <a href="javascript:void(0);"
-                                    onclick="toggleCategory('category-{{ Str::slug($category) }}')"
-                                    class="block border border-blue-700 rounded-md px-4 py-2 text-black hover:bg-blue-600 hover:text-white">
-                                    {{ $category }}
-                                </a>
-                            </li>
-                        </ul>
-                    @endforeach
-                </li>
+            @foreach ($groupedPolicies->groupBy('category') as $category => $categoryPolicies)
+                <ul class="space-y-2 pl-4">
+                    <li>
+                        <a href="javascript:void(0);"
+                            class="block border border-blue-700 rounded-md px-4 py-2 text-black hover:bg-blue-600 hover:text-white toggle-category"
+                            data-category="{{ $category }}">
+                            {{ $category }}
+                        </a>
+                    </li>
+                </ul>
             @endforeach
-        </ul>
-    </div>
+        </li>
+    @endforeach
+</ul>
+</div>
+<!-- Content Section -->
+<div class="bg-gray-100 w-full p-5 rounded gap-5">
+    <div class="bg-white rounded p-6 space-y-6">
+        @foreach ($policies->groupBy('type') as $type => $groupedPolicies)
+            @foreach ($groupedPolicies->groupBy('category') as $category => $categoryPolicies)
+                <div class="contentSection" id="category_{{ $category }}" style="display:none;">
+                    <h4 class="text-xl font-bold">{{ ucfirst($category) }}</h4>
 
-    <div class="bg-gray-100 w-full p-5 rounded gap-5">
-        <div class="bg-white rounded p-6 space-y-6">
-            @if(isset($groupedPolicies) && $groupedPolicies->isNotEmpty())
-                @foreach ($groupedPolicies->groupBy('category') as $category => $categoryPolicies)
-                    <div id="category-{{ Str::slug($category) }}" class="contentSection hidden">
-
-                        <h4 class="text-xl font-bold">{{ ucfirst($category) }}</h4>
-
-                        @foreach ($categoryPolicies as $policy)
-                            <div class="flex gap-2">
-                                <h1 id="dynamicTitle" class="text-lg font-semibold text-gray-800">{{ $policy->title }}</h1>
-                                <button onclick="editPolicy(
-                                    {{ $policy->id }},
-                                    '{{ addslashes($policy->type) }}',
-                                    '{{ addslashes($policy->category) }}',
-                                    '{{ addslashes($policy->title) }}'
-                                )"
+                    @foreach ($categoryPolicies as $policy)
+                        <div class="flex gap-2">
+                            <h1 id="dynamicTitle" class="text-lg font-semibold text-gray-800">{{ $policy->title }}</h1>
+                            <button
+                                onclick="editPolicy({{ $policy->id }}, '{{ addslashes($policy->type) }}', '{{ addslashes($policy->category) }}', '{{ addslashes($policy->title) }}')"
                                 class="rounded-md px-1 flex gap-2 border">
-                                    Edit
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9" />
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <p class="text-gray-600 mt-2">
-                                {!! Str::of(nl2br(e($policy->description)))
-                                    ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
-                                    ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
-                                !!}
-                            </p>
-                        @endforeach
-                    </div>
-                @endforeach
-            @else
-                <p class="text-gray-600">No policies available.</p>
-            @endif
-        </div>
+                                Edit
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="text-gray-600 mt-2">
+                            {!! Str::of(nl2br(e($policy->description)))
+                                ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
+                                ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
+                            !!}
+                        </p>
+                    @endforeach
+                </div>
+            @endforeach
+        @endforeach
     </div>
+</div>
 </aside>
 
 <!-- Hidden Form Section -->
@@ -90,7 +82,7 @@
                 class="w-full px-5 py-3 border rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required>
                 <option value="" disabled selected>Select an option</option>
-                <option value="policy">Policies</option>
+                <option value="policies">Policies</option>
                 <option value="guideline">Guidelines</option>
             </select>
         </div>
@@ -121,73 +113,91 @@
 </div>
 
 <script>
-    window.onload = function() {
+    window.onload = function () {
+    const addFormPolicies = document.getElementById("addFormPolicies");
+    const policyForm = document.getElementById("policyForm");
+    const policyIdInput = document.getElementById("policy_id");
+    const typeInput = document.getElementById("type");
+    const categoryInput = document.getElementById("category");
+    const titleInput = document.getElementById("title");
+    const descriptionInput = document.getElementById("description");
+    const formTitle = document.getElementById("formTitle");
+
+    window.showFormPolicies = function () {
+        addFormPolicies.classList.remove("hidden");
+        formTitle.textContent = "Add Policy";
+        policyForm.action = "{{ route('admin.policies_guidelines.store') }}";
+        policyForm.method = "POST";
+        policyIdInput.value = "";
+        titleInput.value = "";
+        descriptionInput.value = "";
+        const methodField = document.getElementById('method_field');
+        if (methodField) methodField.remove();
+    };
+
+    window.editPolicy = function (id, type, category, title) {
+
         const addFormPolicies = document.getElementById("addFormPolicies");
+        const formTitle = document.getElementById("formTitle");
         const policyForm = document.getElementById("policyForm");
         const policyIdInput = document.getElementById("policy_id");
         const typeInput = document.getElementById("type");
         const categoryInput = document.getElementById("category");
         const titleInput = document.getElementById("title");
         const descriptionInput = document.getElementById("description");
-        const formTitle = document.getElementById("formTitle");
 
-        window.showFormPolicies = function() {
-            addFormPolicies.classList.remove("hidden");
-            formTitle.textContent = "Add Policy";
-            policyForm.action = "{{ route('admin.policies_guidelines.store') }}";
-            policyForm.method = "POST";
-            policyIdInput.value = "";
-            titleInput.value = "";
-            descriptionInput.value = "";
-            const methodField = document.getElementById('method_field');
-            if (methodField) methodField.remove();
-        };
+        // Show the form
+        addFormPolicies.classList.remove("hidden");
 
-        window.editPolicy = function(id, type, category, title) {
+        // Set form title and populate form fields with current data
+        formTitle.textContent = "Update Policy";
+        policyForm.action = `/admin/policies-guidelines/${id}/edit`;
+        policyIdInput.value = id;
+        typeInput.value = type;
+        categoryInput.value = category;
+        titleInput.value = title;
 
-            const addFormPolicies = document.getElementById("addFormPolicies");
-            const formTitle = document.getElementById("formTitle");
-            const policyForm = document.getElementById("policyForm");
-            const policyIdInput = document.getElementById("policy_id");
-            const typeInput = document.getElementById("type");
-            const categoryInput = document.getElementById("category");
-            const titleInput = document.getElementById("title");
-            const descriptionInput = document.getElementById("description");
-
-            // Show the form
-            addFormPolicies.classList.remove("hidden");
-
-            // Set form title and populate form fields with current data
-            formTitle.textContent = "Update Policy";
-            policyForm.action = `/admin/policies-guidelines/${id}/edit`;
-            policyIdInput.value = id;
-            typeInput.value = type;
-            categoryInput.value = category;
-            titleInput.value = title;
-
-            // Optionally, you can add the _method hidden input for a PUT request, if required
-            const methodField = document.getElementById('method_field');
-            if (!methodField) {
-                const newMethodField = document.createElement('input');
-                newMethodField.type = 'hidden';
-                newMethodField.name = '_method';
-                newMethodField.value = 'GET';
-                newMethodField.id = 'method_field';
-                policyForm.appendChild(newMethodField);
-            }
-        };
-
-        window.hideForm = function() {
-            addFormPolicies.classList.add("hidden");
-        };
-
-        addFormPolicies.addEventListener("click", (e) => {
-            if (e.target === addFormPolicies) hideForm();
-        });
+        // Optionally, you can add the _method hidden input for a PUT request, if required
+        const methodField = document.getElementById('method_field');
+        if (!methodField) {
+            const newMethodField = document.createElement('input');
+            newMethodField.type = 'hidden';
+            newMethodField.name = '_method';
+            newMethodField.value = 'GET';
+            newMethodField.id = 'method_field';
+            policyForm.appendChild(newMethodField);
+        }
     };
 
-    function toggleCategory(categoryId) {
-        const contentSection = document.getElementById(categoryId);
-        contentSection.classList.toggle('hidden');
-    }
+    window.hideForm = function () {
+        addFormPolicies.classList.add("hidden");
+    };
+
+    addFormPolicies.addEventListener("click", (e) => {
+        if (e.target === addFormPolicies) hideForm();
+    });
+
+    // Add click event listeners to category links
+    const categoryLinks = document.querySelectorAll('.toggle-category');
+    categoryLinks.forEach(link => {
+        link.addEventListener('click', function () {
+            const category = this.getAttribute('data-category');
+            const contentSection = document.getElementById(`category_${category}`);
+
+            // Toggle visibility
+            if (contentSection.style.display === "none" || contentSection.style.display === "") {
+                // Hide all other sections
+                document.querySelectorAll('.contentSection').forEach(section => {
+                    section.style.display = "none";
+                });
+
+                // Show the clicked section
+                contentSection.style.display = "block";
+            } else {
+                contentSection.style.display = "none";
+            }
+        });
+    });
+};
+
 </script>

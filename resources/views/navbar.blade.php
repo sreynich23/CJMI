@@ -78,7 +78,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('all-editorials') }}#all-editorials"
+                <a href="{{ route('all-editorials') }}"
                 class="px-3 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
                     POLICIES AND GUIDELINES
                 </a>

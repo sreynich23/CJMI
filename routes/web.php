@@ -48,7 +48,7 @@ Route::middleware(['web'])->group(function () {
     Route::get('/VolumeIssue/{id}', [CurrentIssueController::class, 'showVolumeIssueDetails'])->name('volume.issue.details');
     Route::get('/reviewer', [ReviewerController::class, 'index'])->name('reviewer');
     Route::post('/reviewer/feedback/{id}', [ReviewerFeedbackController::class, 'storeFeedback'])->name('reviewer.feedback');
-    Route::get('/all-editorials', [HomeController::class, 'allEditorials'])->name('all-editorials');
+    Route::get('/policies-guidelines', [HomeController::class, 'allEditorials'])->name('all-editorials');
     Route::get('/editorials-team', [HomeController::class, 'editorialTeam'])->name('editorials-team');
     Route::post('/all-editorials/create', [ReviewerController::class, 'requestRoleChange'])->name('reviewer.create');
     Route::get('/files/{id}/download', [CurrentIssueController::class, 'download'])->name('download.article');
