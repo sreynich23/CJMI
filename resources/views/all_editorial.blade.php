@@ -32,6 +32,7 @@
                             <h4 class="text-xl font-bold">{{ ucfirst($category) }}</h4>
 
                             @foreach ($categoryPolicies as $policy)
+                                <h1 class=" font-bold">{{$policy->title}}</h1>
                                 <p class="text-gray-600 mt-2">
                                     {!! Str::of(nl2br(e($policy->description)))
                                         ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
