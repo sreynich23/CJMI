@@ -31,16 +31,15 @@
         <!-- Admin Navigation -->
         <div class="w-full text-gray-700 bg-green-500">
             <div class="flex flex-col max-w-screen-xl text-white mx-auto md:items-center  md:flex-row md:px-2 lg:px-4">
-                <div class="">
+                <div class="p-3 ">
                     <img src="{{ asset('storage/' . $navbar->logo_path) }}" alt="Logo" height="100"
                         width="100">
                 </div>
-                <div class="flex flex-row items-center p-4">
+                <div class="items-center p-4 space-y-6">
                     <a href="#"
-                        class="text-lg text-white font-semibold tracking-widest uppercase rounded-lg focus:outline-none focus:shadow-outline">
+                        class="text-xl text-white font-semibold tracking-widest uppercase rounded-lg focus:outline-none focus:shadow-outline">
                         {{ $navbar->title ?? '' }}
                     </a>
-                </div>
                 <nav class="flex-col flex-grow pb-4 md:pb-0 md:flex md:justify-end md:flex-row">
                     <button onclick="switchScreen('homePage')"
                         class="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline">Home</button>
@@ -63,6 +62,7 @@
                     </form>
 
                 </nav>
+            </div>
                 <div class="flex items-center px-4 py-2 mt-2">
                     <button onclick="showNavbarModal()"
                         class="rounded-md px-1 flex gap-2 border bg-green-500 text-white ">
