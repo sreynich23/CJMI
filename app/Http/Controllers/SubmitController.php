@@ -107,8 +107,8 @@ class SubmitController extends Controller
                 'title' => 'required|string|max:255',
                 'author_name' => 'required|string|max:255',
                 'abstract' => 'required|string|min:100',
-                'keywords' => 'required|string|max:255',
-                'prefix' => 'nullable|string|max:10',
+                'keywords' => 'required|string',
+                'prefix' => 'nullable|string',
                 'subtitle' => 'nullable|string|max:255',
             ]);
 
@@ -286,9 +286,9 @@ class SubmitController extends Controller
     $validated = $request->validate([
         'title' => 'required|string|max:255',
         'abstract' => 'required|string',
-        'keywords' => 'required|string|max:255',
-        'prefix' => 'nullable|string|max:50',
-        'subtitle' => 'nullable|string|max:255',
+        'keywords' => 'required|string',
+        'prefix' => 'nullable|string',
+        'subtitle' => 'nullable|string',
         'file_path' => 'nullable|file|mimes:pdf,docx|max:10240', // Updated to file_path
     ]);
     $status = $submission->status != 'pending' ? 'update' : $submission->status;

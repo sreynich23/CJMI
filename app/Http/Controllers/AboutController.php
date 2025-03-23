@@ -201,7 +201,7 @@ class AboutController extends Controller
     public function updateAnnouncements(Request $request)
     {
         $request->validate([
-            'content' => 'required|string|max:1000',
+            'content' => 'required|string|max:2000',
         ]);
         // Update if exists, or create a new record
         Announcement::updateOrCreate(
@@ -230,21 +230,38 @@ class AboutController extends Controller
         return redirect()->back()->with('success', 'Navbar updated successfully!');
     }
     public function sendReviewFeedback($authorId, $submissionId, Request $request)
-    {
-        // Fetch the author and submission data
-        $author = User::findOrFail($authorId);
-        $submission = Submit::findOrFail($submissionId);
-        $request->validate([
-            'comment' => 'required|string|max:1000',
-        ]);
-        $comment = $request->input('comment');
-        $submission->update(['status' => 'waiting_update']);
+{
+    // Fetch the author and submission data
+    $author = User::findOrFail($authorId);
+    $submission = Submit::findOrFail($submissionId);
 
-        // Send the email with feedback
-        Mail::to($author->email)->send(new FeedbackAuthor($submission, $author, $comment));
+    // Validate the input
+    $request->validate([
+        'comment' => 'required|string|max:1000',
+        'file' => 'nullable|mimes:pdf|max:10240', // Allow PDF files with a max size of 10MB
+    ]);
 
-        return redirect()->back()->with('success', 'Feedback sent successfully.');
+    // Store the comment
+    $comment = $request->input('comment');
+
+    // Update the submission status
+    $submission->update(['status' => 'waiting_update']);
+
+    // Handle file upload if a file is provided
+    $filePath = null;
+    if ($request->hasFile('file')) {
+        $file = $request->file('file');
+        // Store the PDF file in the 'feedback_pdfs' directory
+        $filePath = $file->store('feedback_pdfs', 'public');
     }
+
+    // Send the email with feedback and the optional file path
+    Mail::to($author->email)->send(new FeedbackAuthor($submission, $author, $comment, $filePath));
+
+    // Redirect back with a success message
+    return redirect()->back()->with('success', 'Feedback sent successfully.');
+}
+
     public function reject($authorId, $submissionId, Request $request)
     {
         // Fetch the author and submission data

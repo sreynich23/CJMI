@@ -13,7 +13,7 @@
                         <img src="{{ asset('storage/images/book.jpg') }}" alt="Cover Image">
                     @endif
                 </div>
-                <div class="lg:w-4/5 border-2 lg:border-8 border-blue-950 lg:py-2">
+                <div class="lg:w-4/5 border-2 lg:border-8 border-blue-950 lg:py-2 bg-slate-200">
                     <!-- Search Form Section -->
                     <form action="{{ route('home') }}" method="GET" class="flex items-center px-2">
                         <input type="text" name="query"
@@ -28,12 +28,11 @@
                         </button>
                     </form>
                     <div class="justify-between flex px-3">
-                        <div class="space-y-2">
+                        {{-- <div class="space-y-2">
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">Journal name:</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">Initials:</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">DOI:</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">Print ISSN:</p>
-                            {{-- <p class="text-xs font-thin lg:font-semibold text-gray-700">Editor-in-Chief:</p> --}}
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">Publisher:</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">Citation analysis:</p>
                         </div>
@@ -44,16 +43,15 @@
                             <p class="text-xs font-thin lg:font-semibold text-gray-900">CJMRI</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-900">...</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-900">...</p>
-                            {{-- <p class="text-xs font-thin lg:font-semibold text-gray-900">Prefix. XXXXX.xxxxxxx by Crossref</p> --}}
                             <p class="text-xs font-thin lg:font-semibold text-gray-900">Dr. Sam Rany</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-900">...</p>
                         </div>
                         <div class="py-6">
                             <img src="{{ asset('storage/images/qrcode.png') }}" alt="QR Code"
                                 class="w-20 h-20 rounded-md shadow-md">
-                        </div>
-                        {{-- <img src="{{ asset('storage/images/cover.jpg') }}" alt="QR Code"
-                                class="h-4/5 sm:h-3/5 lg:h-4/5"> --}}
+                        </div> --}}
+                        <img src="{{ asset('storage/images/qrcode.png') }}" alt="QR Code"
+                                class="h-4/5 sm:h-3/5 lg:h-4/5">
                     </div>
                 </div>
             </div>

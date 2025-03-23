@@ -28,7 +28,10 @@
                         <div class="prose max-w-none">
                             <h3 class="text-lg font-semibold mb-2">Cambodian Journal of Multidisciplinary Research and Innovation (CJMRI)</h3>
                             <div class="flex items-center space-x-4">
-                                <p>{{$announcements->content}}</p>
+                                <p>{!! Str::of(nl2br(e($announcements->content)))
+                                    ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
+                                    ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
+                                !!}</p>
                             </div>
                         </div>
                     </div>

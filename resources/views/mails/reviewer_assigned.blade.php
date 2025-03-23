@@ -11,7 +11,7 @@
     <p>The Review Team</p>
     <p>
         <strong>File:</strong>
-        <a href="{{ url('storage/submissions/' . $submission->file) }}" target="_blank">Click here to view the file</a>
+        <a href="http://cjmri.nubb.edu.kh/" target="_blank">Click here to view the file</a>
     </p>
 </body>
 </html>
