@@ -7,7 +7,9 @@ node_modules
 /vendor/
 /public/
 /public/storage/covers/
+/public/storage/cvs/
 /public/storage/editorial_images/
+/public/storage/images/
 /public/storage/manuscripts/
 /public/storage/pdf_articles/
 .env.backup
