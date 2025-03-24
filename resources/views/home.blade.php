@@ -28,30 +28,31 @@
                         </button>
                     </form>
                     <div class="justify-between flex px-3">
-                        {{-- <div class="space-y-2">
+                        <div class="space-y-2">
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">Journal name:</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">Initials:</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">DOI:</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">Print ISSN:</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-700">e-ISSN:</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">Publisher:</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-700">Citation analysis:</p>
                         </div>
+
                         <div class="space-y-2">
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Cambodian Journal of
-                                Multidisciplinary Research
-                                and Innovation</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Cambodian Journal of Multidisciplinary Research and Innovation</p>
                             <p class="text-xs font-thin lg:font-semibold text-gray-900">CJMRI</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">...</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">...</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Dr. Sam Rany</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">...</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">[Insert DOI here]</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">3080-0358</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">3080-0366</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">National University of Battambang</p>
+                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Google Scholar</p>
                         </div>
                         <div class="py-6">
                             <img src="{{ asset('storage/images/qrcode.png') }}" alt="QR Code"
                                 class="w-20 h-20 rounded-md shadow-md">
-                        </div> --}}
-                        <img src="{{ asset('storage/images/qrcode.png') }}" alt="QR Code"
-                                class="h-4/5 sm:h-3/5 lg:h-4/5">
+                        </div>
+                        {{-- <img src="{{ asset('storage/images/qrcode.png') }}" alt="QR Code"
+                                class="h-4/5 sm:h-3/5 lg:h-4/5"> --}}
                     </div>
                 </div>
             </div>

@@ -61,7 +61,7 @@ class AboutController extends Controller
         $reviewing = DB::table('reviewers')
             ->join('submits', 'reviewers.submission_id', '=', 'submits.id')
             ->join('reviewer', 'reviewers.reviewer_id', '=', 'reviewer.id')
-            ->select('submits.title as title', 'submits.file_path as file_path', 'reviewers.status', 'reviewers.submission_id', 'reviewers.reviewer_id', 'reviewer.name as reviewer_name', 'reviewer.user_id as user_id')
+            ->select('submits.title as title','submits.status as submission_status', 'submits.file_path as file_path', 'reviewers.status', 'reviewers.submission_id', 'reviewers.reviewer_id', 'reviewer.name as reviewer_name', 'reviewer.user_id as user_id')
             ->get()
             ->groupBy('submission_id');
         // Fetch all volumes with their issues, ordered by year, volume, and issue
@@ -238,20 +238,15 @@ class AboutController extends Controller
     // Validate the input
     $request->validate([
         'comment' => 'required|string|max:1000',
-        'file' => 'nullable|mimes:pdf|max:10240', // Allow PDF files with a max size of 10MB
+        'file' => 'nullable|mimes:pdf|max:10240',
     ]);
 
-    // Store the comment
     $comment = $request->input('comment');
 
-    // Update the submission status
     $submission->update(['status' => 'waiting_update']);
 
-    // Handle file upload if a file is provided
-    $filePath = null;
     if ($request->hasFile('file')) {
         $file = $request->file('file');
-        // Store the PDF file in the 'feedback_pdfs' directory
         $filePath = $file->store('feedback_pdfs', 'public');
     }
 

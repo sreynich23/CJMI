@@ -66,7 +66,7 @@
         </div>
 
         <!-- Submissions List -->
-        <div class="bg-white shadow overflow-hidden sm:rounded-md">
+        <div class="bg-white shadow sm:rounded-md">
             <ul class="divide-y divide-gray-200">
                 @forelse($submissions as $submission)
                     <li>
@@ -117,8 +117,8 @@
                                         <div x-show="open"
                                              @click.away="open = false"
                                              x-cloak
-                                             class="absolute left-3 transform -translate-x-full mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
-                                            <div class="py-1">
+                                             class="absolute left-3 transform -translate-x-full mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                                            <div class="py-1 z-50">
                                                 <a href="{{ route('submissions.show', $submission) }}"
                                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                     View Details

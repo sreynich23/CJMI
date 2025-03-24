@@ -20,11 +20,26 @@ class FeedbackAuthor extends Mailable
     public $user;
     public $comment;
 
-    public function __construct( $submission, $user,$comment)
+    public $filePath;
+
+    public function __construct( $submission, $user,$comment, $filePath = null)
     {
         $this->submission = $submission;
         $this->user = $user;
         $this->comment = $comment;
+        $this->filePath = $filePath;
+    }
+
+    public function build()
+    {
+        $mail = $this->subject('Feedback for Your Submission')
+                     ->view('emails.feedback');
+
+        if ($this->filePath) {
+            $mail->attach(storage_path('app/public/' . $this->filePath));
+        }
+
+        return $mail;
     }
     /**
      * Get the message envelope.

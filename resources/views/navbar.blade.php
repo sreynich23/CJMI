@@ -82,35 +82,6 @@
                 class="px-3 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
                     POLICIES AND GUIDELINES
                 </a>
-                {{-- <div class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" @click.away="open = false"
-                        class="nav-link flex items-center text-xs md:text-sm lg:text-base">
-
-                    </button>
-                    <div x-cloak x-show="open" x-transition
-                        class="absolute right-0 lg:mt-2 lg:w-48 bg-white rounded-md shadow-lg py-1 z-10">
-                        <a href="{{ route('all-editorials') }}#all-editorials"
-                            class="block px-2 py-2 text-xs md:text-sm lg:text-base text-gray-700 hover:text-white hover:bg-blue-950">
-                            📖 All Editorials
-                        </a>
-                        <a href="{{ route('all-editorials') }}#reviewing-policy"
-                            class="block px-2 py-2 text-xs md:text-sm lg:text-base text-gray-700 hover:text-white hover:bg-blue-950">
-                            📝 Reviewing Policy
-                        </a>
-                        <a href="{{ route('all-editorials') }}#archiving-policy"
-                            class="block px-2 py-2 text-xs md:text-sm lg:text-base text-gray-700 hover:text-white hover:bg-blue-950">
-                            📂 Archiving Policy
-                        </a>
-                        <a href="{{ route('all-editorials') }}#plagiarism-policy"
-                            class="block px-2 py-2 text-xs md:text-sm lg:text-base text-gray-700 hover:text-white hover:bg-blue-950">
-                            📑 Plagiarism Policy
-                        </a>
-                        <a href="{{ route('all-editorials') }}#open-access-policy"
-                            class="block px-2 py-2 text-xs md:text-sm lg:text-base text-gray-700 hover:text-white hover:bg-blue-950">
-                            🔓 Open Access Policy
-                        </a>
-                    </div>
-                </div> --}}
             </li>
             <li>
                 <a href="{{ route('editorials-team') }}"
