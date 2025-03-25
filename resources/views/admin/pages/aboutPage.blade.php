@@ -53,7 +53,6 @@
     <form method="POST" action="{{ route('admin.about.store') }}" id="aboutForm"
         class="bg-white p-10 rounded shadow-lg w-1/2">
         @csrf
-        @method('PUT')
         <input type="hidden" id="about_id" name="about_id">
         <h2 class="text-2xl font-semibold mb-6 hidden" id="form">Update</h2>
         <div class="mb-6">

@@ -21,7 +21,7 @@
         </ul>
     </div>
     <div id="all-editorials" class="page">
-        <h2 class="text-lg font-semibold text-gray-700 mb-4">📚 All Editorials</h2>
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">📚EDITORIAL BOARD</h2>
         <div class="space-y-2">
             @foreach ($teamMembers as $position => $members)
             <div id="{{ Str::slug($position) }}">

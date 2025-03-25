@@ -48,7 +48,11 @@
             </div>
         </div>
         <div class="flex justify-between">
-            <img src="{{ asset('storage/' . $navbar->background_color) }}" alt="">
+            @if(Storage::exists('public/' . $navbar->background_color))
+                <img src="{{ asset('storage/' . $navbar->background_color) }}" alt="">
+            @else
+                <img src="{{ asset('storage/images/aWUzD1MBfnyxCuDGFFzQOIJKgLfBzbfu9Cs4dnam.png') }}" alt="">
+            @endif
         </div>
     </header>
     <nav class="text-white flex py-2 bg-blue-950 sticky top-0 justify-between px-1 z-20">
@@ -62,7 +66,7 @@
             <li>
                 <a href="{{ route('about') }}"
                     class="px-2 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
-                    ABOUT
+                    ABOUT CJMRI
                 </a>
             </li>
             <li>

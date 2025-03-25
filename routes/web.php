@@ -78,7 +78,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/request-role-change', [ReviewerController::class, 'requestRoleChange']);
     Route::get('/files/{id}/download', [CurrentIssueController::class, 'download'])->name('download.article');
     Route::get('/files/{id}/download/doc', [FileDownloadController::class, 'download'])
-    ->name('download');
+        ->name('download');
     // Submission Wizard for Users
     Route::prefix('submit')->name('submit.')->group(function () {
         Route::get('/', [SubmitController::class, 'index'])->name('index');
@@ -126,8 +126,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/updateNavbar', [AboutController::class, 'updateNavbar'])->name('navbar.update');
         Route::get('/VolumeIssue/{id}', [AboutController::class, 'showVolumeIssueDetails'])->name('volume.issue.details');
         Route::get('/files/{id}/download', [CurrentIssueController::class, 'download'])->name('download.article');
-        Route::get('/files/{id}/download/doc', [FileDownloadController::class, 'download'])
-    ->name('download');
+        Route::get('/files/{id}/download/doc', [FileDownloadController::class, 'download'])->name('download');
 
         // Submissions Management
         // Route::get('/', [AboutController::class, 'index'])->name('submissions');
