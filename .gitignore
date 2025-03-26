@@ -1,33 +1,42 @@
-node_modules
-/.phpunit.cache
+# Dependencies
 /node_modules
-/public/build
-/public/hot
-/storage/*.key
 /vendor/
-/public/storage/covers/
-/public/storage/cvs/
-/public/storage/editorial_images/
-/public/storage/images/
-/public/storage/manuscripts/
-/public/storage/pdf_articles/
-/public/storage/feedback_pdfs/
-/public/storage/reviewer_feedback_files/
-/public/storage/mail.json
-.env.backup
-.env.production
-.phpactor.json
+
+# Laravel & PHP caches
+/.phpunit.cache
 .phpunit.result.cache
+.phpactor.json
 Homestead.json
 Homestead.yaml
 auth.json
+
+# Storage (Ignore all, but allow a placeholder file)
+/public/storage/*
+!/public/storage/.gitignore
+
+# Build files
+/public/build
+/public/hot
+
+# Laravel storage (keys, logs, caches)
+storage/*.key
+/storage/logs/
+bootstrap/cache/
+
+# Ignore sensitive environment files
+.env
+.env.*  # Covers .env.local, .env.production, etc.
+
+# IDE and editor configs
+/.idea
+/.vscode
+/.nova
+/.fleet
+/.zed
+
+# Debug logs
 npm-debug.log
 yarn-error.log
-/.fleet
-/.idea
-/.nova
-/.vscode
-/.zed
-.env
-.env.*  # To ignore all environment files like .env.local, .env.production, etc.
-.env
+
+# Optional: If using JetBrains Fleet
+/.fleet/
