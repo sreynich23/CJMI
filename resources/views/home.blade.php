@@ -2,65 +2,27 @@
 
 @section('content')
     <div class="flex flex-col max-w-screen-xl text-white mx-auto md:flex-row md:px-2 lg:px-4 py-4">
-        <!-- Main Content Grid -->
         <div class="bg-gray-100 px-3 lg:px-2 rounded-lg shadow-sm mb-6 lg:w-3/4 h-full">
-
-            <div class="bg-white h-full flex justify-between lg:space-x-2">
-                <div class="bg-white w-1/5 h-full">
-                    @if ($image)
-                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Cover Image">
-                    @else
-                        <img src="{{ asset('storage/images/book.jpg') }}" alt="Cover Image">
-                    @endif
-                </div>
-                <div class="lg:w-4/5 border-2 lg:border-8 border-blue-950 lg:py-2 bg-slate-200">
-                    <!-- Search Form Section -->
+            <div class="bg-white">
+                <div class="lg:py-2 bg-slate-200 h-full">
                     <form action="{{ route('home') }}" method="GET" class="flex items-center px-2">
                         <input type="text" name="query"
                             class="text-black flex-1 px-3 py-2 text-sm border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Search..." value="{{ request()->query('query') }}">
                         <button type="submit"
-                            class="p-2 bg-blue-500 text-white hover:bg-blue-600 transition-colors  justify-items-center">
+                            class="p-2 bg-blue-500 text-white hover:bg-blue-600 transition-colors justify-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
                                 <path
                                     d="M8.5 2a6.5 6.5 0 014.71 11.11l4.09 4.09a1 1 0 01-1.42 1.42l-4.09-4.09A6.5 6.5 0 118.5 2zm0 2a4.5 4.5 0 100 9 4.5 4.5 0 000-9z" />
                             </svg>
                         </button>
                     </form>
-                    <div class="justify-between flex px-3">
-                        <div class="space-y-2">
-                            <p class="text-xs font-thin lg:font-semibold text-gray-700">Journal name:</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-700">Initials:</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-700">DOI:</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-700">Print ISSN:</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-700">e-ISSN:</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-700">Publisher:</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-700">Citation analysis:</p>
-                        </div>
-
-                        <div class="space-y-2">
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Cambodian Journal of Multidisciplinary Research and Innovation</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">CJMRI</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">[Insert DOI here]</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">3080-0358</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">3080-0366</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">National University of Battambang</p>
-                            <p class="text-xs font-thin lg:font-semibold text-gray-900">Google Scholar</p>
-                        </div>
-                        <div class="py-6">
-                            <img src="{{ asset('storage/images/qrcode.png') }}" alt="QR Code"
-                                class="w-20 h-20 rounded-md shadow-md">
-                        </div>
-                        {{-- <img src="{{ asset('storage/images/qrcode.png') }}" alt="QR Code"
-                                class="h-4/5 sm:h-3/5 lg:h-4/5"> --}}
-                    </div>
+                    <img src="{{ asset('storage/bg_images/cover.png') }}" alt="Cover Image" class="h-full object-cover">
                 </div>
             </div>
-            <!-- Latest Articles Highlight Section -->
             <div class="mb-12">
                 <h2 class="text-sm lg:text-2xl font-bold text-gray-800 mb-4">Latest Articles</h2>
                 <div id="highlight-section" class="bg-white rounded-lg shadow-md p-4 h-5/6 overflow-hidden">
-                    <!-- Carousel Container -->
                     <div id="carousel" class="flex transition-transform duration-500">
                         @foreach ($articles as $index => $article)
                             <div class="w-full flex-shrink-0 p-4"

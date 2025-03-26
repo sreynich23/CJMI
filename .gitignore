@@ -5,13 +5,15 @@ node_modules
 /public/hot
 /storage/*.key
 /vendor/
-/public/
 /public/storage/covers/
 /public/storage/cvs/
 /public/storage/editorial_images/
 /public/storage/images/
 /public/storage/manuscripts/
 /public/storage/pdf_articles/
+/public/storage/feedback_pdfs/
+/public/storage/reviewer_feedback_files/
+/public/storage/mail.json
 .env.backup
 .env.production
 .phpactor.json

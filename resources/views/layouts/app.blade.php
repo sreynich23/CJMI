@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name', 'Laravel') }}</title>
-    <link rel="icon" type="image/png" href="{{ asset('storage/images/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('storage/bg_images/logo.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
@@ -26,7 +26,7 @@
 <body x-data="{ loading: true }" x-init="loading = false"
     :class="{ 'bg-gray-200': loading }"
     class="flex flex-col min-h-screen lg:w-3/4 justify-center mx-auto transition-all duration-300"
-    :style="loading ? '' : 'background-image: url(\'storage/images/bg.jpg\'); background-size: cover; background-attachment: fixed; background-position: center;'">
+    :style="loading ? '' : 'background-image: url(\'storage/bg_images/bg.jpg\'); background-size: cover; background-attachment: fixed; background-position: center;'">
 
     <template x-if="loading">
         <div class="absolute inset-0 flex items-center justify-center bg-gray-200">

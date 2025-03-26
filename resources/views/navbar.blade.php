@@ -16,7 +16,7 @@
                 <div class="flex items-center space-x-4">
                     @if (auth()->user()->role === 'admin')
                         <a href="{{ url('/admin') }}"
-                            class="block px-2 py-2 lg:text-sm text-xs text-gray-700 hover:bg-gray-100 rounded-lg bg-white">Editorial
+                            class="block px-1 py-2 lg:text-sm text-xs text-gray-700 hover:bg-gray-100 rounded-lg bg-white">Editorial
                             Dashboard</a>
                     @endif
                     <div class="relative" x-data="{ open: false }">
@@ -32,13 +32,13 @@
                         <div x-cloak x-show="open" x-transition
                             class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
                             <a href="{{ route('profile.show') }}"
-                                class="block px-2 py-2 lg:text-sm text-xs text-gray-700 hover:bg-gray-100">
+                                class="block px-1 py-2 lg:text-sm text-xs text-gray-700 hover:bg-gray-100">
                                 Profile
                             </a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit"
-                                    class="block w-full text-left px-2 py-2 lg:text-sm text-xs text-gray-700 hover:bg-gray-100">
+                                    class="block w-full text-left px-1 py-2 lg:text-sm text-xs text-gray-700 hover:bg-gray-100">
                                     Logout
                                 </button>
                             </form>
@@ -59,13 +59,13 @@
         <ul class="flex flex-wrap justify-center space-x-2 items-center">
             <li>
                 <a href="{{ route('home') }}"
-                    class="px-2 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
+                    class="px-1 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
                     HOME
                 </a>
             </li>
             <li>
                 <a href="{{ route('about') }}"
-                    class="px-2 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
+                    class="px-1 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
                     ABOUT CJMRI
                 </a>
             </li>
@@ -89,19 +89,19 @@
             </li>
             <li>
                 <a href="{{ route('editorials-team') }}"
-                class="px-2 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
+                class="px-1 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
                 EDITORIAL TEAM
                 </a>
             </li>
             <li>
                 <a href="{{ route('submit.index') }}"
-                    class="px-2 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
+                    class="px-1 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
                     SUBMISSION
                 </a>
             </li>
             <li>
                 <a href="{{ route('announcements') }}"
-                    class="px-2 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
+                    class="px-1 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
                     ANNOUNCEMENTS
                 </a>
             </li>
@@ -110,7 +110,7 @@
                 @if (auth()->user()->role === 'reviewer')
                     <li>
                         <a href="{{ route('reviewer') }}"
-                            class="px-2 py-2 lg:text-sm text-xs hover:border hover:rounded ">
+                            class="px-1 py-2 lg:text-sm text-xs hover:border hover:rounded ">
                             FOR REVIEWER
                         </a>
                     </li>
