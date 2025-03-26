@@ -5,7 +5,7 @@
         <div class="bg-gray-100 px-3 lg:px-2 rounded-lg shadow-sm mb-6 lg:w-3/4 h-full">
             <div class="bg-white">
                 <div class="lg:py-2 bg-slate-200 h-full">
-                    <form action="{{ route('home') }}" method="GET" class="flex items-center px-2">
+                    <form action="{{ route('search') }}" method="GET" class="flex items-center px-2">
                         <input type="text" name="query"
                             class="text-black flex-1 px-3 py-2 text-sm border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Search..." value="{{ request()->query('query') }}">
