@@ -52,6 +52,7 @@ Route::middleware(['web'])->group(function () {
     Route::get('/editorials-team', [HomeController::class, 'editorialTeam'])->name('editorials-team');
     Route::post('/all-editorials/create', [ReviewerController::class, 'requestRoleChange'])->name('reviewer.create');
     Route::get('/files/{id}/download', [CurrentIssueController::class, 'download'])->name('download.article');
+    Route::get('/search', [ArticleController::class, 'search'])->name('search');
 
     // File Download Routes
     Route::get('/files/{id}/download', [FileDownloadController::class, 'download'])->name('download');

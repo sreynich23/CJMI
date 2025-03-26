@@ -6,6 +6,8 @@
 /.phpunit.cache
 .phpunit.result.cache
 .phpactor.json
+
+# Homestead & authentication files
 Homestead.json
 Homestead.yaml
 auth.json
@@ -26,6 +28,8 @@ bootstrap/cache/
 # Ignore sensitive environment files
 .env
 .env.*  # Covers .env.local, .env.production, etc.
+.env.backup
+.env.production
 
 # IDE and editor configs
 /.idea
