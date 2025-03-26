@@ -92,7 +92,7 @@
 
                         <div class="bg-white rounded-lg p-6 w-96" onclick="event.stopPropagation();">
                             <h2 class="text-xl font-semibold mb-4">Edit Editor</h2>
-                            <form action="{{ route('admin.editorials.update', $editor->id) }}" method="GET"
+                            <form action="{{ route('admin.editorials.update', $editor->id) }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
