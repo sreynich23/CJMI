@@ -95,7 +95,7 @@ class CurrentIssueController extends Controller
                 $imagePath = $volumeImages->where('id_volume_issue', $volume->id)->first()?->image_path;
                 return [
                     'id_volume_issue' => $volume->id, // Include id_volume_issue
-                    'volume' => 'Vol. ' . $volume->volume . ' No. ' . $volume->issue . ' (' . $volume->year . ')',
+                    'volume' => 'Vol. ' . $volume->volume . ' Iss. ' . $volume->issue . ' (' . $volume->year . ')',
                     'image' => $imagePath,
                 ];
             });
