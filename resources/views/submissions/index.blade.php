@@ -75,7 +75,7 @@
                                 <div class="flex-1 min-w-0">
                                     <div class="flex items-center">
                                         <p class="text-sm font-medium text-gray-900 truncate">
-                                            {{ $submission->id }} {{ $submission->title }}
+                                            {{ $submission->title }}
                                         </p>
                                     </div>
                                     <div class="mt-2 flex items-center text-sm text-gray-500">
@@ -97,10 +97,13 @@
                                         View
                                     </a>
                                     <!-- Update Button -->
+                                    @if ($submission->status === 'publiced')
+                                    @else
                                     <a href="{{ route('submit.updateSubmit', ['submission' => $submission->id]) }}"
                                         class="inline-flex items-center px-3 py-1 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
                                         Update
                                     </a>
+                                    @endif
 
                                     <!-- Actions Dropdown -->
                                     <div class="relative" x-data="{ open: false }">

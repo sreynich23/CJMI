@@ -10,62 +10,67 @@
                 </svg>
             </button>
         </div>
-        <div class="text-xl font-semibold">Policies and Guidelines</div>
-<ul class="space-y-4">
-    @foreach ($policies->groupBy('type') as $type => $groupedPolicies)
-        <li>
-            <h3 class="text-lg font-semibold text-blue-600">{{ ucfirst($type) }}</h3>
+        <div class="text-xl font-semibold text-white text-center bg-red-600 ml-4 mb-6 p-1">Policies and Guidelines</div>
+        <ul class="space-y-4">
+            @foreach ($policies->groupBy('type') as $type => $groupedPolicies)
+                <li>
+                    <h3 class="text-lg font-semibold text-white text-center bg-blue-950 ml-4 ">{{ ucfirst($type) }}</h3>
 
-            @foreach ($groupedPolicies->groupBy('category') as $category => $categoryPolicies)
-                <ul class="space-y-2 pl-4">
-                    <li>
-                        <a href="javascript:void(0);"
-                            class="block border border-blue-700 rounded-md px-4 py-2 text-black hover:bg-blue-600 hover:text-white toggle-category"
-                            data-category="{{ $category }}">
-                            {{ $category }}
-                        </a>
-                    </li>
-                </ul>
-            @endforeach
-        </li>
-    @endforeach
-</ul>
-</div>
-<!-- Content Section -->
-<div class="bg-gray-100 w-full p-5 rounded gap-5">
-    <div class="bg-white rounded p-6 space-y-6">
-        @foreach ($policies->groupBy('type') as $type => $groupedPolicies)
-            @foreach ($groupedPolicies->groupBy('category') as $category => $categoryPolicies)
-                <div class="contentSection" id="category_{{ $category }}" style="display:none;">
-                    <h4 class="text-xl font-bold">{{ ucfirst($category) }}</h4>
-
-                    @foreach ($categoryPolicies as $policy)
-                        <div class="flex gap-2">
-                            <h1 id="dynamicTitle" class="text-lg font-semibold text-gray-800">{{ $policy->title }}</h1>
-                            <button
-                                onclick="editPolicy({{ $policy->id }}, '{{ addslashes($policy->type) }}', '{{ addslashes($policy->category) }}', '{{ addslashes($policy->title) }}')"
-                                class="rounded-md px-1 flex gap-2 border">
-                                Edit
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9" />
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z" />
-                                </svg>
-                            </button>
-                        </div>
-                        <p class="text-gray-600 mt-2">
-                            {!! Str::of(nl2br(e($policy->description)))
-                                ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
-                                ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
-                            !!}
-                        </p>
+                    @foreach ($groupedPolicies->groupBy('category') as $category => $categoryPolicies)
+                        <ul class="space-y-2 pl-4 mt-1">
+                            <li>
+                                <a href="javascript:void(0);"
+                                    class="block px-4 py-2 bg-blue-500 text-white hover:bg-blue-800 hover:text-white toggle-category"
+                                    data-category="{{ $category }}">
+                                    {{ $category }}
+                                </a>
+                            </li>
+                        </ul>
                     @endforeach
-                </div>
+                </li>
             @endforeach
-        @endforeach
+        </ul>
     </div>
-</div>
+    <!-- Content Section -->
+    <div class="bg-gray-100 w-full p-5 rounded gap-5">
+        <div class="bg-white rounded p-6 space-y-6">
+            @foreach ($policies->groupBy('type') as $type => $groupedPolicies)
+                @foreach ($groupedPolicies->groupBy('category') as $category => $categoryPolicies)
+                    <div class="contentSection" id="category_{{ $category }}" style="display:none;">
+                        <h4 class="text-xl font-bold">{{ ucfirst($category) }}</h4>
+
+                        @foreach ($categoryPolicies as $policy)
+                        @if (addslashes($policy->category) === 'Manuscript structure and Template')
+                                <a href="{{ asset('manuscripts/CJMRI_Templete.docx') }}"
+                                    class="text-blue-500 hover:underline" target="_blank">Download Manuscript Template</a>
+                            @endif
+                            <div class="flex gap-2">
+                                <h1 id="dynamicTitle" class="text-lg font-semibold text-gray-800">{{ $policy->title }}
+                                </h1>
+                                <button
+                                    onclick="editPolicy({{ $policy->id }}, '{{ addslashes($policy->type) }}', '{{ addslashes($policy->category) }}', '{{ addslashes($policy->title) }}')"
+                                    class="rounded-md px-1 flex gap-2 border">
+                                    Edit
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4 12.5-12.5z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <p class="text-gray-600 mt-2">
+                                {!! Str::of(nl2br(e($policy->description)))
+                                    ->replaceMatches('/(https?:\/\/[^\s]+)/', '<a href="$1" class="text-blue-500 hover:underline" target="_blank">$1</a>')  // Links
+                                    ->replaceMatches('/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/', '<a href="mailto:$1" class="text-blue-500 hover:underline">$1</a>')  // Emails
+                                !!}
+                            </p>
+                        @endforeach
+                    </div>
+                @endforeach
+            @endforeach
+        </div>
+    </div>
 </aside>
 
 <!-- Hidden Form Section -->
@@ -113,91 +118,91 @@
 </div>
 
 <script>
-    window.onload = function () {
-    const addFormPolicies = document.getElementById("addFormPolicies");
-    const policyForm = document.getElementById("policyForm");
-    const policyIdInput = document.getElementById("policy_id");
-    const typeInput = document.getElementById("type");
-    const categoryInput = document.getElementById("category");
-    const titleInput = document.getElementById("title");
-    const descriptionInput = document.getElementById("description");
-    const formTitle = document.getElementById("formTitle");
-
-    window.showFormPolicies = function () {
-        addFormPolicies.classList.remove("hidden");
-        formTitle.textContent = "Add Policy";
-        policyForm.action = "{{ route('admin.policies_guidelines.store') }}";
-        policyForm.method = "POST";
-        policyIdInput.value = "";
-        titleInput.value = "";
-        descriptionInput.value = "";
-        const methodField = document.getElementById('method_field');
-        if (methodField) methodField.remove();
-    };
-
-    window.editPolicy = function (id, type, category, title) {
-
+    window.onload = function() {
         const addFormPolicies = document.getElementById("addFormPolicies");
-        const formTitle = document.getElementById("formTitle");
         const policyForm = document.getElementById("policyForm");
         const policyIdInput = document.getElementById("policy_id");
         const typeInput = document.getElementById("type");
         const categoryInput = document.getElementById("category");
         const titleInput = document.getElementById("title");
         const descriptionInput = document.getElementById("description");
+        const formTitle = document.getElementById("formTitle");
 
-        // Show the form
-        addFormPolicies.classList.remove("hidden");
+        window.showFormPolicies = function() {
+            addFormPolicies.classList.remove("hidden");
+            formTitle.textContent = "Add Policy";
+            policyForm.action = "{{ route('admin.policies_guidelines.store') }}";
+            policyForm.method = "POST";
+            policyIdInput.value = "";
+            titleInput.value = "";
+            descriptionInput.value = "";
+            const methodField = document.getElementById('method_field');
+            if (methodField) methodField.remove();
+        };
 
-        // Set form title and populate form fields with current data
-        formTitle.textContent = "Update Policy";
-        policyForm.action = `/admin/policies-guidelines/${id}/edit`;
-        policyIdInput.value = id;
-        typeInput.value = type;
-        categoryInput.value = category;
-        titleInput.value = title;
+        window.editPolicy = function(id, type, category, title) {
 
-        // Optionally, you can add the _method hidden input for a PUT request, if required
-        const methodField = document.getElementById('method_field');
-        if (!methodField) {
-            const newMethodField = document.createElement('input');
-            newMethodField.type = 'hidden';
-            newMethodField.name = '_method';
-            newMethodField.value = 'GET';
-            newMethodField.id = 'method_field';
-            policyForm.appendChild(newMethodField);
-        }
-    };
+            const addFormPolicies = document.getElementById("addFormPolicies");
+            const formTitle = document.getElementById("formTitle");
+            const policyForm = document.getElementById("policyForm");
+            const policyIdInput = document.getElementById("policy_id");
+            const typeInput = document.getElementById("type");
+            const categoryInput = document.getElementById("category");
+            const titleInput = document.getElementById("title");
+            const descriptionInput = document.getElementById("description");
 
-    window.hideForm = function () {
-        addFormPolicies.classList.add("hidden");
-    };
+            // Show the form
+            addFormPolicies.classList.remove("hidden");
 
-    addFormPolicies.addEventListener("click", (e) => {
-        if (e.target === addFormPolicies) hideForm();
-    });
+            // Set form title and populate form fields with current data
+            formTitle.textContent = "Update Policy";
+            policyForm.action = `/admin/policies-guidelines/${id}/edit`;
+            policyIdInput.value = id;
+            typeInput.value = type;
+            categoryInput.value = category;
+            titleInput.value = title;
 
-    // Add click event listeners to category links
-    const categoryLinks = document.querySelectorAll('.toggle-category');
-    categoryLinks.forEach(link => {
-        link.addEventListener('click', function () {
-            const category = this.getAttribute('data-category');
-            const contentSection = document.getElementById(`category_${category}`);
-
-            // Toggle visibility
-            if (contentSection.style.display === "none" || contentSection.style.display === "") {
-                // Hide all other sections
-                document.querySelectorAll('.contentSection').forEach(section => {
-                    section.style.display = "none";
-                });
-
-                // Show the clicked section
-                contentSection.style.display = "block";
-            } else {
-                contentSection.style.display = "none";
+            // Optionally, you can add the _method hidden input for a PUT request, if required
+            const methodField = document.getElementById('method_field');
+            if (!methodField) {
+                const newMethodField = document.createElement('input');
+                newMethodField.type = 'hidden';
+                newMethodField.name = '_method';
+                newMethodField.value = 'GET';
+                newMethodField.id = 'method_field';
+                policyForm.appendChild(newMethodField);
             }
-        });
-    });
-};
+        };
 
+        window.hideForm = function() {
+            addFormPolicies.classList.add("hidden");
+        };
+
+        addFormPolicies.addEventListener("click", (e) => {
+            if (e.target === addFormPolicies) hideForm();
+        });
+
+        // Add click event listeners to category links
+        const categoryLinks = document.querySelectorAll('.toggle-category');
+        categoryLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                const category = this.getAttribute('data-category');
+                const contentSection = document.getElementById(`category_${category}`);
+
+                // Toggle visibility
+                if (contentSection.style.display === "none" || contentSection.style.display ===
+                    "") {
+                    // Hide all other sections
+                    document.querySelectorAll('.contentSection').forEach(section => {
+                        section.style.display = "none";
+                    });
+
+                    // Show the clicked section
+                    contentSection.style.display = "block";
+                } else {
+                    contentSection.style.display = "none";
+                }
+            });
+        });
+    };
 </script>

@@ -18,9 +18,6 @@
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
                     Submission Details
                 </h3>
-                <p class="mt-1 max-w-2xl text-sm text-gray-500">
-                    {{ $submit->id }}
-                </p>
             </div>
             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $submit->status_badge }}">
                 {{ ucfirst($submit->status) }}

@@ -9,9 +9,9 @@
         </div>
 
         <!-- Main Content -->
-        <div class="p-6">
+        <div class="flex rounded-lg border p-6">
             <!-- Featured Announcement -->
-            <div class="mb-8 bg-white rounded-lg border p-6">
+            <div class="mb-8 bg-white w-4/5">
                 <h2 class="text-base md:text-base lg:text-xl font-bold mb-2">Call for Papers</h2>
                 <div class="text-gray-600 text-xs md:text-sm lg:text-base mb-2">
                     {!! Str::of(nl2br(e("cjmri@nubb.edu.kh\n+855 31 222 8888")))
@@ -29,6 +29,11 @@
                         </p>
                     </div>
                 </div>
+            </div>
+            <div class="h-full w-1/5 space-y-2">
+                <a href="{{ asset('manuscripts/CJMRI_Templete.docx') }}"
+                                    class="text-blue-500 hover:underline" target="_blank">Download Manuscript Template</a>
+                <img src="{{ asset('manuscripts/announcements.jpg') }}" alt="" class="">
             </div>
         </div>
     </div>
