@@ -59,49 +59,49 @@
         <ul class="flex flex-wrap justify-center space-x-2 items-center">
             <li>
                 <a href="{{ route('home') }}"
-                    class="px-1 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
+                    class="px-1 py-2 text-xs md:text-xs lg:text-sm hover:border hover:rounded ">
                     HOME
                 </a>
             </li>
             <li>
                 <a href="{{ route('about') }}"
-                    class="px-1 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
+                    class="px-1 py-2 text-xs md:text-xs lg:text-sm hover:border hover:rounded ">
                     ABOUT CJMRI
                 </a>
             </li>
             <li>
                 <a href="{{ route('curr') }}"
-                    class="px-3 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
+                    class="px-3 py-2 text-xs md:text-xs lg:text-sm hover:border hover:rounded ">
                     CURRENT ISSUE
                 </a>
             </li>
             <li>
                 <a href="{{ route('all_volumes') }}"
-                    class="px-3 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
+                    class="px-3 py-2 text-xs md:text-xs lg:text-sm hover:border hover:rounded ">
                     ALL VOLUME ISSUES
                 </a>
             </li>
             <li>
                 <a href="{{ route('all-editorials') }}"
-                class="px-3 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
+                class="px-3 py-2 text-xs md:text-xs lg:text-sm hover:border hover:rounded ">
                     POLICIES AND GUIDELINES
                 </a>
             </li>
             <li>
                 <a href="{{ route('editorials-team') }}"
-                class="px-1 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
+                class="px-1 py-2 text-xs md:text-xs lg:text-sm hover:border hover:rounded ">
                 EDITORIAL TEAM
                 </a>
             </li>
             <li>
                 <a href="{{ route('submit.index') }}"
-                    class="px-1 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
+                    class="px-1 py-2 text-xs md:text-xs lg:text-sm hover:border hover:rounded ">
                     SUBMISSION
                 </a>
             </li>
             <li>
                 <a href="{{ route('announcements') }}"
-                    class="px-1 py-2 text-xs md:text-sm lg:text-base hover:border hover:rounded ">
+                    class="px-1 py-2 text-xs md:text-xs lg:text-sm hover:border hover:rounded ">
                     ANNOUNCEMENTS
                 </a>
             </li>

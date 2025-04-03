@@ -3,16 +3,16 @@
 @section('content')
     <aside class="p-2 flex bg-white gap-5">
         <ul class="space-y-4">
-            <div class="text-xl font-semibold">Policies and Guidelines</div>
+            <div class="text-xl font-semibold text-white text-center bg-red-600 ml-4 mb-6 p-1">Policies and Guidelines</div>
             @foreach ($policies->groupBy('type') as $type => $groupedPolicies)
                 <li>
-                    <h3 class="text-lg font-semibold text-blue-600">{{ ucfirst($type) }}</h3>
+                    <h3 class="text-lg font-semibold text-white text-center bg-blue-950 ml-4 ">{{ ucfirst($type) }}</h3>
 
                     @foreach ($groupedPolicies->groupBy('category') as $category => $categoryPolicies)
-                        <ul class="space-y-2 pl-4">
+                        <ul class="space-y-2 pl-4 mt-1">
                             <li>
                                 <a href="javascript:void(0);"
-                                    class="block border border-blue-700 rounded-md px-4 py-2 text-black hover:bg-blue-600 hover:text-white toggle-category"
+                                    class="block px-4 py-2 bg-blue-500 text-white hover:bg-blue-800 hover:text-white toggle-category"
                                     data-category="{{ $category }}">
                                     {{ $category }}
                                 </a>
@@ -32,6 +32,10 @@
                             <h4 class="text-xl font-bold">{{ ucfirst($category) }}</h4>
 
                             @foreach ($categoryPolicies as $policy)
+                            @if (addslashes($policy->category) === 'Manuscript structure and Template')
+                                <a href="{{ asset('manuscripts/CJMRI_Templete.docx') }}"
+                                    class="text-blue-500 hover:underline" target="_blank">Download Manuscript Template</a>
+                            @endif
                                 <h1 class=" font-bold">{{$policy->title}}</h1>
                                 <p class="text-gray-600 mt-2">
                                     {!! Str::of(nl2br(e($policy->description)))
