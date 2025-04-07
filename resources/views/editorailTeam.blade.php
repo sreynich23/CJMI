@@ -9,7 +9,10 @@
                 <li>
                     <a href="#{{ Str::slug($position) }}"
                         class="block text-xs md:text-sm lg:text-base border border-blue-700 rounded-md px-4 py-2 text-black hover:bg-blue-600 hover:text-white">
-                        {{ $position }}
+                        @if ($position==='')
+
+                        @endif
+                        {{  }}
                     </a>
                 </li>
             @endforeach
