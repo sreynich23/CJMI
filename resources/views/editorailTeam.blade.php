@@ -12,7 +12,7 @@
                         @if ($position==='')
 
                         @endif
-                        {{  }}
+                        {{ $position }}
                     </a>
                 </li>
             @endforeach
