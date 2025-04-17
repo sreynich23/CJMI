@@ -31,9 +31,9 @@
                 </div>
             </div>
             <div class="h-full w-1/5 space-y-2">
-                <a href="{{ asset('manuscripts/CJMRI_Templete.docx') }}"
+                <a href="{{ asset('storage/manuscripts/CJMRI_Templete.docx') }}"
                                     class="text-blue-500 hover:underline" target="_blank">Download Manuscript Template</a>
-                <img src="{{ asset('manuscripts/announcements.jpg') }}" alt="" class="">
+                <img src="{{ asset('storage/manuscripts/announcements.jpg') }}" alt="" class="">
             </div>
         </div>
     </div>

@@ -33,7 +33,7 @@
 
                             @foreach ($categoryPolicies as $policy)
                             @if (addslashes($policy->category) === 'Manuscript structure and Template')
-                                <a href="{{ asset('manuscripts/CJMRI_Templete.docx') }}"
+                                <a href="{{ asset('storage/manuscripts/CJMRI_Templete.docx') }}"
                                     class="text-blue-500 hover:underline" target="_blank">Download Manuscript Template</a>
                             @endif
                                 <h1 class=" font-bold">{{$policy->title}}</h1>
