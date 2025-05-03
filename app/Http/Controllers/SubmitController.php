@@ -104,12 +104,12 @@ class SubmitController extends Controller
     {
         try {
             $validated = $request->validate([
-                'title' => 'required|string|max:255',
-                'author_name' => 'required|string|max:255',
-                'abstract' => 'required|string|min:100',
+                'title' => 'required|string',
+                'author_name' => 'required|string|max:100',
+                'abstract' => 'required|string',
                 'keywords' => 'required|string',
                 'prefix' => 'nullable|string',
-                'subtitle' => 'nullable|string|max:255',
+                'subtitle' => 'nullable|string',
             ]);
 
             // Store metadata in session

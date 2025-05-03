@@ -15,7 +15,7 @@
         <form action="{{ route('admin.editorials.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <label class="block mb-2">Profile:</label>
-            <input type="file" name="image" class="w-full p-2 border rounded mb-4" required>
+            <input type="file" name="image" class="w-full p-2 border rounded mb-4">
             <label class="block mb-2">Name:</label>
             <input type="text" name="name" class="w-full p-2 border rounded mb-4" required>
 
