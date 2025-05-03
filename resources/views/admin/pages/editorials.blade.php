@@ -52,7 +52,6 @@
         <table class="w-full border-collapse border border-gray-300 mt-4">
             <thead>
                 <tr class="bg-gray-100">
-                    <th class="border border-gray-300 px-4 py-2 text-left">Profile</th>
                     <th class="border border-gray-300 px-4 py-2 text-left">Name</th>
                     <th class="border border-gray-300 px-4 py-2 text-left">Position</th>
                     <th class="border border-gray-300 px-4 py-2 text-center">Description</th>
@@ -62,9 +61,11 @@
             <tbody>
                 @foreach ($editors as $editor)
                     <tr class="border border-gray-300 hover:bg-gray-50">
-                        <td class="border border-gray-300 px-4 py-2"><img
-                                src="{{ asset('storage/' . $editor->path_image) }}" alt="Profile" height="100"
-                                width="100"></td>
+                        @if ($editor->path_image)
+                            <td class="border border-gray-300 px-4 py-2"><img
+                                    src="{{ asset('storage/' . $editor->path_image) }}" alt="Profile" height="100"
+                                    width="100"></td>
+                        @endif
                         <td class="border border-gray-300 px-4 py-2">{{ $editor->name }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ $editor->position }}</td>
                         <td class="border border-gray-300 px-4 py-2">{!! nl2br(e($editor->description)) !!}</td>
