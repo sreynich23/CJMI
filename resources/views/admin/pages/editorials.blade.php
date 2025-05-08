@@ -8,6 +8,9 @@
     <button onclick="EdAccForm()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
         Add Account Editor
     </button>
+    <button onclick="ReviewerAccForm()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+        Add Account Reviewer
+    </button>
 
     <!-- Add Editor Form (Initially Hidden) -->
     <div id="addEditorForm" class="mt-4 p-4 border border-gray-300 rounded-lg bg-gray-50 hidden">
@@ -40,6 +43,26 @@
             <input type="text" name="email" class="w-full p-2 border rounded mb-4" required>
             <label class="block mb-2">Password:</label>
             <input type="password" name="password" class="w-full p-2 border rounded mb-4" required>
+            <label class="block mb-2">Country:</label>
+            <input type="text" name="country" class="w-full p-2 border rounded mb-4" required>
+
+            <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Save</button>
+        </form>
+    </div>
+
+    <div id="addReviewerAccForm" class="mt-4 p-4 border border-gray-300 rounded-lg bg-gray-50 hidden">
+        <h2 class="text-xl font-semibold mb-2">Add New Reviewer</h2>
+        <form action="{{ route('admin.reviewer.add') }}" method="POST">
+            @csrf
+            <label class="block mb-2">Name:</label>
+            <input type="text" name="name" class="w-full p-2 border rounded mb-4" required>
+
+            <label class="block mb-2">Email:</label>
+            <input type="text" name="email" class="w-full p-2 border rounded mb-4" required>
+            <label class="block mb-2">Password:</label>
+            <input type="password" name="password" class="w-full p-2 border rounded mb-4" required>
+            <label class="block mb-2">Position:</label>
+            <input type="position" name="position" class="w-full p-2 border rounded mb-4" required>
             <label class="block mb-2">Country:</label>
             <input type="text" name="country" class="w-full p-2 border rounded mb-4" required>
 
@@ -128,6 +151,11 @@
 
 <!-- JavaScript to Toggle Form -->
 <script>
+    function ReviewerAccForm() {
+        let form = document.getElementById("addReviewerAccForm");
+        form.classList.toggle("hidden");
+    }
+    
     function EdAccForm() {
         let form = document.getElementById("addEdAccForm");
         form.classList.toggle("hidden");

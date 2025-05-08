@@ -153,6 +153,7 @@ Route::middleware(['auth'])->group(function () {
         // Editorial Management
         Route::post('editorials/store', [AboutController::class, 'storeEditorial'])->name('editorials.store');
         Route::post('editorials/addEd', [AboutController::class, 'createAccEditorial'])->name('editorials.add');
+        Route::post('editorials/addReviewer', [AboutController::class, 'createReviewer'])->name('reviewer.add');
         Route::put('editorials/{editor}', [AboutController::class, 'updateEditorial'])->name('editorials.update');
         Route::delete('editorials/delete/{editor}', [AboutController::class, 'destroyEditorial'])->name('editorials.destroy');
 

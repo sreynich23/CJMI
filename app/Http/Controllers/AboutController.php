@@ -61,7 +61,7 @@ class AboutController extends Controller
         $reviewing = DB::table('reviewers')
             ->join('submits', 'reviewers.submission_id', '=', 'submits.id')
             ->join('reviewer', 'reviewers.reviewer_id', '=', 'reviewer.id')
-            ->select('submits.title as title','submits.status as submission_status', 'submits.file_path as file_path', 'reviewers.status', 'reviewers.submission_id', 'reviewers.reviewer_id', 'reviewer.name as reviewer_name', 'reviewer.user_id as user_id')
+            ->select('submits.title as title', 'submits.status as submission_status', 'submits.file_path as file_path', 'reviewers.status', 'reviewers.submission_id', 'reviewers.reviewer_id', 'reviewer.name as reviewer_name', 'reviewer.user_id as user_id')
             ->get()
             ->groupBy('submission_id');
         // Fetch all volumes with their issues, ordered by year, volume, and issue
@@ -93,7 +93,7 @@ class AboutController extends Controller
             });
         }
         $latestYear = VolumeIssue::query()->max('year');
-        return view('admin.dashboard', compact('abouts', 'submissions', 'formattedVolumes', 'image', 'latestYear', 'navbar', 'journalInfo', 'announcements', 'reviewers', 'reviewersEditorial', 'reviewing', 'submissionsUpdate', 'submissionsApproved', 'editors', 'recognitions', 'indexings', 'conferences','policies'));
+        return view('admin.dashboard', compact('abouts', 'submissions', 'formattedVolumes', 'image', 'latestYear', 'navbar', 'journalInfo', 'announcements', 'reviewers', 'reviewersEditorial', 'reviewing', 'submissionsUpdate', 'submissionsApproved', 'editors', 'recognitions', 'indexings', 'conferences', 'policies'));
     }
 
     public function indexuser()
@@ -230,32 +230,32 @@ class AboutController extends Controller
         return redirect()->back()->with('success', 'Navbar updated successfully!');
     }
     public function sendReviewFeedback($authorId, $submissionId, Request $request)
-{
-    // Fetch the author and submission data
-    $author = User::findOrFail($authorId);
-    $submission = Submit::findOrFail($submissionId);
+    {
+        // Fetch the author and submission data
+        $author = User::findOrFail($authorId);
+        $submission = Submit::findOrFail($submissionId);
 
-    // Validate the input
-    $request->validate([
-        'comment' => 'required|string|max:1000',
-        'file' => 'nullable|mimes:pdf|max:10240',
-    ]);
+        // Validate the input
+        $request->validate([
+            'comment' => 'required|string|max:1000',
+            'file' => 'nullable|mimes:pdf|max:10240',
+        ]);
 
-    $comment = $request->input('comment');
+        $comment = $request->input('comment');
 
-    $submission->update(['status' => 'waiting_update']);
+        $submission->update(['status' => 'waiting_update']);
 
-    if ($request->hasFile('file')) {
-        $file = $request->file('file');
-        $filePath = $file->store('feedback_pdfs', 'public');
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filePath = $file->store('feedback_pdfs', 'public');
+        }
+
+        // Send the email with feedback and the optional file path
+        Mail::to($author->email)->send(new FeedbackAuthor($submission, $author, $comment, $filePath));
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Feedback sent successfully.');
     }
-
-    // Send the email with feedback and the optional file path
-    Mail::to($author->email)->send(new FeedbackAuthor($submission, $author, $comment, $filePath));
-
-    // Redirect back with a success message
-    return redirect()->back()->with('success', 'Feedback sent successfully.');
-}
 
     public function reject($authorId, $submissionId, Request $request)
     {
@@ -369,6 +369,33 @@ class AboutController extends Controller
         return redirect()->back()->with('success', 'Account Editor created successfully.');
     }
 
+    public function createReviewer(Request $request)
+    {
+        // Create the user and store the instance
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'country' => $request->country,
+            'password' => Hash::make($request->password),
+            'role' => 'reviewer',
+            'notifications_enabled' => 1,
+            'reviewer_available' => 1,
+            'isAdmin' => 1,
+        ]);
+
+        // Create the reviewer and link to the user
+        Reviewer::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'position' => $request->position, // fixed typo
+            'country' => $request->country,
+            'active' => 1,
+            'user_id' => $user->id, // use created user ID
+        ]);
+
+        return redirect()->back()->with('success', 'Account Reviewer created successfully.');
+    }
+
     /**
      * Store a newly created editor in storage.
      */
@@ -400,36 +427,36 @@ class AboutController extends Controller
     }
 
     public function updateEditorial(Request $request, EditorialTeam $editor)
-{
-    $request->validate([
-        'path_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        'name' => 'required',
-        'position' => 'required',
-        'description' => 'required',
-    ]);
+    {
+        $request->validate([
+            'path_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'name' => 'required',
+            'position' => 'required',
+            'description' => 'required',
+        ]);
 
-    $data = $request->only(['name', 'position', 'description']);
+        $data = $request->only(['name', 'position', 'description']);
 
-    // Handle image upload if present
-    if ($request->hasFile('path_image')) {
-        // Delete the old image if it exists
-        if ($editor->path_image) {
-            Storage::disk('public')->delete($editor->path_image);
+        // Handle image upload if present
+        if ($request->hasFile('path_image')) {
+            // Delete the old image if it exists
+            if ($editor->path_image) {
+                Storage::disk('public')->delete($editor->path_image);
+            }
+
+            // Store the new image
+            $image = $request->file('path_image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $path = $image->storeAs('editorial_images', $imageName, 'public');
+
+            $data['path_image'] = $path; // Add new image path to update data
         }
 
-        // Store the new image
-        $image = $request->file('path_image');
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
-        $path = $image->storeAs('editorial_images', $imageName, 'public');
+        // Update the editor record
+        $editor->update($data);
 
-        $data['path_image'] = $path; // Add new image path to update data
+        return redirect()->back()->with('success', 'Editor updated successfully.');
     }
-
-    // Update the editor record
-    $editor->update($data);
-
-    return redirect()->back()->with('success', 'Editor updated successfully.');
-}
 
     public function destroyEditorial(EditorialTeam $editor)
     {
