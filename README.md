@@ -1,66 +1,144 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+---
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# CJMRI Web Journal
 
-## About Laravel
+Cambodian Journal of Multidisciplinary Research and Innovation (CJMRI) is a modern web-based journal management system built with Laravel. This application allows researchers, editors, and readers to submit, manage, and access academic articles and publications efficiently.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* 📝 **Article Submission** – Allow authors to submit and manage research articles.
+* 🧑‍⚖️ **Peer Review Management** – Support for reviewer assignment and review workflows.
+* 📄 **PDF & File Upload** – Upload and manage PDF versions of articles.
+* 🌐 **Multilingual Support** – Supports Khmer and English languages.
+* 🔍 **Search & Filter** – Easily search and filter through published articles.
+* 📢 **Announcements** – Display important news and updates for journal users.
+* 🛠️ **Admin Panel** – Manage users, articles, categories, and settings.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Technologies Used
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+* **Backend:** Laravel 11.x
+* **Database:** MySQL 
+* **Frontend:** Blade Templates
+* **Authentication:** Laravel Breeze
+* **File Storage:** Local (public), can be configured for S3
+* **PDF Generation/Display:** DomPDF / embedded viewer
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Installation
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. **Clone the repository**
 
-### Premium Partners
+   ```bash
+   git clone https://github.com/sreynich23/cjmi
+   cd cjmi
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+2. **Install dependencies**
 
-## Contributing
+   ```bash
+   composer install
+   npm install && npm run dev
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. **Set up environment**
 
-## Code of Conduct
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4. **Configure `.env`**
 
-## Security Vulnerabilities
+   * Set database credentials
+   * Configure file storage (default: local)
+   * Set mail configuration (for notifications)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+5. **Run migrations**
+
+   ```bash
+   php artisan migrate
+   ```
+
+6. **Serve the application**
+
+   ```bash
+   php artisan serve
+   ```
+
+7. **(Optional) Seed demo data**
+
+   ```bash
+   php artisan db:seed
+   ```
+
+---
+
+## File Upload Configuration
+
+Ensure the storage link is created:
+
+```bash
+php artisan storage:link
+```
+
+Uploads are stored in:
+
+```
+public/storage/pdf_books
+public/storage/images
+```
+
+---
+
+## User Roles
+
+| Role   | Permissions                                 |
+| ------ | ------------------------------------------- |
+| Admin  | Manage users, articles, settings            |
+| Editor | Review submissions, approve/reject articles |
+| Author | Submit and manage own articles              |
+| Reader | View published content                      |
+
+---
+
+## Localization
+
+This project supports **English** and **Khmer**. Language files are stored in:
+
+```
+resources/lang/en/
+resources/lang/km/
+```
+
+---
+
+## Deployment
+
+Recommended to deploy with:
+
+* **Web Server:** Nginx / Apache
+* **PHP Version:** 8.1+
+* **Queue:** Redis / Database queue for notifications
+* **Scheduler:** Set up `php artisan schedule:run` via cron
+
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-source and licensed under the [MIT License](LICENSE).
+
+---
+
+## Contact
+
+📧 **Email:** [cjmri@nubb.edu.kh](mailto:cjmri@nubb.edu.kh)
+🌐 **Website:** [https://cjmri.nubb.edu.kh](https://cjmri.nubb.edu.kh)
+📄 **Maintainer:** Long Sreynich
+
+---
+
